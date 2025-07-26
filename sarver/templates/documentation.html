@@ -1,0 +1,394 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Documentation{% endblock %}
+
+{% block styles %}
+<style>
+    .documentation-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .doc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .doc-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .doc-content {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .doc-nav {
+        position: sticky;
+        top: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .doc-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .doc-nav li {
+        margin-bottom: 0.5rem;
+    }
+
+    .doc-nav a {
+        color: #495057;
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.2s;
+    }
+
+    .doc-nav a:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+    }
+
+    .doc-nav a.active {
+        background-color: #e9ecef;
+        color: #0d6efd;
+        font-weight: 500;
+    }
+
+    .doc-section {
+        margin-bottom: 3rem;
+    }
+
+    .doc-section h2 {
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .audio-player {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        display: none;
+    }
+
+    .audio-player.active {
+        display: block;
+    }
+
+    .audio-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .documentation-page {
+            padding: 1rem;
+        }
+
+        .doc-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .doc-content {
+            padding: 1rem;
+        }
+
+        .audio-player {
+            bottom: 0;
+            right: 0;
+            left: 0;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="documentation-page">
+    <div class="doc-header">
+        <h1>ডকুমেন্টেশন (বাংলা)</h1>
+        <div class="doc-actions">
+            <input type="text" id="doc-search" class="form-control" placeholder="Search documentation..."
+                style="width:200px;display:inline-block;" oninput="searchDocs()">
+            <button class="btn btn-secondary" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export as
+                PDF</button>
+            <button class="btn btn-primary" onclick="downloadMD()">
+                <i class="fas fa-download"></i> Download MD
+            </button>
+            <button class="btn btn-success" onclick="playDocumentation()">
+                <i class="fas fa-play"></i> অডিও প্লে করুন
+            </button>
+            <span class="text-muted ms-2">ডকুমেন্টেশন পড়তে বা শুনতে Play as Audio বাটন চাপুন</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Navigation Sidebar -->
+        <div class="col-md-3">
+            <div class="doc-nav">
+                <h4>Contents</h4>
+                <ul id="doc-nav-list">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="doc-content" id="doc-content">
+                {{ content | safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="btn btn-sm btn-primary" onclick="togglePlay()">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="progress" style="flex: 1">
+                <div class="progress-bar" id="audio-progress" role="progressbar"></div>
+            </div>
+            <button class="btn btn-sm btn-danger" onclick="stopAudio()">
+                <i class="fas fa-stop"></i>
+            </button>
+        </div>
+        <audio id="doc-audio" style="display: none;"></audio>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    let currentAudio = null;
+    let isPlaying = false;
+    let currentSection = null;
+
+    // Generate table of contents
+    function generateTOC() {
+        const content = document.getElementById('doc-content');
+        const navList = document.getElementById('doc-nav-list');
+        const headings = content.querySelectorAll('h2');
+
+        headings.forEach((heading, index) => {
+            const id = `section-${index}`;
+            heading.id = id;
+
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `#${id}`;
+            a.textContent = heading.textContent;
+            a.onclick = (e) => {
+                e.preventDefault();
+                heading.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                updateActiveSection(id);
+            };
+
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+    }
+
+    // Update active section in nav
+    function updateActiveSection(id) {
+        const links = document.querySelectorAll('#doc-nav-list a');
+        links.forEach(link => {
+            if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // Download documentation as MD
+    async function downloadMD() {
+        try {
+            const response = await fetch('/api/docs/download');
+            const blob = await response.blob();
+
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'documentation.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+        } catch (error) {
+            console.error('Failed to download:', error);
+            alert('Failed to download documentation');
+        }
+    }
+
+    // Play documentation audio
+    async function playDocumentation() {
+        const content = document.getElementById('doc-content');
+        const text = content.textContent;
+
+        try {
+            const response = await fetch('/api/voice/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: text,
+                    voice: 'google_tts' // Ensure Bengali TTS
+                })
+            });
+            if (!response.ok) throw new Error('Generation failed');
+            const blob = await response.blob();
+            const audioUrl = URL.createObjectURL(blob);
+            const player = document.getElementById('doc-audio');
+            player.src = audioUrl;
+            document.getElementById('audio-player').classList.add('active');
+            togglePlay();
+        } catch (error) {
+            alert('অডিও প্লে করতে ব্যর্থ হয়েছে');
+        }
+    }
+
+    // Toggle play/pause
+    function togglePlay() {
+        const player = document.getElementById('doc-audio');
+        const icon = document.getElementById('play-icon');
+
+        if (isPlaying) {
+            player.pause();
+            icon.classList.replace('fa-pause', 'fa-play');
+        } else {
+            player.play();
+            icon.classList.replace('fa-play', 'fa-pause');
+        }
+
+        isPlaying = !isPlaying;
+    }
+
+    // Stop audio playback
+    function stopAudio() {
+        const player = document.getElementById('doc-audio');
+        player.pause();
+        player.currentTime = 0;
+        document.getElementById('play-icon').classList.replace('fa-pause', 'fa-play');
+        isPlaying = false;
+    }
+
+    // Update progress bar
+    document.getElementById('doc-audio').addEventListener('timeupdate', function (e) {
+        const progress = (e.target.currentTime / e.target.duration) * 100;
+        document.getElementById('audio-progress').style.width = `${progress}%`;
+    });
+
+    // --- Search Functionality ---
+    function searchDocs() {
+        const q = document.getElementById('doc-search').value.toLowerCase();
+        const content = document.getElementById('doc-content');
+        const html = content.innerHTML;
+        if (!q) {
+            // Remove highlights
+            content.innerHTML = html.replace(/<mark>(.*?)<\/mark>/g, '$1');
+            return;
+        }
+        // Highlight matches
+        content.innerHTML = html.replace(/<mark>(.*?)<\/mark>/g, '$1')
+            .replace(new RegExp(q, 'gi'), match => `<mark>${match}</mark>`);
+    }
+    // --- PDF Export ---
+    function exportPDF() {
+        html2pdf(document.getElementById('doc-content'), {
+            margin: 0.5,
+            filename: 'documentation.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        });
+    }
+    // --- Section-wise Play ---
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add play buttons to each h2/h3
+        document.querySelectorAll('#doc-content h2, #doc-content h3').forEach(function (h) {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-sm btn-outline-success ms-2';
+            btn.innerHTML = '<i class="fas fa-play"></i>';
+            btn.title = 'Play this section';
+            btn.onclick = function () {
+                playSectionAudio(h);
+            };
+            h.appendChild(btn);
+        });
+    });
+    async function playSectionAudio(heading) {
+        let text = '';
+        let el = heading.nextElementSibling;
+        while (el && !/^H[23]$/.test(el.tagName)) {
+            text += el.textContent + '\n';
+            el = el.nextElementSibling;
+        }
+        if (!text.trim()) text = heading.textContent;
+        try {
+            const response = await fetch('/api/voice/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text,
+                    voice: 'coqui_bn_female'
+                })
+            });
+            if (!response.ok) throw new Error('Generation failed');
+            const blob = await response.blob();
+            const audioUrl = URL.createObjectURL(blob);
+            const player = document.getElementById('doc-audio');
+            player.src = audioUrl;
+            document.getElementById('audio-player').classList.add('active');
+            togglePlay();
+        } catch (error) {
+            alert('Failed to generate audio');
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', generateTOC);
+</script>
+{% endblock %}

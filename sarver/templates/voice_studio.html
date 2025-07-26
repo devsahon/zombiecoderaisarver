@@ -1,0 +1,369 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Voice Studio{% endblock %}
+
+{% block styles %}
+<style>
+    .voice-studio {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .voice-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .text-input {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        min-height: 200px;
+        resize: vertical;
+    }
+
+    .voice-options {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .voice-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .voice-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .voice-info {
+        flex: 1;
+    }
+
+    .voice-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .audio-player {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .generation-history {
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .voice-studio {
+            padding: 1rem;
+        }
+
+        .voice-controls {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="voice-studio">
+    <h1 class="mb-4">Voice Studio</h1>
+
+    <div class="voice-controls">
+        <div class="voice-input">
+            <h3>Text Input</h3>
+            <textarea id="text-input" class="text-input form-control"
+                placeholder="Enter your text here... Special characters (*#..--) will be ignored"></textarea>
+        </div>
+
+        <div class="voice-options">
+            <h3>Voice Settings</h3>
+
+            <div class="mb-3">
+                <label class="form-label">Select Voice</label>
+                <select id="voice-select" class="form-select" aria-label="Select voice type">
+                    <optgroup label="Local Models">
+                        <option value="coqui_bn_female">Bangla Female (Local)</option>
+                        <option value="coqui_bn_male">Bangla Male (Local)</option>
+                    </optgroup>
+                    <optgroup label="Cloud Services">
+                        <option value="google_tts">Google TTS</option>
+                        <option value="eleven_bn_female">ElevenLabs Female</option>
+                        <option value="eleven_bn_male">ElevenLabs Male</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Speed</label>
+                <input type="range" class="form-range" id="speed-control" min="0.5" max="2" step="0.1" value="1"
+                    aria-label="Speech speed control" title="Adjust speech speed">
+                <small class="text-muted">Speed: <span id="speed-value">1.0</span>x</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Pitch</label>
+                <input type="range" class="form-range" id="pitch-control" min="0.5" max="2" step="0.1" value="1"
+                    aria-label="Speech pitch control" title="Adjust speech pitch">
+                <small class="text-muted">Pitch: <span id="pitch-value">1.0</span>x</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Emotion</label>
+                <select id="emotion-select" class="form-select" aria-label="Select emotion" title="Select emotion">
+                    <option value="neutral">Neutral</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="serious">Serious</option>
+                </select>
+            </div>
+
+            <div class="mb-3 d-flex gap-2">
+                <button class="btn btn-outline-secondary" onclick="savePreset()"><i class="fas fa-save"></i> Save
+                    Preset</button>
+                <button class="btn btn-outline-info" onclick="loadPreset()"><i class="fas fa-upload"></i> Load
+                    Preset</button>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Batch Texts</label>
+                <textarea id="batch-input" class="form-control" rows="4"
+                    placeholder="Enter multiple lines, one per audio" title="Batch text input"></textarea>
+                <button class="btn btn-outline-primary mt-2" onclick="batchGenerate()"><i class="fas fa-tasks"></i>
+                    Batch Generate</button>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" onclick="generateSpeech()">
+                    <i class="fas fa-play"></i> Generate & Play
+                </button>
+                <button class="btn btn-outline-primary" onclick="downloadSpeech()">
+                    <i class="fas fa-download"></i> Download Audio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="audio-output" style="display: none;">
+        <h3>Preview</h3>
+        <audio id="preview-player" controls class="audio-player"></audio>
+    </div>
+
+    <div class="generation-history">
+        <h3>History</h3>
+        <div id="history-list"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+    let currentAudioBlob = null;
+
+    function sanitizeText(text) {
+        // Remove special characters
+        return text.replace(/[*#\-]/g, ' ').trim();
+    }
+
+    // --- Preset Save/Load ---
+    function savePreset() {
+        const preset = {
+            voice: document.getElementById('voice-select').value,
+            speed: document.getElementById('speed-control').value,
+            pitch: document.getElementById('pitch-control').value,
+            emotion: document.getElementById('emotion-select').value
+        };
+        localStorage.setItem('voice_preset', JSON.stringify(preset));
+        showNotification('Preset saved!', 'success');
+    }
+
+    function loadPreset() {
+        const preset = JSON.parse(localStorage.getItem('voice_preset') || '{}');
+        if (!preset.voice) return showNotification('No preset found', 'warning');
+        document.getElementById('voice-select').value = preset.voice;
+        document.getElementById('speed-control').value = preset.speed;
+        document.getElementById('pitch-control').value = preset.pitch;
+        document.getElementById('emotion-select').value = preset.emotion;
+        document.getElementById('speed-value').textContent = preset.speed;
+        document.getElementById('pitch-value').textContent = preset.pitch;
+        showNotification('Preset loaded!', 'info');
+    }
+
+    // --- Batch Processing ---
+    async function batchGenerate() {
+        const batchText = document.getElementById('batch-input').value.trim();
+        if (!batchText) return showNotification('No batch text', 'warning');
+        const lines = batchText.split('\n').filter(Boolean);
+        if (!lines.length) return showNotification('No valid lines', 'warning');
+        showLoading();
+        let zip = new JSZip();
+        for (let i = 0; i < lines.length; i++) {
+            const text = sanitizeText(lines[i]);
+            try {
+                const response = await fetch('/api/voice/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text,
+                        voice: document.getElementById('voice-select').value,
+                        speed: document.getElementById('speed-control').value,
+                        pitch: document.getElementById('pitch-control').value,
+                        emotion: document.getElementById('emotion-select').value
+                    })
+                });
+                if (response.ok) {
+                    const blob = await response.blob();
+                    zip.file(`audio_${i + 1}.mp3`, blob);
+                }
+            } catch (e) {
+                // skip error
+            }
+        }
+        zip.generateAsync({
+            type: 'blob'
+        }).then(function (content) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(content);
+            a.download = 'batch_audio.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            hideLoading();
+            showNotification('Batch download ready!', 'success');
+        });
+    }
+
+    // --- Notification Helper ---
+    function showNotification(msg, type) {
+        // Simple toast/alert, can be improved
+        alert(msg);
+    }
+
+    // --- Update generateSpeech to send emotion param ---
+    async function generateSpeech() {
+        const text = sanitizeText(document.getElementById('text-input').value);
+        if (!text) return;
+
+        const voice = document.getElementById('voice-select').value;
+        const speed = document.getElementById('speed-control').value;
+        const pitch = document.getElementById('pitch-control').value;
+        const emotion = document.getElementById('emotion-select').value;
+
+        try {
+            showLoading();
+            const response = await fetch('/api/voice/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text,
+                    voice,
+                    speed,
+                    pitch,
+                    emotion
+                })
+            });
+
+            if (!response.ok) throw new Error('Generation failed');
+
+            const blob = await response.blob();
+            currentAudioBlob = blob;
+
+            const audioUrl = URL.createObjectURL(blob);
+            const player = document.getElementById('preview-player');
+            player.src = audioUrl;
+
+            document.getElementById('audio-output').style.display = 'block';
+            player.play();
+
+            addToHistory(text, voice);
+            hideLoading();
+
+        } catch (error) {
+            hideLoading();
+            showError('Failed to generate speech: ' + error.message);
+        }
+    }
+
+    function downloadSpeech() {
+        if (!currentAudioBlob) return;
+
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(currentAudioBlob);
+        a.download = 'generated_speech.mp3';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function addToHistory(text, voice) {
+        const historyList = document.getElementById('history-list');
+        const card = document.createElement('div');
+        card.className = 'voice-card';
+
+        card.innerHTML = `
+        <div class="voice-info">
+            <strong>${voice}</strong>
+            <p class="text-muted mb-0">${text.substring(0, 100)}${text.length > 100 ? '...' : ''}</p>
+        </div>
+        <div class="voice-actions">
+            <button class="btn btn-sm btn-outline-primary" onclick="regenerate(this)" data-text="${text}" data-voice="${voice}">
+                <i class="fas fa-redo"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.voice-card').remove()">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+        historyList.insertBefore(card, historyList.firstChild);
+    }
+
+    function regenerate(button) {
+        const text = button.dataset.text;
+        const voice = button.dataset.voice;
+
+        document.getElementById('text-input').value = text;
+        document.getElementById('voice-select').value = voice;
+        generateSpeech();
+    }
+
+    // Update speed/pitch value displays
+    document.getElementById('speed-control').addEventListener('input', function (e) {
+        document.getElementById('speed-value').textContent = e.target.value;
+    });
+
+    document.getElementById('pitch-control').addEventListener('input', function (e) {
+        document.getElementById('pitch-value').textContent = e.target.value;
+    });
+
+    function showLoading() {
+        // Add loading indicator
+    }
+
+    function hideLoading() {
+        // Remove loading indicator
+    }
+
+    function showError(message) {
+        alert(message); // Replace with better error UI
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,517 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Server Control - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Server Control{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Server Control Panel -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">Server Control Panel</h2>
+                    <p class="content-subtitle">Manage all system servers from one place</p>
+                </div>
+                <div>
+                    <button class="btn btn-success me-2" onclick="startAllServers()">
+                        <i class="fas fa-play"></i> Start All
+                    </button>
+                    <button class="btn btn-danger" onclick="stopAllServers()">
+                        <i class="fas fa-stop"></i> Stop All
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row" id="server-controls">
+                <!-- Model Server -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-brain"></i> Model Server</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-secondary">Port: 5000</span>
+                                <span class="status-badge" id="model-server-badge">Unknown</span>
+                            </div>
+                            <p class="card-text">AI model management and API services</p>
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-outline-success" onclick="controlServer('model-server', 'start')">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="controlServer('model-server', 'stop')">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button class="btn btn-outline-info" onclick="controlServer('model-server', 'restart')">
+                                    <i class="fas fa-redo"></i> Restart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Server -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-server"></i> Main Server</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-secondary">Port: 5001</span>
+                                <span class="status-badge" id="main-server-badge">Unknown</span>
+                            </div>
+                            <p class="card-text">Core application server and routing</p>
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-outline-success" onclick="controlServer('main-server', 'start')">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="controlServer('main-server', 'stop')">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button class="btn btn-outline-info" onclick="controlServer('main-server', 'restart')">
+                                    <i class="fas fa-redo"></i> Restart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client API -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-users"></i> Client API</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-secondary">Port: 5002</span>
+                                <span class="status-badge" id="client-api-badge">Unknown</span>
+                            </div>
+                            <p class="card-text">Client monitoring and project management</p>
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-outline-success" onclick="controlServer('client-api', 'start')">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="controlServer('client-api', 'stop')">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button class="btn btn-outline-info" onclick="controlServer('client-api', 'restart')">
+                                    <i class="fas fa-redo"></i> Restart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio API -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-microphone"></i> Audio API</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-secondary">Port: 5003</span>
+                                <span class="status-badge" id="audio-api-badge">Unknown</span>
+                            </div>
+                            <p class="card-text">Voice generation and audio processing</p>
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-outline-success" onclick="controlServer('audio-api', 'start')">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="controlServer('audio-api', 'stop')">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button class="btn btn-outline-info" onclick="controlServer('audio-api', 'restart')">
+                                    <i class="fas fa-redo"></i> Restart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Server Status & Logs -->
+    <div class="col-lg-4">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">Server Status</h3>
+            </div>
+            
+            <div class="server-status-list" id="server-status-list">
+                <!-- Server status items will be populated here -->
+            </div>
+        </div>
+
+        <!-- Recent Logs -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Recent Logs</h4>
+            </div>
+            
+            <div class="log-container" id="log-container">
+                <div class="text-center text-muted">
+                    <i class="fas fa-spinner fa-spin"></i> Loading logs...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Server Configuration -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">Server Configuration</h3>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Auto-Start Configuration</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="auto-start-model">
+                        <label class="form-check-label" for="auto-start-model">
+                            Auto-start Model Server
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="auto-start-main">
+                        <label class="form-check-label" for="auto-start-main">
+                            Auto-start Main Server
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="auto-start-client">
+                        <label class="form-check-label" for="auto-start-client">
+                            Auto-start Client API
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="auto-start-audio">
+                        <label class="form-check-label" for="auto-start-audio">
+                            Auto-start Audio API
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5>Health Check Settings</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Check Interval (seconds)</label>
+                        <input type="number" class="form-control" id="health-check-interval" value="30" min="10" max="300">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Timeout (seconds)</label>
+                        <input type="number" class="form-control" id="health-check-timeout" value="5" min="1" max="30">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveConfiguration()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .status-badge.online {
+        background-color: rgba(39, 174, 96, 0.1);
+        color: #27ae60;
+    }
+    
+    .status-badge.offline {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+    
+    .status-badge.starting {
+        background-color: rgba(241, 196, 15, 0.1);
+        color: #f39c12;
+    }
+    
+    .status-badge.stopping {
+        background-color: rgba(155, 89, 182, 0.1);
+        color: #9b59b6;
+    }
+    
+    .server-status-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .server-status-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .server-status-item:last-child {
+        border-bottom: none;
+    }
+    
+    .log-container {
+        max-height: 200px;
+        overflow-y: auto;
+        background: #f8f9fa;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.85rem;
+    }
+    
+    .log-entry {
+        margin-bottom: 5px;
+        padding: 2px 0;
+    }
+    
+    .log-entry.info {
+        color: #3498db;
+    }
+    
+    .log-entry.success {
+        color: #27ae60;
+    }
+    
+    .log-entry.warning {
+        color: #f39c12;
+    }
+    
+    .log-entry.error {
+        color: #e74c3c;
+    }
+    
+    .btn-group .btn {
+        flex: 1;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .form-check {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const servers = {
+        'model-server': { port: 5000, name: 'Model Server', script: 'model_server.py' },
+        'main-server': { port: 5001, name: 'Main Server', script: 'simple_main_server.py' },
+        'client-api': { port: 5002, name: 'Client API', script: 'client_monitoring_api.py' },
+        'audio-api': { port: 5003, name: 'Audio API', script: 'zonemind_audio_api.py' }
+    };
+
+    // Control server function
+    function controlServer(serverId, action) {
+        const server = servers[serverId];
+        const badge = document.getElementById(`${serverId}-badge`);
+        
+        // Update badge to show action
+        badge.textContent = action === 'start' ? 'Starting...' : action === 'stop' ? 'Stopping...' : 'Restarting...';
+        badge.className = `status-badge ${action === 'start' ? 'starting' : 'stopping'}`;
+        
+        // Send control request
+        fetch('/api/server-control', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                server: serverId,
+                action: action,
+                script: server.script,
+                port: server.port
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(`Server ${action}ed successfully`, 'success');
+                setTimeout(() => updateServerStatus(serverId), 2000);
+            } else {
+                showNotification(`Failed to ${action} server: ${data.message}`, 'error');
+                updateServerStatus(serverId);
+            }
+        })
+        .catch(error => {
+            showNotification(`Error: ${error.message}`, 'error');
+            updateServerStatus(serverId);
+        });
+    }
+
+    // Start all servers
+    function startAllServers() {
+        Object.keys(servers).forEach(serverId => {
+            setTimeout(() => controlServer(serverId, 'start'), Math.random() * 1000);
+        });
+    }
+
+    // Stop all servers
+    function stopAllServers() {
+        Object.keys(servers).forEach(serverId => {
+            setTimeout(() => controlServer(serverId, 'stop'), Math.random() * 1000);
+        });
+    }
+
+    // Update server status
+    function updateServerStatus(serverId) {
+        const server = servers[serverId];
+        const badge = document.getElementById(`${serverId}-badge`);
+        
+        fetch(`http://localhost:${server.port}/api/status`)
+            .then(response => {
+                if (response.ok) {
+                    badge.textContent = 'Online';
+                    badge.className = 'status-badge online';
+                } else {
+                    throw new Error('Server not responding');
+                }
+            })
+            .catch(() => {
+                badge.textContent = 'Offline';
+                badge.className = 'status-badge offline';
+            });
+    }
+
+    // Update all server statuses
+    function updateAllServerStatuses() {
+        Object.keys(servers).forEach(serverId => {
+            updateServerStatus(serverId);
+        });
+    }
+
+    // Update server status list
+    function updateServerStatusList() {
+        const statusList = document.getElementById('server-status-list');
+        statusList.innerHTML = '';
+        
+        Object.keys(servers).forEach(serverId => {
+            const server = servers[serverId];
+            const statusItem = document.createElement('div');
+            statusItem.className = 'server-status-item';
+            statusItem.innerHTML = `
+                <div>
+                    <strong>${server.name}</strong>
+                    <br><small class="text-muted">Port ${server.port}</small>
+                </div>
+                <span class="status-badge" id="list-${serverId}-badge">Checking...</span>
+            `;
+            statusList.appendChild(statusItem);
+            
+            // Update status
+            updateServerStatus(serverId);
+        });
+    }
+
+    // Update logs
+    function updateLogs() {
+        fetch('/api/server-logs')
+            .then(response => response.json())
+            .then(data => {
+                const logContainer = document.getElementById('log-container');
+                logContainer.innerHTML = '';
+                
+                data.logs.slice(-10).forEach(log => {
+                    const logEntry = document.createElement('div');
+                    logEntry.className = `log-entry ${log.level}`;
+                    logEntry.innerHTML = `
+                        <span class="text-muted">${new Date(log.timestamp).toLocaleTimeString()}</span>
+                        <span class="ms-2">${log.message}</span>
+                    `;
+                    logContainer.appendChild(logEntry);
+                });
+            })
+            .catch(() => {
+                document.getElementById('log-container').innerHTML = `
+                    <div class="text-center text-muted">
+                        Unable to load logs
+                    </div>
+                `;
+            });
+    }
+
+    // Save configuration
+    function saveConfiguration() {
+        const config = {
+            autoStart: {
+                modelServer: document.getElementById('auto-start-model').checked,
+                mainServer: document.getElementById('auto-start-main').checked,
+                clientApi: document.getElementById('auto-start-client').checked,
+                audioApi: document.getElementById('auto-start-audio').checked
+            },
+            healthCheck: {
+                interval: parseInt(document.getElementById('health-check-interval').value),
+                timeout: parseInt(document.getElementById('health-check-timeout').value)
+            }
+        };
+        
+        fetch('/api/save-config', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(config)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Configuration saved successfully', 'success');
+            } else {
+                showNotification('Failed to save configuration', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification(`Error: ${error.message}`, 'error');
+        });
+    }
+
+    // Show notification
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        updateAllServerStatuses();
+        updateServerStatusList();
+        updateLogs();
+        
+        // Auto-refresh every 10 seconds
+        setInterval(() => {
+            updateAllServerStatuses();
+            updateServerStatusList();
+            updateLogs();
+        }, 10000);
+    });
+</script>
+{% endblock %} 

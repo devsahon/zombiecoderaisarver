@@ -1,0 +1,50 @@
+{
+    "language": "bn",
+    "tts": {
+        "espeak": {
+            "enabled": true,
+            "voice": "bengali",
+            "rate": 150,
+            "volume": 0.9,
+            "command": "espeak-ng"
+        },
+        "pyttsx3": {
+            "enabled": true,
+            "rate": 150,
+            "volume": 0.9
+        }
+    },
+    "stt": {
+        "vosk": {
+            "enabled": false,
+            "model_path": "vosk_bengali/vosk-model-small-bn-0.22",
+            "language": "bn"
+        },
+        "whisper": {
+            "enabled": false,
+            "model_size": "base"
+        },
+        "google": {
+            "enabled": true,
+            "language": "bn-IN",
+            "fallback": "en-US"
+        }
+    },
+    "voices": {
+        "male": {
+            "name": "বাংলা পুরুষ",
+            "rate": 150,
+            "volume": 0.9
+        },
+        "female": {
+            "name": "বাংলা মহিলা",
+            "rate": 160,
+            "volume": 0.9
+        }
+    },
+    "audio": {
+        "sample_rate": 16000,
+        "channels": 1,
+        "format": "wav"
+    }
+}

@@ -1,0 +1,7 @@
+# ollama_agent.yaml
+name: Ollama Local Agent
+personality: offline, privacy-focused
+model_preference:
+  - ollama
+prompt_template: |
+  Answer the following question using only local models. Do not use cloud services. 
