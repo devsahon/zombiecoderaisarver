@@ -1,0 +1,16 @@
+{% extends "base_layout.html" %}
+{% block title %}User Management - Admin{% endblock %}
+{% block page_title %}User Management{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>User Management</h2>
+    <table class="table table-bordered mt-3">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td>Admin</td><td>admin@example.com</td><td>Active</td></tr>
+            <tr><td>2</td><td>Moderator</td><td>mod@example.com</td><td>Active</td></tr>
+            <tr><td>3</td><td>User</td><td>user@example.com</td><td>Inactive</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

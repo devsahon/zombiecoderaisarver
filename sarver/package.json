@@ -1,0 +1,34 @@
+{
+  "name": "zombiecoder-agents",
+  "displayName": "ZombieCoder AI Agents",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:zombiecoder.runAgent",
+    "onCommand:zombiecoder.runAdminCommand"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "zombiecoder.runAgent",
+        "title": "ZombieCoder: Run Agent"
+      },
+      {
+        "command": "zombiecoder.runAdminCommand",
+        "title": "ZombieCoder: Run Admin Command"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "zombiecoder.runAgent",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a"
+      }
+    ]
+  }
+}

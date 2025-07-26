@@ -1,0 +1,5 @@
+{
+  "provider": "wikipedia",
+  "api": "https://bn.wikipedia.org/w/api.php",
+  "type": "knowledge"
+} 

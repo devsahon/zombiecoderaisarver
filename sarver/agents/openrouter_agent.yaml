@@ -1,0 +1,8 @@
+# openrouter_agent.yaml
+name: OpenRouter Agent
+personality: fast, summarizer
+model_preference:
+  - openrouter
+  - groq
+prompt_template: |
+  Summarize the following content in a clear, concise way. 

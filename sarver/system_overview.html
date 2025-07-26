@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>জম্বি কোডার - সিস্টেম ওভারভিউ</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --light-bg: #ecf0f1;
+      }
+
+      body {
+        font-family: "Noto Sans Bengali", sans-serif;
+        background: #f8f9fa;
+        color: #2c3e50;
+        line-height: 1.8;
+        padding: 0;
+      }
+
+      .hero-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 50px 0;
+        margin-bottom: 30px;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: var(--primary-color);
+        text-align: center;
+        padding-bottom: 15px;
+        border-bottom: 3px solid var(--accent-color);
+      }
+
+      .block {
+        background: white;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .diagram {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+
+      .provider-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: var(--light-bg);
+        border-radius: 8px;
+      }
+
+      .provider-icon {
+        margin-right: 15px;
+        color: var(--accent-color);
+        font-size: 1.2rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      ul li {
+        margin-bottom: 10px;
+      }
+
+      pre {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h1>জম্বি কোডার সিস্টেম ওভারভিউ</h1>
+            <p class="lead">আপনার স্মার্ট প্রোগ্রামিং সহকারী</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Agents Section -->
+      <section class="mb-5">
+        <h2 class="section-title">এআই এজেন্টস</h2>
+        <div class="block">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="provider-item">
+                <i class="fas fa-pen-fancy provider-icon"></i>
+                <div>
+                  <h4>blog_writer_bn</h4>
+                  <p class="mb-0">বাংলা ব্লগ লেখার জন্য বিশেষ এজেন্ট</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Providers Section -->
+      <section class="mb-5">
+        <h2 class="section-title">প্রোভাইডার এবং এপিআই</h2>
+        <div class="block">
+          <div class="row">
+            <div class="col-lg-6">
+              <h3 class="h5 mb-3">এআই মডেল প্রোভাইডার</h3>
+              <ul>
+                <li class="provider-item">
+                  <i class="fas fa-brain provider-icon"></i>
+                  <span>OpenAI (GPT-4, GPT-3.5)</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-laptop-code provider-icon"></i>
+                  <span>Ollama (লোকাল মডেল)</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-cloud provider-icon"></i>
+                  <span>Together AI</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-microchip provider-icon"></i>
+                  <span>Mistral AI</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-server provider-icon"></i>
+                  <span>Hugging Face</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <h3 class="h5 mb-3">সহায়ক সার্ভিস</h3>
+              <ul>
+                <li class="provider-item">
+                  <i class="fas fa-volume-up provider-icon"></i>
+                  <span>Google TTS (টেক্সট-টু-স্পিচ)</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-microphone provider-icon"></i>
+                  <span>Coqui (লোকাল স্পিচ)</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-dollar-sign provider-icon"></i>
+                  <span>Exchange Rate API</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-newspaper provider-icon"></i>
+                  <span>News API</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-cloud-sun provider-icon"></i>
+                  <span>OpenWeatherMap</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-book provider-icon"></i>
+                  <span>Wikipedia API</span>
+                </li>
+                <li class="provider-item">
+                  <i class="fas fa-books provider-icon"></i>
+                  <span>Google Books API</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process Flow Section -->
+      <section class="mb-5">
+        <h2 class="section-title">সিস্টেম প্রসেস ফ্লো</h2>
+        <div class="block">
+          <div class="diagram">
+            <h3 class="h5 mb-3">সিস্টেম আর্কিটেকচার</h3>
+            <!-- Mermaid diagram preserved from original -->
+            <pre>
+flowchart TD
+    User["ইউজার ইনপুট"] --> CLI["cli.py"]
+    CLI --> Dispatcher["dispatcher.py"]
+    Dispatcher -->|YAML কনফিগ| ConfigLoader["helpers.py"]
+    Dispatcher -->|ফলব্যাক| FallbackRouter["fallback_router.py"]
+    Dispatcher -->|কল| BlogWriter["blog_writer_bn এজেন্ট"]
+    BlogWriter --> Provider["প্রোভাইডার"]
+    Provider -->|API| OpenAI["OpenAI"]
+    Provider -->|API| Ollama["Ollama"]
+    Provider -->|API| TogetherAI["Together AI"]
+    Provider -->|API| Mistral["Mistral"]
+    Provider -->|API| Huggingface["Hugging Face"]
+    Provider -->|API| GoogleTTS["Google TTS"]
+    Provider -->|API| Coqui["Coqui"]
+    Provider -->|API| ExchangeRate["Exchange Rate"]
+    Provider -->|API| NewsAPI["News API"]
+    Provider -->|API| OpenWeather["OpenWeather"]
+    Provider -->|API| Wikipedia["Wikipedia"]
+    Provider -->|API| GoogleBooks["Google Books"]
+                    </pre
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="mb-5">
+        <h2 class="section-title">বিশেষ বৈশিষ্ট্য</h2>
+        <div class="block">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="text-center mb-4">
+                <i class="fas fa-language fa-3x mb-3 text-primary"></i>
+                <h3 class="h5">বাংলা ভাষা সমর্থন</h3>
+                <p>সম্পূর্ণ বাংলা ইন্টারফেস এবং কন্টেন্ট জেনারেশন</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center mb-4">
+                <i class="fas fa-robot fa-3x mb-3 text-primary"></i>
+                <h3 class="h5">স্মার্ট এজেন্ট সিস্টেম</h3>
+                <p>স্বয়ংক্রিয় এজেন্ট রাউটিং এবং ফলব্যাক সিস্টেম</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center mb-4">
+                <i class="fas fa-project-diagram fa-3x mb-3 text-primary"></i>
+                <h3 class="h5">মডুলার আর্কিটেকচার</h3>
+                <p>সহজে নতুন এজেন্ট এবং প্রোভাইডার যোগ করার সুবিধা</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.0.2/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "default",
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: "cardinal",
+        },
+      });
+    </script>
+  </body>
+</html>

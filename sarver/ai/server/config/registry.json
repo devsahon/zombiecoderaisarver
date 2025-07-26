@@ -1,0 +1,8 @@
+{
+  "weather": ["openweathermap", "wikipedia"],
+  "chat": ["ollama", "together_ai", "openai"],
+  "voice": ["coqui", "google_tts"],
+  "books": ["google_books"],
+  "currency": ["exchange_rate"],
+  "news": ["newsapi"]
+} 

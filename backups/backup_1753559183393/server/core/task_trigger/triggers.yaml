@@ -1,0 +1,13 @@
+# Task Triggers
+
+- name: nightly_backup
+  time: "00:00"
+  action: "backup"
+
+- name: license_expiry_check
+  time: "23:00"
+  action: "check_license_expiry"
+
+- name: price_update
+  interval: "1h"
+  action: "update_prices"

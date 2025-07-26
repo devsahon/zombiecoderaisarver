@@ -1,0 +1,23 @@
+total 104
+drwxrwxr-x 3 sahon sahon  4096 Jul 14 20:19 admin
+-rw-rw-r-- 1 sahon sahon  4404 Jul 14 20:43 admin_admission_table_doc.html
+-rw-rw-r-- 1 sahon sahon  6155 Jul 14 21:22 admin_all_tables_doc.html
+-rw-rw-r-- 1 sahon sahon  3199 Jul 14 20:49 admin_docs_table_doc.html
+drwxrwxr-x 2 sahon sahon  4096 Jul 15 09:52 agents
+drwxrwxr-x 9 sahon sahon  4096 Jul 16 16:21 ai
+-rw-rw-r-- 1 sahon sahon  2884 Jul 14 20:37 create_models_admin_db.sql
+drwxrwxr-x 3 sahon sahon  4096 Jul 15 19:51 demo
+drwxrwxr-x 3 sahon sahon  4096 Jul 16 16:10 dispatcher
+drwxrwxr-x 2 sahon sahon  4096 Jul 15 11:08 docs
+drwxrwxr-x 4 sahon sahon  4096 Jul 16 16:08 frontend
+drwxrwxr-x 4 sahon sahon  4096 Jul 15 09:56 laravel-api
+drwxrwxr-x 2 sahon sahon  4096 Jul 15 10:03 logs
+drwxrwxr-x 2 sahon sahon  4096 Jul 15 19:51 presentation
+drwxrwxr-x 3 sahon sahon  4096 Jul 15 10:03 project
+drwxrwxr-x 4 sahon sahon  4096 Jul 16 16:10 providers
+-rw-rw-r-- 1 sahon sahon  1345 Jul 15 19:50 README.md
+-rw-rw-r-- 1 sahon sahon     0 Jul 16 16:25 shawn_features.txt
+-rw-rw-r-- 1 sahon sahon  1979 Jul 15 19:50 team-message.txt
+drwxrwxr-x 2 sahon sahon  4096 Jul 14 21:56 tools
+drwxrwxr-x 2 sahon sahon  4096 Jul 15 19:51 video
+-rw-rw-r-- 1 sahon sahon 13656 Jul 15 19:51 zombiecoder_demo_package.zip

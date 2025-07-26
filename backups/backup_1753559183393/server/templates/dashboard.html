@@ -1,0 +1,414 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Dashboard - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- System Overview -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">System Overview</h2>
+                    <p class="content-subtitle">Real-time system status and performance metrics</p>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row" id="system-stats">
+                <!-- Server Status Cards -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Model Server</h6>
+                                    <h4 class="mb-0" id="model-server-status">Loading...</h4>
+                                </div>
+                                <div class="status-icon" id="model-server-icon">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">Port: 5000</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Main Server</h6>
+                                    <h4 class="mb-0" id="main-server-status">Loading...</h4>
+                                </div>
+                                <div class="status-icon" id="main-server-icon">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">Port: 5001</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Client API</h6>
+                                    <h4 class="mb-0" id="client-api-status">Loading...</h4>
+                                </div>
+                                <div class="status-icon" id="client-api-icon">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">Port: 5002</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Audio API</h6>
+                                    <h4 class="mb-0" id="audio-api-status">Loading...</h4>
+                                </div>
+                                <div class="status-icon" id="audio-api-icon">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">Port: 5003</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="col-lg-4">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">Quick Actions</h3>
+            </div>
+            
+            <div class="d-grid gap-3">
+                <a href="/chat" class="btn btn-primary btn-lg">
+                    <i class="fas fa-comments"></i> Start Chat
+                </a>
+                <a href="/prompt" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-keyboard"></i> Prompt Engineering
+                </a>
+                <a href="/admin" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-cogs"></i> Admin Panel
+                </a>
+                <a href="/server-control" class="btn btn-outline-info btn-lg">
+                    <i class="fas fa-server"></i> Server Control
+                </a>
+            </div>
+        </div>
+
+        <!-- System Info -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">System Info</h4>
+            </div>
+            
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-center p-3">
+                        <h5 class="text-primary" id="cpu-usage">--</h5>
+                        <small class="text-muted">CPU Usage</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-center p-3">
+                        <h5 class="text-success" id="memory-usage">--</h5>
+                        <small class="text-muted">Memory Usage</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-center p-3">
+                        <h5 class="text-warning" id="disk-usage">--</h5>
+                        <small class="text-muted">Disk Usage</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-center p-3">
+                        <h5 class="text-info" id="uptime">--</h5>
+                        <small class="text-muted">Uptime</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">Recent Activity</h3>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Service</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activity-log">
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                <i class="fas fa-spinner fa-spin"></i> Loading activity log...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Performance Metrics -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">API Performance</h4>
+            </div>
+            
+            <canvas id="api-performance-chart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Token Usage</h4>
+            </div>
+            
+            <canvas id="token-usage-chart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .status-icon {
+        font-size: 1.5rem;
+    }
+    
+    .status-icon.online {
+        color: var(--success-color);
+    }
+    
+    .status-icon.offline {
+        color: var(--danger-color);
+    }
+    
+    .status-icon.warning {
+        color: var(--warning-color);
+    }
+    
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+    }
+    
+    .btn-lg {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
+    
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Dashboard refresh function
+    function refreshDashboard() {
+        updateServerStatus();
+        updateSystemInfo();
+        updateActivityLog();
+        updateCharts();
+    }
+
+    // Update server status
+    function updateServerStatus() {
+        const servers = [
+            { name: 'model-server', port: 5000, endpoint: '/api/status' },
+            { name: 'main-server', port: 5001, endpoint: '/status' },
+            { name: 'client-api', port: 5002, endpoint: '/api/health' },
+            { name: 'audio-api', port: 5003, endpoint: '/api/audio/health' }
+        ];
+
+        servers.forEach(server => {
+            fetch(`http://localhost:${server.port}${server.endpoint}`)
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById(`${server.name}-status`).textContent = 'Online';
+                        document.getElementById(`${server.name}-status`).className = 'text-success';
+                        document.getElementById(`${server.name}-icon`).innerHTML = '<i class="fas fa-check-circle"></i>';
+                        document.getElementById(`${server.name}-icon`).className = 'status-icon online';
+                    } else {
+                        throw new Error('Server not responding');
+                    }
+                })
+                .catch(() => {
+                    document.getElementById(`${server.name}-status`).textContent = 'Offline';
+                    document.getElementById(`${server.name}-status`).className = 'text-danger';
+                    document.getElementById(`${server.name}-icon`).innerHTML = '<i class="fas fa-times-circle"></i>';
+                    document.getElementById(`${server.name}-icon`).className = 'status-icon offline';
+                });
+        });
+    }
+
+    // Update system information
+    function updateSystemInfo() {
+        fetch('/api/admin/system-info')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('cpu-usage').textContent = data.data.cpu_usage + '%';
+                    document.getElementById('memory-usage').textContent = data.data.memory_usage + '%';
+                    document.getElementById('disk-usage').textContent = data.data.disk_usage + '%';
+                    document.getElementById('uptime').textContent = data.data.uptime;
+                }
+            })
+            .catch(() => {
+                document.getElementById('cpu-usage').textContent = 'N/A';
+                document.getElementById('memory-usage').textContent = 'N/A';
+                document.getElementById('disk-usage').textContent = 'N/A';
+                document.getElementById('uptime').textContent = 'N/A';
+            });
+    }
+
+    // Update activity log
+    function updateActivityLog() {
+        fetch('/api/admin/logs')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const tbody = document.getElementById('activity-log');
+                    tbody.innerHTML = '';
+                    
+                    data.data.recent_logs.slice(0, 10).forEach(log => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${new Date(log.timestamp).toLocaleTimeString()}</td>
+                            <td>${log.service}</td>
+                            <td>${log.action}</td>
+                            <td><span class="badge bg-${log.status === 'success' ? 'success' : 'danger'}">${log.status}</span></td>
+                            <td>${log.details}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            })
+            .catch(() => {
+                document.getElementById('activity-log').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            Unable to load activity log
+                        </td>
+                    </tr>
+                `;
+            });
+    }
+
+    // Initialize charts
+    function updateCharts() {
+        // API Performance Chart
+        const apiCtx = document.getElementById('api-performance-chart').getContext('2d');
+        new Chart(apiCtx, {
+            type: 'line',
+            data: {
+                labels: ['1m', '2m', '3m', '4m', '5m'],
+                datasets: [{
+                    label: 'Response Time (ms)',
+                    data: [120, 150, 180, 140, 160],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Token Usage Chart
+        const tokenCtx = document.getElementById('token-usage-chart').getContext('2d');
+        new Chart(tokenCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used', 'Available'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: ['#e74c3c', '#27ae60']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshDashboard();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(refreshDashboard, 30000);
+    });
+</script>
+{% endblock %} 

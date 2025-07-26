@@ -1,0 +1,5 @@
+{
+  "provider": "coqui",
+  "api": "local",
+  "type": "audio"
+} 

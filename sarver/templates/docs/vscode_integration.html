@@ -1,0 +1,240 @@
+{% extends "base_layout.html" %}
+
+{% block page_title %}VSCode Integration Guide{% endblock %}
+
+{% block content %}
+<div class="content-card fade-in">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title">VSCode Integration Guide</h2>
+            <p class="content-subtitle">Learn how to integrate and use our AI agents in Visual Studio Code</p>
+        </div>
+    </div>
+
+    <!-- Quick Start Video -->
+    <div class="video-section mb-5">
+        <h3>Quick Start Guide</h3>
+        <div class="ratio ratio-16x9">
+            <iframe src="https://www.youtube.com/embed/your_video_id" title="VSCode Integration Quick Start"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Setup Steps -->
+    <div class="setup-section mb-5">
+        <h3>Setup Instructions</h3>
+        <div class="setup-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Install Extension</h4>
+                    <p>Install our VSCode extension from the marketplace:</p>
+                    <div class="code-block">
+                        <code>ext install zombie-coder.ai-assistant</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Configure API Endpoint</h4>
+                    <p>Set your API endpoint in VSCode settings:</p>
+                    <ol>
+                        <li>Open Command Palette (Ctrl+Shift+P)</li>
+                        <li>Search for "ZombieCoder: Set API Endpoint"</li>
+                        <li>Enter your endpoint URL</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Test Connection</h4>
+                    <p>Verify the connection:</p>
+                    <ol>
+                        <li>Open Command Palette</li>
+                        <li>Run "ZombieCoder: Test Connection"</li>
+                        <li>You should see a success message</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features-section mb-5">
+        <h3>Features</h3>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h4>AI Code Assistance</h4>
+                    <p>Get real-time code suggestions, explanations, and fixes directly in your editor.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h4>Chat Interface</h4>
+                    <p>Chat with AI agents in the sidebar for quick help and guidance.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h4>Code Generation</h4>
+                    <p>Generate code snippets, functions, and entire files with AI assistance.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h4>Debug Helper</h4>
+                    <p>Get AI-powered debugging suggestions and error explanations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+        <h3>Frequently Asked Questions</h3>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        How do I start using the AI features?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        After installation, you can access AI features through:
+                        <ul>
+                            <li>Command Palette commands (Ctrl+Shift+P)</li>
+                            <li>Right-click context menu</li>
+                            <li>AI Sidebar panel</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#faq2">
+                        Is my code secure when using AI features?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, your code is secure. We:
+                        <ul>
+                            <li>Never store your code permanently</li>
+                            <li>Use encrypted connections</li>
+                            <li>Process everything locally when possible</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#faq3">
+                        Can I customize the AI behavior?
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, you can customize:
+                        <ul>
+                            <li>AI response style and format</li>
+                            <li>Code generation preferences</li>
+                            <li>Language-specific settings</li>
+                        </ul>
+                        Access settings through VSCode's settings panel.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .video-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .setup-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .step {
+        display: flex;
+        gap: 20px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        background: #007bff;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+
+    .code-block {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+    .feature-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #e7f1ff;
+        color: #0056b3;
+    }
+</style>
+{% endblock %}
