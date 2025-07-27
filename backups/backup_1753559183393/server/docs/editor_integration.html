@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><meta charset="UTF-8"><title>ZombieCoder: এডিটর ইন্টিগ্রেশন (VS Code & Cursor)</title></head>
+<body style="font-family:Segoe UI,Arial,sans-serif;background:#f7f9fa;color:#222;padding:2em;max-width:900px;margin:auto;">
+<h1>ZombieCoder: এডিটর ইন্টিগ্রেশন (VS Code & Cursor)</h1>
+<p>ZombieCoder-এর AI suggestion, codegen, docgen, ও fallback ফিচার VS Code, Cursor, বা অন্য কোড এডিটরে ব্যবহার করতে নিচের ধাপগুলো অনুসরণ করুন:</p>
+
+<h2>১. Local Endpoint কনফিগারেশন</h2>
+<ol>
+  <li>Admin UI বা API থেকে আপনার local endpoint (যেমন: <b>http://localhost:9000/v1/completions</b>) কপি করুন।</li>
+  <li>এন্ডপয়েন্টটি VS Code বা Cursor-এর settings.json-এ যুক্ত করুন।</li>
+</ol>
+
+<h2>২. Cursor Editor Integration</h2>
+<p>Cursor-এর জন্য <b>settings.json</b> ফাইলে নিচের কনফিগারেশন দিন:</p>
+<pre><code>{
+  "ai.agent": {
+    "endpoint": "http://localhost:9000/v1/completions",
+    "localModels": {
+      "codeAnalysis": "mistral",
+      "codeGeneration": "deepseek",
+      "documentation": "gemma"
+    },
+    "fallbackToLocal": true
+  }
+}</code></pre>
+
+<h2>৩. VS Code Integration</h2>
+<p>VS Code-এর জন্য <b>settings.json</b> ফাইলে দিন (LocalAI/CodeGPT extension):</p>
+<pre><code>{
+  "localAI.enable": true,
+  "localAI.endpoint": "http://127.0.0.1:9000",
+  "localAI.modelMapping": {
+    "default": "mistral",
+    "documentation": "gemma",
+    "codegen": "deepseek"
+  }
+}</code></pre>
+
+<h2>৪. Model Mapping (YAML/JSON)</h2>
+<p>প্রয়োজনে YAML/JSON ফাইলে model mapping কনফিগার করুন:</p>
+<pre><code>model_mapping:
+  code: mistral
+  doc: gemma
+  chat: deepseek
+</code></pre>
+
+<h2>৫. Fallback Chain ও API Key</h2>
+<ul>
+  <li>Fallback chain ও API key এখন <b>OpenAI, TogetherAI, Ollama, HuggingFace, lmstudio</b>—সব provider 100% enabled।</li>
+  <li>API key না থাকলে cloud provider কাজ করবে না।</li>
+</ul>
+
+<h2>৬. Troubleshooting</h2>
+<ul>
+  <li>Endpoint connection error দেখলে: server/app.py বা dispatcher/core.py চালু আছে কিনা চেক করুন।</li>
+  <li>Model না দেখালে: <b>curl http://localhost:9000/status</b> দিয়ে চেক করুন।</li>
+  <li>VS Code/ Cursor extension restart দিন প্রয়োজনে।</li>
+</ul>
+
+<h2>৭. ডকুমেন্টেশন ও হেল্প</h2>
+<ul>
+  <li>প্রধান ডকুমেন্টেশন: <b>file:///C:/Agent/docs/index.html</b></li>
+  <li>মডেল স্পেসিফিকেশন: <b>file:///C:/Agent/docs/model_specs/</b></li>
+  <li>এডিটর ইন্টিগ্রেশন: <b>file:///C:/Agent/docs/editor_integration/</b></li>
+</ul>
+
+<p>এভাবে সহজেই আপনার এডিটরে ZombieCoder-এর AI ফিচারগুলো ব্যবহার করতে পারবেন।</p>
+</body></html> 

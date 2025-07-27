@@ -1,0 +1,5 @@
+{
+  "provider": "mistral",
+  "api": "https://api.mistral.ai/v1/chat/completions",
+  "type": "chat"
+} 

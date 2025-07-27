@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>প্রজেক্ট ওভারভিউ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f7f9fb; color: #222; }
+    .navbar { background: #2a5d8f; }
+    .navbar-brand, .nav-link, .footer { color: #fff !important; }
+    .container { max-width: 1100px; margin: 40px auto; }
+    h1, h2 { font-weight: 700; }
+    h1 { color: #2a5d8f; margin-bottom: 0.5em; }
+    h2 { color: #3a3a7a; margin-top: 2em; }
+    .section { margin-bottom: 2.5em; }
+    .card { border-radius: 14px; box-shadow: 0 2px 12px #0001; margin-bottom: 1.5em; }
+    .card-header { background: #e3f2fd; font-weight: 700; font-size: 1.2em; }
+    .icon { font-size: 1.5em; color: #2a5d8f; margin-right: 8px; }
+    .diagram { background: #f0f4fa; border-radius: 10px; padding: 24px; margin: 2em 0; }
+    .highlight { background: #e0f7fa; border-radius: 6px; padding: 2px 8px; }
+    .footer { background: #2a5d8f; color: #fff; text-align: center; padding: 18px 0 8px 0; margin-top: 40px; border-radius: 0 0 16px 16px; }
+    .sticky-top { z-index: 1030; }
+    @media (max-width: 600px) {
+      .container { padding: 8px; }
+      .diagram { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="bi bi-diagram-3"></i> প্রজেক্ট ওভারভিউ</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#structure">স্ট্রাকচার</a></li>
+          <li class="nav-item"><a class="nav-link" href="#logic">লজিক</a></li>
+          <li class="nav-item"><a class="nav-link" href="#components">কম্পোনেন্ট</a></li>
+          <li class="nav-item"><a class="nav-link" href="#diagram">ডায়াগ্রাম</a></li>
+          <li class="nav-item"><a class="nav-link" href="#details">বিস্তারিত</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <h1 class="mb-4"><i class="bi bi-cpu"></i> ZombieCoder: আধুনিক এআই প্রজেক্ট ওভারভিউ</h1>
+    <div class="section mb-4">
+      <div class="alert alert-info shadow-sm">
+        <b>ZombieCoder</b> একটি মাল্টি-এজেন্ট, এক্সটেন্ডেবল এআই সিস্টেম, যেখানে এডমিন, এডিটর, ও ইউজাররা একাধিক এজেন্ট, প্রোভাইডার, ভয়েস, ও মেমোরি ফিচার ব্যবহার করতে পারেন। নিচে সম্পূর্ণ ফাইল-ফোল্ডার স্ট্রাকচার, সিস্টেম লজিক, এবং প্রতিটি কম্পোনেন্টের বিশদ বিবরণ দেওয়া হলো।
+      </div>
+    </div>
+
+    <!-- Structure Section -->
+    <div class="section" id="structure">
+      <h2><i class="bi bi-folder2-open"></i> ফোল্ডার ও ফাইল স্ট্রাকচার</h2>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-person-gear icon"></i>admin/</div>
+            <div class="card-body">এডমিন প্যানেল, UI, ও ইন্টিগ্রেশন গাইড। লাইসেন্স, এজেন্ট, প্রজেক্ট ম্যানেজমেন্ট সহজ করে।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-robot icon"></i>agents/</div>
+            <div class="card-body">এজেন্ট কনফিগ, পার্সোনালিটি, ও ইউটিলিটি ফাইল। প্রতিটি এজেন্টের আলাদা YAML কনফিগ ও পার্সোনালিটি ডেটা।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-cpu icon"></i>ai/</div>
+            <div class="card-body">পাইথন ব্যাকএন্ড, ডিসপ্যাচার, মডেল সার্ভার, এজেন্ট রেজিস্ট্রি, ও লঞ্চার স্ক্রিপ্ট। এআই লজিকের মূল কেন্দ্র।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-diagram-3 icon"></i>dispatcher/</div>
+            <div class="card-body">ডিসপ্যাচার লজিক, কনটেক্সট রাউটার, fallback ও অর্কেস্ট্রেশন। ইনপুটকে সঠিক এজেন্টে পাঠায়।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-display icon"></i>frontend/</div>
+            <div class="card-body">Vue/Next.js ভিত্তিক ফ্রন্টএন্ড, ইউজার ইন্টারফেস ও এডমিন ড্যাশবোর্ড।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-database icon"></i>database/</div>
+            <div class="card-body">ডাটাবেজ স্কিমা, সিডস, ও মাইগ্রেশন। Laravel ও Python উভয় ব্যাকএন্ডের জন্য।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-cloud-arrow-up icon"></i>backup/</div>
+            <div class="card-body">গুগল ড্রাইভ, গিটহাব, ও অটো ব্যাকআপ স্ক্রিপ্ট। ডেটা সুরক্ষা ও পুনরুদ্ধার।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-gear-wide-connected icon"></i>providers/</div>
+            <div class="card-body">OpenAI, Mistral, TogetherAI, লোকাল/ক্লাউড মডেল, TTS/STT, নিউজ, ওয়েদার প্রোভাইডার।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-mic-fill icon"></i>voice/</div>
+            <div class="card-body">ভয়েস হ্যান্ডলার, কনফিগ, বাংলা ও ইংরেজি টেক্সট-টু-স্পিচ, অডিও আউটপুট।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-memory icon"></i>storage/</div>
+            <div class="card-body">এজেন্ট ও ইউজার কনটেক্সট মেমোরি, দ্রুত রিট্রিভাল ও স্টোরেজ।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-journal-code icon"></i>docs/</div>
+            <div class="card-body">API স্পেক, ডেভেলপার ম্যানুয়াল, টেস্ট কেস, ডেমো স্ক্রিপ্ট, ইউজার গাইড।</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-tools icon"></i>tools/</div>
+            <div class="card-body">CLI টুলস, এনভ জেনারেটর, লগ মনিটর, স্ট্যাটাস চেকার।</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic Section -->
+    <div class="section" id="logic">
+      <h2><i class="bi bi-diagram-3"></i> সিস্টেম লজিক ও ওয়ার্কফ্লো</h2>
+      <div class="card">
+        <div class="card-body">
+          <ul class="mb-2">
+            <li><b>এজেন্ট সিস্টেম:</b> প্রতিটি এজেন্টের নিজস্ব পার্সোনালিটি, কনফিগ, ও মেমোরি রয়েছে। <span class="highlight">BaseAgent</span> ক্লাসের মাধ্যমে মেসেজ প্রসেসিং, মেমোরি চেক, ও রেসপন্স জেনারেশন হয়।</li>
+            <li><b>ডিসপ্যাচার:</b> ইনপুট অনুযায়ী সঠিক এজেন্ট ও fallback নির্বাচন করে। <span class="highlight">core/dispatcher/</span> ও <span class="highlight">ai/server/mcp/</span> ফোল্ডারে মূল লজিক।</li>
+            <li><b>প্রোভাইডার:</b> OpenAI, Mistral, TogetherAI, লোকাল/ক্লাউড মডেল, TTS/STT API সহজেই এক্সটেন্ডেবল।</li>
+            <li><b>মেমোরি সিস্টেম:</b> এজেন্ট ও ইউজার কনটেক্সট দ্রুত রিট্রিভাল ও স্টোরেজের জন্য <span class="highlight">ai/agents/memory_system.py</span> ও <span class="highlight">storage/</span>।</li>
+            <li><b>ভয়েস:</b> বাংলা ও ইংরেজি টেক্সট-টু-স্পিচ, ভয়েস চ্যাট, ও অডিও আউটপুট <span class="highlight">voice/</span> ও <span class="highlight">ai/server/app.py</span>।</li>
+            <li><b>এপিআই ও ব্যাকএন্ড:</b> <span class="highlight">ai/server/app.py</span>, <span class="highlight">api/</span>, <span class="highlight">laravel-api/</span> - এপিআই রাউট, অথেন্টিকেশন, লাইসেন্স, ডাটাবেজ।</li>
+            <li><b>লগস ও মনিটরিং:</b> এজেন্ট স্ট্যাটাস, লেটেন্সি, fallback লগ <span class="highlight">logs/</span> ও <span class="highlight">core/monitoring/</span>।</li>
+            <li><b>ব্যাকআপ/রিস্টোর:</b> গুগল ড্রাইভ, গিটহাব, অটো ব্যাকআপ <span class="highlight">core/backup/</span> ও <span class="highlight">backup/</span>।</li>
+            <li><b>ডকুমেন্টেশন:</b> API, টেস্ট কেস, ইউজার গাইড <span class="highlight">docs/</span> ও <span class="highlight">templates/</span>।</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Components Section -->
+    <div class="section" id="components">
+      <h2><i class="bi bi-puzzle"></i> প্রধান কম্পোনেন্ট ও বিশদ বর্ণনা</h2>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-robot icon"></i> এজেন্ট সিস্টেম</div>
+            <div class="card-body">
+              <ul>
+                <li>প্রতিটি এজেন্টের আলাদা পার্সোনালিটি ও কনফিগ।</li>
+                <li>মাল্টি-এজেন্ট অর্কেস্ট্রেশন ও fallback সাপোর্ট।</li>
+                <li>এডমিন কমান্ড ও ইউজার কনটেক্সট হ্যান্ডলিং।</li>
+                <li>YAML/JSON ফাইলের মাধ্যমে সহজ কাস্টমাইজেশন।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-diagram-3 icon"></i> ডিসপ্যাচার</div>
+            <div class="card-body">
+              <ul>
+                <li>ইনপুট অনুযায়ী সঠিক এজেন্ট নির্বাচন।</li>
+                <li>Fallback চেইন ও এজেন্ট অর্কেস্ট্রেশন।</li>
+                <li>কনটেক্সট রাউটিং ও এজেন্ট স্ট্যাটাস মনিটরিং।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-gear-wide-connected icon"></i> প্রোভাইডার</div>
+            <div class="card-body">
+              <ul>
+                <li>OpenAI, Mistral, TogetherAI, লোকাল/ক্লাউড মডেল ইন্টিগ্রেশন।</li>
+                <li>TTS (টেক্সট-টু-স্পিচ), STT (স্পিচ-টু-টেক্সট), নিউজ, ওয়েদার API।</li>
+                <li>API কী ও fallback চেইন কনফিগারেশন।</li>
+                <li>সহজেই নতুন প্রোভাইডার যোগ করা যায়।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-memory icon"></i> মেমোরি সিস্টেম</div>
+            <div class="card-body">
+              <ul>
+                <li>এজেন্ট ও ইউজার কনটেক্সট মেমোরি।</li>
+                <li>দ্রুত রিট্রিভাল ও স্টোরেজ (ফাইল/ডাটাবেজ)।</li>
+                <li>প্রতিটি এজেন্টের জন্য আলাদা মেমোরি স্পেস।</li>
+                <li>কাস্টম মেমোরি ম্যানেজার ও API।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-mic-fill icon"></i> ভয়েস সিস্টেম</div>
+            <div class="card-body">
+              <ul>
+                <li>বাংলা ও ইংরেজি টেক্সট-টু-স্পিচ (TTS)।</li>
+                <li>ভয়েস চ্যাট ও অডিও আউটপুট।</li>
+                <li>লোকাল ও ক্লাউড TTS/STT ইন্টিগ্রেশন।</li>
+                <li>এডমিন ও ইউজার উভয়ের জন্য সহজ ব্যবহার।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-shield-lock icon"></i> API ও অথেন্টিকেশন</div>
+            <div class="card-body">
+              <ul>
+                <li>লাইসেন্স ম্যানেজমেন্ট, এজেন্ট CRUD, প্রজেক্ট অথেন্টিকেশন।</li>
+                <li>Laravel ও Python API উভয় ব্যাকএন্ড।</li>
+                <li>RESTful এন্ডপয়েন্ট ও ডকুমেন্টেশন।</li>
+                <li>API কী ও অথেন্টিকেশন সিস্টেম।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-activity icon"></i> লগস ও মনিটরিং</div>
+            <div class="card-body">
+              <ul>
+                <li>এজেন্ট স্ট্যাটাস, লেটেন্সি, fallback লগ।</li>
+                <li>মনিটরিং ড্যাশবোর্ড ও রিয়েলটাইম স্ট্যাটাস।</li>
+                <li>লগ ফাইল ও অ্যালার্ট সিস্টেম।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header"><i class="bi bi-cloud-arrow-up icon"></i> ব্যাকআপ ও রিস্টোর</div>
+            <div class="card-body">
+              <ul>
+                <li>গুগল ড্রাইভ, গিটহাব, ও অটো ব্যাকআপ।</li>
+                <li>ডেটা সুরক্ষা ও পুনরুদ্ধার সহজ।</li>
+                <li>শিডিউলড ও ম্যানুয়াল ব্যাকআপ সাপোর্ট।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="section" id="features">
+      <h2><i class="bi bi-stars"></i> ফিচার</h2>
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-primary text-white"><i class="bi bi-gear"></i> সার্ভিস ও ফিচার বাস্তবায়ন</div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-bordered mb-0 align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>ফিচার/সার্ভিস</th>
+                      <th>স্ট্যাটাস</th>
+                      <th>সম্পন্নতা</th>
+                      <th>বিস্তারিত</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><i class="bi bi-person-gear"></i> এডমিন UI</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>লাইসেন্স, এজেন্ট, প্রজেক্ট ম্যানেজমেন্ট, রিয়েলটাইম স্ট্যাটাস</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-robot"></i> মাল্টি-এজেন্ট সিস্টেম</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>বিভিন্ন এজেন্ট, পার্সোনালিটি, কনফিগ, fallback</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-diagram-3"></i> ডিসপ্যাচার ও fallback</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>ইনপুট রাউটিং, fallback চেইন, অর্কেস্ট্রেশন</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-gear-wide-connected"></i> প্রোভাইডার ইন্টিগ্রেশন</td>
+                      <td><span class="badge bg-warning text-dark">আংশিক</span></td>
+                      <td>80%</td>
+                      <td>OpenAI, TogetherAI, Ollama, HuggingFace, lmstudio (কিছু placeholder/disabled)</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-mic-fill"></i> ভয়েস (TTS/STT)</td>
+                      <td><span class="badge bg-warning text-dark">আংশিক</span></td>
+                      <td>70%</td>
+                      <td>বাংলা/ইংরেজি TTS, কিছু STT placeholder</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-memory"></i> মেমোরি সিস্টেম</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>এজেন্ট ও ইউজার কনটেক্সট, দ্রুত রিট্রিভাল</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-shield-lock"></i> API ও অথেন্টিকেশন</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>লাইসেন্স, এজেন্ট CRUD, প্রজেক্ট অথেন্টিকেশন</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-activity"></i> লগস ও মনিটরিং</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>এজেন্ট স্ট্যাটাস, লেটেন্সি, fallback লগ</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-cloud-arrow-up"></i> ব্যাকআপ/রিস্টোর</td>
+                      <td><span class="badge bg-warning text-dark">আংশিক</span></td>
+                      <td>60%</td>
+                      <td>গুগল ড্রাইভ, গিটহাব, অটো ব্যাকআপ (কিছু স্ক্রিপ্ট placeholder)</td>
+                    </tr>
+                    <tr>
+                      <td><i class="bi bi-journal-code"></i> ডকুমেন্টেশন</td>
+                      <td><span class="badge bg-success">সম্পূর্ণ</span></td>
+                      <td>100%</td>
+                      <td>API, টেস্ট কেস, ইউজার গাইড</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Agent List -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-info text-white"><i class="bi bi-people"></i> এজেন্ট তালিকা ও ক্যারেক্টার</div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-bordered mb-0 align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>এজেন্ট</th>
+                      <th>ক্যারেক্টার/পার্সোনালিটি</th>
+                      <th>স্ট্যাটাস</th>
+                      <th>ভয়েস</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>instruct</td><td>শিক্ষক, দায়িত্বশীল, ব্যাখ্যামূলক</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>blog_writer_bn</td><td>বাংলা ব্লগ লেখক, তথ্যবহুল</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>girlfriend_gpt</td><td>বান্ধবী, কেয়ারিং, মজার</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>sms_reply</td><td>দ্রুত, সংক্ষিপ্ত, সহায়ক</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>procoder</td><td>কোডিং বিশেষজ্ঞ, বিশলেষণধর্মী</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>creative_writer</td><td>সৃজনশীল, কল্পনাপ্রবণ</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>business_agent</td><td>ব্যবসা বিশ্লেষক, কৌশলী</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>learning_agent</td><td>শিক্ষা সহায়ক, ধৈর্যশীল</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>translation_agent</td><td>অনুবাদক, নির্ভুল</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>db_analyzer</td><td>ডাটাবেজ বিশ্লেষক, বিশদ</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>relationship_agent</td><td>সম্পর্ক বিশ্লেষক, সহানুভূতিশীল</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                    <tr><td>security_agent</td><td>নিরাপত্তা বিশ্লেষক, সতর্ক</td><td><span class="badge bg-success">সম্পূর্ণ</span></td><td>না</td></tr>
+                  </tbody>
+                </table>
+                <div class="text-muted p-2">নোট: আরও এজেন্ট placeholder হিসেবে master_config.yaml-এ সংরক্ষিত আছে, ভবিষ্যতে যুক্ত হবে।</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Server List -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-secondary text-white"><i class="bi bi-hdd-network"></i> রান করার জন্য প্রয়োজনীয় সার্ভার</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered mb-0 align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>সার্ভার</th>
+                      <th>পোর্ট</th>
+                      <th>কাজ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Python Backend (Flask)</td><td>8000</td><td>এআই এজেন্ট, ডিসপ্যাচার, API</td></tr>
+                    <tr><td>MCP Dispatcher</td><td>—</td><td>এজেন্ট অর্কেস্ট্রেশন, fallback, টুল রেজিস্ট্রি</td></tr>
+                    <tr><td>Laravel API</td><td>8001</td><td>লাইসেন্স, অথেন্টিকেশন, ডাটাবেজ</td></tr>
+                    <tr><td>Ollama Server (optional)</td><td>11434</td><td>লোকাল মডেল সার্ভার (যদি চালু থাকে)</td></tr>
+                    <tr><td>Frontend (Vue/Next.js)</td><td>5173 বা 3000</td><td>ইউজার/এডমিন ইন্টারফেস</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <ul class="mt-2 mb-0">
+                <li>Windows-এ <code>powershell/auto_start_servers.ps1</code> বা <code>launchers/master_launcher.bat</code> চালিয়ে সব সার্ভার চালু করা যায়।</li>
+                <li>Linux-এ <code>launchers/master_launcher.sh</code> ব্যবহার করুন।</li>
+                <li>সব সার্ভার চালু হলে <b>http://localhost:8000</b> (backend), <b>http://localhost:8001</b> (Laravel API), <b>http://localhost:5173</b> (frontend) ওপেন করুন।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Features Section -->
+
+    <!-- Diagram Section -->
+    <div class="section diagram" id="diagram">
+      <h2><i class="bi bi-diagram-3"></i> সিস্টেম আর্কিটেকচার ডায়াগ্রাম</h2>
+      <div class="mermaid">
+        graph TD;
+          A["User/Admin/Editor"] --> B["Frontend (Vue/Next.js, admin/, frontend/)"]
+          B --> C["API Layer (api/, laravel-api/, ai/server/app.py)"]
+          C --> D["MCP Dispatcher (ai/server/mcp/, core/dispatcher/)"]
+          D --> E["Agent System (ai/agents/, ai/agents/base_agent.py)"]
+          E --> F["Providers (providers/, ai/agents/store/provider_store.py)"]
+          F --> G["External APIs (OpenAI, Mistral, TTS, STT, etc.)"]
+          E --> H["Memory System (ai/agents/memory_system.py, storage/)"]
+          D --> I["Fallback Logic (core/fallback/, core/fallback_engine.py)"]
+          C --> J["Database (database/, laravel-api/database/)"]
+          B --> K["Voice System (voice/, ai/server/app.py)"]
+          B --> L["Logs/Monitoring (logs/, core/monitoring/)"]
+          B --> M["Docs/Help (docs/, templates/)"]
+          A -.-> N["Backup/Restore (core/backup/, backup/)"]
+          A -.-> O["Tools/CLI (tools/, cli.py)"]
+      </div>
+      <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+      </script>
+    </div>
+
+    <!-- Details Section -->
+    <div class="section" id="details">
+      <h2><i class="bi bi-info-circle"></i> আরও বিস্তারিত</h2>
+      <div class="card">
+        <div class="card-body">
+          <ul>
+            <li>প্রতিটি এজেন্টের নিজস্ব পার্সোনালিটি, কনফিগ, ও মেমোরি রয়েছে।</li>
+            <li>ডিসপ্যাচার ইনপুট অনুযায়ী সঠিক এজেন্ট ও fallback নির্বাচন করে।</li>
+            <li>প্রোভাইডার ইন্টিগ্রেশন (OpenAI, Mistral, TogetherAI) সহজেই এক্সটেন্ডেবল।</li>
+            <li>ভয়েস ফিচার বাংলা ও ইংরেজি সাপোর্ট করে।</li>
+            <li>এডমিন প্যানেল থেকে লাইসেন্স, এজেন্ট, প্রজেক্ট, ও স্ট্যাটাস দেখা যায়।</li>
+            <li>ব্যাকআপ, মনিটরিং, ও লগিং ফিচার রয়েছে।</li>
+            <li>ডকুমেন্টেশন ও API স্পেক docs/ ফোল্ডারে সবসময় আপডেট রাখুন।</li>
+            <li>প্রজেক্ট সহজেই এক্সটেন্ড ও কাস্টমাইজ করা যায়।</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>© 2024 ZombieCoder | আধুনিক এআই প্রজেক্ট ডকুমেন্টেশন</span>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+providers:
+  huggingface:
+    status: active
+    health_check: true
+    fallback_priority: 2
+    api_key: ${HUGGINGFACE_API_KEY}
+    models:
+      - bengali-llama-2-7b
+      - bengali-gpt-7b
+
+  openai:
+    status: active
+    health_check: true
+    fallback_priority: 1
+    api_key: ${OPENAI_API_KEY}
+    models:
+      - gpt-4
+      - gpt-3.5-turbo
+
+  together:
+    status: active
+    health_check: true
+    fallback_priority: 3
+    api_key: ${TOGETHER_API_KEY}
+    models:
+      - llama-2-70b-chat
+      - falcon-40b
+
+  ollama:
+    status: active
+    health_check: true
+    fallback_priority: 4
+    host: http://localhost:11434
+    models:
+      - llama2
+      - mistral
+
+  lmstudio:
+    status: active
+    health_check: true
+    fallback_priority: 5
+    host: http://localhost:1234
+
+fallback_strategy:
+  max_retries: 3
+  timeout: 30
+  priority_order:
+    - openai
+    - huggingface
+    - together
+    - ollama
+    - lmstudio

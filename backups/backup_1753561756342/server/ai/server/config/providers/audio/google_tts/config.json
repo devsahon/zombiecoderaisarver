@@ -1,0 +1,5 @@
+{
+  "provider": "google_tts",
+  "api": "https://texttospeech.googleapis.com/v1/text:synthesize",
+  "type": "audio"
+} 

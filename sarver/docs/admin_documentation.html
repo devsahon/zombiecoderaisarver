@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>এডমিন ডকুমেন্টেশন - ZombieCoder AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f8f9fa; color: #333; }
+    .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .navbar-brand, .nav-link { color: #fff !important; }
+    .container { max-width: 1200px; margin: 40px auto; }
+    h1, h2 { font-weight: 700; }
+    h1 { color: #667eea; margin-bottom: 0.5em; }
+    h2 { color: #764ba2; margin-top: 2em; }
+    .section { margin-bottom: 3em; }
+    .card { border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2em; border: none; }
+    .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 700; font-size: 1.2em; border-radius: 15px 15px 0 0 !important; }
+    .icon { font-size: 1.5em; margin-right: 10px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .feature-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+    .status-badge { padding: 8px 16px; border-radius: 20px; font-weight: 600; }
+    .status-complete { background: #d4edda; color: #155724; }
+    .status-progress { background: #fff3cd; color: #856404; }
+    .status-pending { background: #f8d7da; color: #721c24; }
+    .comparison-table { background: white; border-radius: 15px; overflow: hidden; }
+    .comparison-table th { background: #667eea; color: white; padding: 15px; }
+    .comparison-table td { padding: 12px 15px; vertical-align: middle; }
+    .highlight-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin: 2em 0; }
+    .footer { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 30px 0; margin-top: 50px; border-radius: 15px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="bi bi-shield-check"></i> এডমিন ডকুমেন্টেশন</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#updates">আপডেট</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">ফিচার</a></li>
+          <li class="nav-item"><a class="nav-link" href="#comparison">তুলনা</a></li>
+          <li class="nav-item"><a class="nav-link" href="#management">ম্যানেজমেন্ট</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <h1 class="mb-4"><i class="bi bi-shield-check"></i> ZombieCoder AI - এডমিন ডকুমেন্টেশন</h1>
+    
+    <div class="highlight-box">
+      <h3><i class="bi bi-star"></i> সিস্টেম ওভারভিউ</h3>
+      <p class="mb-0">আমাদের AI ম্যানেজমেন্ট সিস্টেমে সম্পূর্ণ এডমিন কন্ট্রোল, রিয়েল-টাইম মনিটরিং, এবং উন্নত ফিচার রয়েছে। অসহায় মানুষের জন্য ফ্রি AI সেবা প্রদানের লক্ষ্যে তৈরি করা হয়েছে।</p>
+    </div>
+
+    <!-- System Updates Section -->
+    <div class="section" id="updates">
+      <h2><i class="bi bi-arrow-clockwise"></i> সর্বশেষ সিস্টেম আপডেট</h2>
+      
+      <div class="card">
+        <div class="card-header">
+          <i class="bi bi-calendar-check icon"></i>2024 সালের আপডেট
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h5><i class="bi bi-check-circle text-success"></i> সম্পন্ন আপডেট</h5>
+              <ul>
+                <li><strong>ভয়েস সিস্টেম:</strong> বাংলা TTS/STT সম্পূর্ণ ইন্টিগ্রেশন</li>
+                <li><strong>এডমিন প্যানেল:</strong> রিয়েল-টাইম সার্ভার মনিটরিং</li>
+                <li><strong>ডাটাবেজ:</strong> MySQL ইন্টিগ্রেশন ও 15টি টেবিল</li>
+                <li><strong>এজেন্ট সিস্টেম:</strong> 25টি AI এজেন্ট কনফিগারেশন</li>
+                <li><strong>প্রোভাইডার:</strong> 23টি AI প্রোভাইডার সেটআপ</li>
+                <li><strong>API সিস্টেম:</strong> Next.js API প্রক্সি ও Flask ব্যাকএন্ড</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h5><i class="bi bi-gear text-warning"></i> চলমান আপডেট</h5>
+              <ul>
+                <li><strong>মাল্টি-এজেন্ট কমিউনিকেশন:</strong> এজেন্টদের মধ্যে যোগাযোগ</li>
+                <li><strong>ফাইল প্রসেসিং:</strong> ইমেজ, PDF, Docx হ্যান্ডলিং</li>
+                <li><strong>অথেন্টিকেশন:</strong> ইউজার লগইন ও রোল সিস্টেম</li>
+                <li><strong>ক্লাউড ডেপ্লয়মেন্ট:</strong> অনলাইন অ্যাক্সেস</li>
+                <li><strong>মোবাইল অ্যাপ:</strong> Android/iOS সাপোর্ট</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="section" id="features">
+      <h2><i class="bi bi-stars"></i> এডমিন ফিচার ও সেবা</h2>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4><i class="bi bi-server text-primary"></i> সার্ভার ম্যানেজমেন্ট</h4>
+          <p><strong>রিয়েল-টাইম মনিটরিং:</strong> CPU, Memory, Disk, Network স্ট্যাটাস</p>
+          <p><strong>কন্ট্রোল:</strong> স্টার্ট, স্টপ, রিস্টার্ট সার্ভার</p>
+          <p><strong>হেলথ চেক:</strong> অটোমেটিক সার্ভার হেলথ মনিটরিং</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+
+        <div class="feature-card">
+          <h4><i class="bi bi-robot text-success"></i> এজেন্ট ম্যানেজমেন্ট</h4>
+          <p><strong>25টি AI এজেন্ট:</strong> বিভিন্ন কাজের জন্য বিশেষায়িত</p>
+          <p><strong>পার্সোনালিটি:</strong> প্রতিটি এজেন্টের আলাদা চরিত্র</p>
+          <p><strong>কনফিগারেশন:</strong> সহজ এজেন্ট সেটিংস</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+
+        <div class="feature-card">
+          <h4><i class="bi bi-gear-wide-connected text-info"></i> প্রোভাইডার ম্যানেজমেন্ট</h4>
+          <p><strong>23টি প্রোভাইডার:</strong> OpenAI, TogetherAI, Ollama, HuggingFace</p>
+          <p><strong>API কী ম্যানেজমেন্ট:</strong> সুরক্ষিত API কী স্টোরেজ</p>
+          <p><strong>ফলব্যাক সিস্টেম:</strong> অটোমেটিক প্রোভাইডার পরিবর্তন</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+
+        <div class="feature-card">
+          <h4><i class="bi bi-mic-fill text-warning"></i> ভয়েস সিস্টেম</h4>
+          <p><strong>বাংলা TTS:</strong> উচ্চমানের বাংলা স্পিচ জেনারেশন</p>
+          <p><strong>মাল্টি-ইঞ্জিন:</strong> Coqui, ESPnet, OpenTTS সাপোর্ট</p>
+          <p><strong>রিয়েল-টাইম প্লেব্যাক:</strong> তৎক্ষণাৎ অডিও প্লে</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+
+        <div class="feature-card">
+          <h4><i class="bi bi-database text-secondary"></i> ডাটাবেজ ম্যানেজমেন্ট</h4>
+          <p><strong>MySQL ইন্টিগ্রেশন:</strong> সম্পূর্ণ ডাটা ম্যানেজমেন্ট</p>
+          <p><strong>15টি টেবিল:</strong> ইউজার, এজেন্ট, প্রোভাইডার, লগ</p>
+          <p><strong>ব্যাকআপ সিস্টেম:</strong> অটোমেটিক ডাটা সুরক্ষা</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+
+        <div class="feature-card">
+          <h4><i class="bi bi-activity text-danger"></i> মনিটরিং & লগিং</h4>
+          <p><strong>সিস্টেম লগ:</strong> বিস্তারিত সিস্টেম লগ</p>
+          <p><strong>পারফরম্যান্স মেট্রিক্স:</strong> রিয়েল-টাইম স্ট্যাটিসটিক্স</p>
+          <p><strong>অ্যালার্ট সিস্টেম:</strong> সমস্যা সনাক্তকরণ</p>
+          <span class="status-badge status-complete">সম্পূর্ণ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Section -->
+    <div class="section" id="comparison">
+      <h2><i class="bi bi-bar-chart"></i> মার্কেট তুলনা</h2>
+      
+      <div class="comparison-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>বৈশিষ্ট্য</th>
+              <th>OpenAI GPT-4</th>
+              <th>Google Cloud AI</th>
+              <th>Hugging Face</th>
+              <th><strong>আমাদের সিস্টেম</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ভাষা সাপোর্ট</strong></td>
+              <td>ইংরেজি প্রধান</td>
+              <td>সীমিত বাংলা</td>
+              <td>বহুভাষিক</td>
+              <td><strong>সম্পূর্ণ বাংলা + ইংরেজি</strong></td>
+            </tr>
+            <tr>
+              <td><strong>কোস্ট</strong></td>
+              <td>$0.03/1K tokens</td>
+              <td>উচ্চ কোস্ট</td>
+              <td>মডেল অনুযায়ী</td>
+              <td><strong>সম্পূর্ণ ফ্রি</strong></td>
+            </tr>
+            <tr>
+              <td><strong>এজেন্ট সংখ্যা</strong></td>
+              <td>একক</td>
+              <td>একক</td>
+              <td>একক</td>
+              <td><strong>25টি এজেন্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>কাস্টমাইজেশন</strong></td>
+              <td>সীমিত</td>
+              <td>সীমিত</td>
+              <td>মাঝারি</td>
+              <td><strong>সম্পূর্ণ কাস্টম</strong></td>
+            </tr>
+            <tr>
+              <td><strong>লোকাল ডেপ্লয়মেন্ট</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>আংশিক</td>
+              <td><strong>সম্পূর্ণ লোকাল</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ভয়েস সিস্টেম</strong></td>
+              <td>সীমিত</td>
+              <td>সীমিত</td>
+              <td>না</td>
+              <td><strong>সম্পূর্ণ বাংলা TTS</strong></td>
+            </tr>
+            <tr>
+              <td><strong>এডমিন প্যানেল</strong></td>
+              <td>না</td>
+              <td>সীমিত</td>
+              <td>না</td>
+              <td><strong>সম্পূর্ণ এডমিন UI</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ডেটা প্রাইভেসি</strong></td>
+              <td>তৃতীয় পক্ষের কাছে</td>
+              <td>Google-এর কাছে</td>
+              <td>তৃতীয় পক্ষের কাছে</td>
+              <td><strong>সম্পূর্ণ লোকাল</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Management Section -->
+    <div class="section" id="management">
+      <h2><i class="bi bi-gear"></i> সিস্টেম ম্যানেজমেন্ট</h2>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-shield-check icon"></i>সুরক্ষা ও অথেন্টিকেশন
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>API কী ম্যানেজমেন্ট:</strong> সুরক্ষিত API কী স্টোরেজ</li>
+                <li><strong>ইউজার অথেন্টিকেশন:</strong> লগইন ও রোল সিস্টেম</li>
+                <li><strong>ডেটা এনক্রিপশন:</strong> সংবেদনশীল ডেটা সুরক্ষা</li>
+                <li><strong>অ্যাক্সেস কন্ট্রোল:</strong> ইউজার পারমিশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-cloud-arrow-up icon"></i>ব্যাকআপ ও রিস্টোর
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>অটোমেটিক ব্যাকআপ:</strong> নিয়মিত ডেটা সুরক্ষা</li>
+                <li><strong>মাল্টি-লোকেশন:</strong> গুগল ড্রাইভ, গিটহাব</li>
+                <li><strong>রিস্টোর সিস্টেম:</strong> সহজ ডেটা পুনরুদ্ধার</li>
+                <li><strong>ভার্সন কন্ট্রোল:</strong> Git ইন্টিগ্রেশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-speedometer2 icon"></i>পারফরম্যান্স অপটিমাইজেশন
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>ক্যাশিং সিস্টেম:</strong> দ্রুত রেসপন্স</li>
+                <li><strong>লোড ব্যালেন্সিং:</strong> সার্ভার লোড ডিস্ট্রিবিউশন</li>
+                <li><strong>ডাটাবেজ অপটিমাইজেশন:</strong> কুয়েরি অপটিমাইজেশন</li>
+                <li><strong>মেমোরি ম্যানেজমেন্ট:</strong> দক্ষ মেমোরি ব্যবহার</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-graph-up icon"></i>অ্যানালিটিক্স ও রিপোর্ট
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>ইউজার অ্যানালিটিক্স:</strong> ব্যবহার প্যাটার্ন</li>
+                <li><strong>সিস্টেম রিপোর্ট:</strong> পারফরম্যান্স মেট্রিক্স</li>
+                <li><strong>এজেন্ট স্ট্যাটিসটিক্স:</strong> এজেন্ট ব্যবহার</li>
+                <li><strong>রিয়েল-টাইম ড্যাশবোর্ড:</strong> লাইভ স্ট্যাটাস</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specifications -->
+    <div class="section">
+      <h2><i class="bi bi-cpu"></i> টেকনিক্যাল স্পেসিফিকেশন</h2>
+      
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-code-slash icon"></i>ফ্রন্টএন্ড
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Next.js 14:</strong> React ফ্রেমওয়ার্ক</li>
+                <li><strong>Tailwind CSS:</strong> স্টাইলিং</li>
+                <li><strong>TypeScript:</strong> টাইপ সেফটি</li>
+                <li><strong>Lucide React:</strong> আইকন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-server icon"></i>ব্যাকএন্ড
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Flask:</strong> Python ওয়েব ফ্রেমওয়ার্ক</li>
+                <li><strong>MySQL:</strong> ডাটাবেজ</li>
+                <li><strong>SQLite:</strong> লোকাল স্টোরেজ</li>
+                <li><strong>Redis:</strong> ক্যাশিং (পরিকল্পিত)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <i class="bi bi-robot icon"></i>AI/ML
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Coqui TTS:</strong> বাংলা স্পিচ</li>
+                <li><strong>ESPnet:</strong> স্পিচ প্রসেসিং</li>
+                <li><strong>OpenTTS:</strong> ওপেন সোর্স TTS</li>
+                <li><strong>Custom Agents:</strong> বিশেষায়িত AI</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <h4><i class="bi bi-shield-check"></i> ZombieCoder AI - এডমিন ডকুমেন্টেশন</h4>
+    <p class="mb-0">অসহায় মানুষের জন্য ফ্রি AI সেবা | © 2024</p>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

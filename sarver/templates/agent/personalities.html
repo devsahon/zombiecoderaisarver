@@ -1,0 +1,191 @@
+{% extends "base_layout.html" %}
+
+{% block page_title %}Agent Personality Profiles{% endblock %}
+
+{% block content %}
+<div class="content-card fade-in">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title">Agent Personality Profiles</h2>
+            <p class="content-subtitle">View and manage agent personalities, styles, and specialties</p>
+        </div>
+    </div>
+
+    <!-- Personality Cards -->
+    <div class="row" id="personality-cards">
+        <!-- Will be populated by JavaScript -->
+    </div>
+
+    <!-- Personality Edit Modal -->
+    <div class="modal fade" id="personalityEditModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Personality</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="personality-form">
+                        <input type="hidden" id="agent-id">
+                        <div class="mb-3">
+                            <label class="form-label">Style</label>
+                            <input type="text" class="form-control" id="style-input">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tone</label>
+                            <input type="text" class="form-control" id="tone-input">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Specialty</label>
+                            <input type="text" class="form-control" id="specialty-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="savePersonality()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .personality-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .personality-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .personality-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .personality-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .personality-status {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.9rem;
+    }
+
+    .personality-detail {
+        margin: 10px 0;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+
+    .personality-detail strong {
+        color: #34495e;
+    }
+</style>
+
+<script>
+    // Fetch and display agent personalities
+    function fetchPersonalities() {
+        fetch('/api/agents/personalities')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('personality-cards');
+                container.innerHTML = '';
+
+                data.agents.forEach(agent => {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4';
+                    col.innerHTML = `
+                    <div class="personality-card">
+                        <div class="personality-header">
+                            <span class="personality-name">${agent.name}</span>
+                            <span class="badge personality-status bg-${agent.status === 'active' ? 'success' : 'secondary'}">${agent.status}</span>
+                        </div>
+                        <div class="personality-detail">
+                            <strong>Style:</strong> ${agent.personality?.style || 'Not set'}
+                        </div>
+                        <div class="personality-detail">
+                            <strong>Tone:</strong> ${agent.personality?.tone || 'Not set'}
+                        </div>
+                        <div class="personality-detail">
+                            <strong>Specialty:</strong> ${agent.personality?.specialty || 'Not set'}
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-primary" onclick="editPersonality('${agent.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="viewConversations('${agent.id}')">
+                                <i class="fas fa-comments"></i> View Conversations
+                            </button>
+                        </div>
+                    </div>
+                `;
+                    container.appendChild(col);
+                });
+            });
+    }
+
+    // Edit personality
+    function editPersonality(agentId) {
+        fetch(`/api/agents/personalities/${agentId}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('agent-id').value = agentId;
+                document.getElementById('style-input').value = data.personality ? .style || '';
+                document.getElementById('tone-input').value = data.personality ? .tone || '';
+                document.getElementById('specialty-input').value = data.personality ? .specialty || '';
+                new bootstrap.Modal(document.getElementById('personalityEditModal')).show();
+            });
+    }
+
+    // Save personality changes
+    function savePersonality() {
+        const agentId = document.getElementById('agent-id').value;
+        const personality = {
+            style: document.getElementById('style-input').value,
+            tone: document.getElementById('tone-input').value,
+            specialty: document.getElementById('specialty-input').value
+        };
+
+        fetch(`/api/agents/personalities/${agentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    personality
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('personalityEditModal')).hide();
+                    fetchPersonalities();
+                    showNotification('Personality updated successfully', 'success');
+                } else {
+                    showNotification('Failed to update personality', 'error');
+                }
+            });
+    }
+
+    // View agent conversations
+    function viewConversations(agentId) {
+        window.location.href = `/agent/conversations/${agentId}`;
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', fetchPersonalities);
+</script>
+{% endblock %}

@@ -1,0 +1,698 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Chat Interface - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Chat Interface{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Chat Interface -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">AI Chat Interface</h2>
+                    <p class="content-subtitle">Interactive conversation with AI models</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2" onclick="clearChat()">
+                        <i class="fas fa-trash"></i> Clear Chat
+                    </button>
+                    <button class="btn btn-primary" onclick="exportChat()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div class="chat-container" id="chat-container">
+                <div class="welcome-message">
+                    <div class="text-center py-5">
+                        <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                        <h4>Welcome to Zombie Coder AI Chat</h4>
+                        <p class="text-muted">Start a conversation with our AI assistant. You can ask questions, get help with coding, or discuss any topic.</p>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="suggestion-card" onclick="sendQuickMessage('Hello! How can you help me today?')">
+                                    <i class="fas fa-hand-wave"></i>
+                                    <span>Greeting</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="suggestion-card" onclick="sendQuickMessage('Can you help me with Python programming?')">
+                                    <i class="fas fa-code"></i>
+                                    <span>Programming</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="suggestion-card" onclick="sendQuickMessage('What are the latest AI trends?')">
+                                    <i class="fas fa-brain"></i>
+                                    <span>AI Trends</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="input-group">
+                    <textarea class="form-control" id="chat-input" placeholder="Type your message here..." rows="3"></textarea>
+                    <button class="btn btn-primary" onclick="sendMessage()" id="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="chat-options mt-2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select class="form-select" id="model-select">
+                                <option value="mistral">Mistral (Fast)</option>
+                                <option value="llama3.1">Llama 3.1 (Accurate)</option>
+                                <option value="hybrid">Hybrid (Best of Both)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="language-select">
+                                <option value="en">English</option>
+                                <option value="bn">বাংলা (Bengali)</option>
+                                <option value="auto">Auto Detect</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-secondary w-100" onclick="toggleVoiceInput()">
+                                <i class="fas fa-microphone" id="voice-icon"></i>
+                                <span id="voice-text">Voice Input</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Sidebar -->
+    <div class="col-lg-4">
+        <!-- Model Status -->
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Model Status</h4>
+            </div>
+            
+            <div class="model-status-list" id="model-status-list">
+                <div class="model-status-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Mistral</strong>
+                            <br><small class="text-muted">Fast & Efficient</small>
+                        </div>
+                        <span class="badge bg-success" id="mistral-status">Online</span>
+                    </div>
+                </div>
+                <div class="model-status-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Llama 3.1</strong>
+                            <br><small class="text-muted">High Accuracy</small>
+                        </div>
+                        <span class="badge bg-success" id="llama-status">Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat History -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Chat History</h4>
+            </div>
+            
+            <div class="chat-history" id="chat-history">
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-history"></i>
+                    <br>No previous chats
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Quick Actions</h4>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary" onclick="sendQuickMessage('Explain this code:')">
+                    <i class="fas fa-code"></i> Code Explanation
+                </button>
+                <button class="btn btn-outline-success" onclick="sendQuickMessage('Debug this issue:')">
+                    <i class="fas fa-bug"></i> Debug Help
+                </button>
+                <button class="btn btn-outline-info" onclick="sendQuickMessage('Create a function for:')">
+                    <i class="fas fa-plus"></i> Create Function
+                </button>
+                <button class="btn btn-outline-warning" onclick="sendQuickMessage('Optimize this code:')">
+                    <i class="fas fa-tachometer-alt"></i> Code Optimization
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        height: 500px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        background: #f8f9fa;
+        margin-bottom: 20px;
+    }
+    
+    .welcome-message {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .suggestion-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .suggestion-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-color: var(--accent-color);
+    }
+    
+    .suggestion-card i {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .chat-message {
+        margin-bottom: 20px;
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .message-user {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .message-ai {
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .message-bubble {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        position: relative;
+    }
+    
+    .message-user .message-bubble {
+        background: var(--accent-color);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+    
+    .message-ai .message-bubble {
+        background: white;
+        color: var(--primary-color);
+        border: 1px solid #e9ecef;
+        border-bottom-left-radius: 4px;
+    }
+    
+    .message-time {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+    
+    .message-user .message-time {
+        text-align: right;
+    }
+    
+    .message-ai .message-time {
+        text-align: left;
+    }
+    
+    .chat-input-container {
+        border-top: 1px solid #e9ecef;
+        padding-top: 20px;
+    }
+    
+    .input-group .form-control {
+        border-radius: 20px 0 0 20px;
+        border-right: none;
+        resize: none;
+    }
+    
+    .input-group .btn {
+        border-radius: 0 20px 20px 0;
+        border-left: none;
+    }
+    
+    .model-status-item {
+        padding: 15px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .model-status-item:last-child {
+        border-bottom: none;
+    }
+    
+    .chat-history {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .history-item {
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    
+    .history-item:hover {
+        background: var(--light-bg);
+    }
+    
+    .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 16px;
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 18px;
+        border-bottom-left-radius: 4px;
+        max-width: 70%;
+    }
+    
+    .typing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #6c757d;
+        animation: typing 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes typing {
+        0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+        40% { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .voice-active {
+        background: var(--danger-color) !important;
+        color: white !important;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let chatHistory = [];
+    let isRecording = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
+
+    // Send message function
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        // Add user message to chat
+        addMessageToChat('user', message);
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Send to API
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: message,
+                model: document.getElementById('model-select').value,
+                language: document.getElementById('language-select').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideTypingIndicator();
+            
+            if (data.success) {
+                addMessageToChat('ai', data.agent_message);
+            } else {
+                addMessageToChat('ai', 'Sorry, I encountered an error. Please try again.');
+            }
+        })
+        .catch(error => {
+            hideTypingIndicator();
+            addMessageToChat('ai', 'Sorry, I cannot connect to the server right now.');
+        });
+    }
+
+    // Send quick message
+    function sendQuickMessage(message) {
+        document.getElementById('chat-input').value = message;
+        sendMessage();
+    }
+
+    // Add message to chat
+    function addMessageToChat(sender, content) {
+        const chatContainer = document.getElementById('chat-container');
+        
+        // Remove welcome message if it exists
+        const welcomeMessage = chatContainer.querySelector('.welcome-message');
+        if (welcomeMessage) {
+            welcomeMessage.remove();
+        }
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message message-${sender}`;
+        
+        const time = new Date().toLocaleTimeString();
+        let audioBtns = '';
+        if (sender === 'ai') {
+            audioBtns = `
+                <button class='btn btn-outline-secondary btn-sm ms-2' onclick='downloadAudio(this)' data-text="${encodeURIComponent(content)}" title='Download Audio'><i class='fas fa-download'></i></button>
+                <button class='btn btn-outline-success btn-sm ms-2' onclick='playAudio(this)' data-text="${encodeURIComponent(content)}" title='Play Audio'><i class="fas fa-play"></i></button>
+            `;
+        }
+        
+        messageDiv.innerHTML = `
+            <div class="message-bubble">
+                <span>${content}</span>
+                ${audioBtns}
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        // Add to history
+        chatHistory.push({ sender, content, time });
+        updateChatHistory();
+    }
+
+    // Show typing indicator
+    function showTypingIndicator() {
+        const chatContainer = document.getElementById('chat-container');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message message-ai typing-indicator';
+        typingDiv.id = 'typing-indicator';
+        typingDiv.innerHTML = `
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        `;
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Hide typing indicator
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+
+    // Clear chat
+    function clearChat() {
+        if (confirm('Are you sure you want to clear the chat?')) {
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.innerHTML = `
+                <div class="welcome-message">
+                    <div class="text-center py-5">
+                        <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                        <h4>Welcome to Zombie Coder AI Chat</h4>
+                        <p class="text-muted">Start a conversation with our AI assistant.</p>
+                    </div>
+                </div>
+            `;
+            chatHistory = [];
+            updateChatHistory();
+        }
+    }
+
+    // Export chat
+    function exportChat() {
+        if (chatHistory.length === 0) {
+            alert('No chat history to export.');
+            return;
+        }
+        
+        const exportData = {
+            timestamp: new Date().toISOString(),
+            messages: chatHistory
+        };
+        
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chat-export-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // Toggle voice input
+    function toggleVoiceInput() {
+        const voiceButton = document.getElementById('voice-icon');
+        const voiceText = document.getElementById('voice-text');
+        
+        if (!isRecording) {
+            startVoiceRecording();
+            voiceButton.className = 'fas fa-stop';
+            voiceText.textContent = 'Stop Recording';
+            document.querySelector('.btn-outline-secondary').classList.add('voice-active');
+        } else {
+            stopVoiceRecording();
+            voiceButton.className = 'fas fa-microphone';
+            voiceText.textContent = 'Voice Input';
+            document.querySelector('.btn-outline-secondary').classList.remove('voice-active');
+        }
+    }
+
+    // Start voice recording
+    function startVoiceRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    processVoiceInput(audioBlob);
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+            })
+            .catch(error => {
+                alert('Error accessing microphone: ' + error.message);
+            });
+    }
+
+    // Stop voice recording
+    function stopVoiceRecording() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            isRecording = false;
+        }
+    }
+
+    // Process voice input
+    function processVoiceInput(audioBlob) {
+        const formData = new FormData();
+        formData.append('audio', audioBlob);
+        
+        fetch('/api/voice-to-text', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('chat-input').value = data.text;
+                sendMessage();
+            } else {
+                alert('Error processing voice input: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error processing voice input: ' + error.message);
+        });
+    }
+
+    // Download Audio function
+    function downloadAudio(btn) {
+        const text = decodeURIComponent(btn.getAttribute('data-text'));
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        fetch('/api/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text, lang: 'bn' })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('TTS failed');
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reply.mp3';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-download"></i>';
+        })
+        .catch(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-download"></i>';
+            alert('Audio download failed!');
+        });
+    }
+
+    async function playAudio(btn) {
+        const text = decodeURIComponent(btn.getAttribute('data-text'));
+        btn.disabled = true;
+        btn.innerHTML = `<i class='fas fa-spinner fa-spin'></i>`;
+        try {
+            const resp = await fetch('/api/tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, lang: 'bn' })
+            });
+            if (!resp.ok) throw new Error('TTS failed');
+            const blob = await resp.blob();
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.play();
+            audio.onended = () => {
+                URL.revokeObjectURL(url);
+                btn.disabled = false;
+                btn.innerHTML = `<i class='fas fa-play'></i>`;
+            };
+        } catch (e) {
+            btn.innerHTML = `<i class='fas fa-play'></i>`;
+            btn.disabled = false;
+            alert('Audio play failed');
+        }
+    }
+
+    // Update chat history
+    function updateChatHistory() {
+        const historyContainer = document.getElementById('chat-history');
+        
+        if (chatHistory.length === 0) {
+            historyContainer.innerHTML = `
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-history"></i>
+                    <br>No previous chats
+                </div>
+            `;
+            return;
+        }
+        
+        historyContainer.innerHTML = '';
+        
+        // Group messages by date
+        const groupedMessages = {};
+        chatHistory.forEach(msg => {
+            const date = new Date().toDateString();
+            if (!groupedMessages[date]) {
+                groupedMessages[date] = [];
+            }
+            groupedMessages[date].push(msg);
+        });
+        
+        Object.keys(groupedMessages).forEach(date => {
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'history-item';
+            dateDiv.innerHTML = `
+                <strong>${date}</strong>
+                <br><small class="text-muted">${groupedMessages[date].length} messages</small>
+            `;
+            historyContainer.appendChild(dateDiv);
+        });
+    }
+
+    // Update model status
+    function updateModelStatus() {
+        fetch('/api/admin/models')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    data.models.forEach(model => {
+                        const statusElement = document.getElementById(`${model.name}-status`);
+                        if (statusElement) {
+                            statusElement.textContent = model.status;
+                            statusElement.className = `badge bg-${model.status === 'online' ? 'success' : 'danger'}`;
+                        }
+                    });
+                }
+            })
+            .catch(() => {
+                // Handle error silently
+            });
+    }
+
+    // Handle Enter key
+    document.getElementById('chat-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        updateModelStatus();
+        
+        // Update model status every 30 seconds
+        setInterval(updateModelStatus, 30000);
+    });
+</script>
+{% endblock %} 

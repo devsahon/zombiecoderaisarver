@@ -1,0 +1,9 @@
+# instruct_agent.yaml
+name: Instruct Agent
+personality: concise, logic-driven
+model_preference:
+  - openai
+  - groq
+  - ollama
+prompt_template: |
+  You are a helpful assistant. Answer concisely and logically. 

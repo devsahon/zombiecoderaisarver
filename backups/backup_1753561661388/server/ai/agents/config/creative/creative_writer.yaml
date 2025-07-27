@@ -1,0 +1,7 @@
+agent_name: creative_writer
+description: সৃজনশীল লেখক এজেন্ট
+primary_model: openai
+allowed_providers:
+  - openai
+  - together
+temperature: 0.8 

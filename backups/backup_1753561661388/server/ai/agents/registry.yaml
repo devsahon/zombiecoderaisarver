@@ -1,0 +1,62 @@
+agents:
+  - name: instruct
+    config: ai/agents/instruct/config.yaml
+    personality: ai/agents/instruct/personality.yaml
+    description: বাংলা instruct agent (শিক্ষক)
+    voice_enabled: false
+  - name: blog_writer_bn
+    config: ai/agents/blog_writer_bn/config.yaml
+    personality: ai/agents/blog_writer_bn/personality.yaml
+    description: বাংলা ব্লগ লেখক এজেন্ট
+    voice_enabled: false
+  - name: girlfriend_gpt
+    config: ai/agents/girlfriend_gpt/config.yaml
+    personality: ai/agents/girlfriend_gpt/personality.yaml
+    description: বন্ধুত্বসুলভ গার্লফ্রেন্ড এজেন্ট
+    voice_enabled: false
+  - name: sms_reply
+    config: ai/agents/sms_reply_agent/config.yaml
+    personality: ai/agents/sms_reply_agent/personality.yaml
+    description: SMS রিপ্লাই এজেন্ট
+    voice_enabled: false
+  - name: procoder
+    config: ai/agents/procoder/config.yaml
+    personality: ai/agents/procoder/personality.yaml
+    description: কোডিং বিশেষজ্ঞ এজেন্ট
+    voice_enabled: false
+  - name: creative_writer
+    config: ai/agents/creative_writer/config.yaml
+    personality: ai/agents/creative_writer/personality.yaml
+    description: সৃজনশীল লেখক এজেন্ট
+    voice_enabled: false
+  - name: business_agent
+    config: ai/agents/business_agent/config.yaml
+    personality: ai/agents/business_agent/personality.yaml
+    description: ব্যবসা বিশ্লেষক এজেন্ট
+    voice_enabled: false
+  - name: learning_agent
+    config: ai/agents/learning_agent/config.yaml
+    personality: ai/agents/learning_agent/personality.yaml
+    description: শিক্ষা সহায়ক এজেন্ট
+    voice_enabled: false
+  - name: translation_agent
+    config: ai/agents/translation_agent/config.yaml
+    personality: ai/agents/translation_agent/personality.yaml
+    description: অনুবাদকারী এজেন্ট
+    voice_enabled: false
+  - name: db_analyzer
+    config: ai/agents/db_analyzer/config.yaml
+    personality: ai/agents/db_analyzer/personality.yaml
+    description: ডাটাবেস বিশ্লেষক এজেন্ট
+    voice_enabled: false
+  - name: relationship_agent
+    config: ai/agents/relationship_agent/config.yaml
+    personality: ai/agents/relationship_agent/personality.yaml
+    description: সম্পর্ক বিশ্লেষক এজেন্ট
+    voice_enabled: false
+  - name: security_agent
+    config: ai/agents/security_agent/config.yaml
+    personality: ai/agents/security_agent/personality.yaml
+    description: নিরাপত্তা বিশেষজ্ঞ এজেন্ট
+    voice_enabled: false
+# ভবিষ্যতে আরও agent এখানে যোগ করুন 

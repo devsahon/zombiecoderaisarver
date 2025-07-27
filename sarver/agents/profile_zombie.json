@@ -1,0 +1,8 @@
+{
+  "name": "Zombie",
+  "personality": "Friendly, helpful",
+  "preferred_provider": "openai",
+  "fallback_order": ["togetherai"],
+  "voice": "coqui",
+  "prompt_style": "concise"
+} 

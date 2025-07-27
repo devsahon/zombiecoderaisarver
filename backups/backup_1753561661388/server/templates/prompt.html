@@ -1,0 +1,544 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Prompt Engineering - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Prompt Engineering{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Prompt Editor -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">Prompt Engineering</h2>
+                    <p class="content-subtitle">Create, test, and optimize AI prompts</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2" onclick="savePrompt()">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button class="btn btn-primary" onclick="testPrompt()">
+                        <i class="fas fa-play"></i> Test
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Prompt Template -->
+            <div class="mb-4">
+                <label class="form-label">Prompt Template</label>
+                <textarea class="form-control" id="prompt-template" rows="8" placeholder="Enter your prompt template here...">You are a helpful AI assistant. Please help me with the following request:
+
+{user_input}
+
+Please provide a detailed and helpful response.</textarea>
+            </div>
+            
+            <!-- Variables -->
+            <div class="mb-4">
+                <label class="form-label">Template Variables</label>
+                <div id="variables-container">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Variable</span>
+                        <input type="text" class="form-control" placeholder="variable_name" value="user_input">
+                        <span class="input-group-text">Value</span>
+                        <input type="text" class="form-control" placeholder="Enter value" id="var-user_input">
+                        <button class="btn btn-outline-danger" onclick="removeVariable(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" onclick="addVariable()">
+                    <i class="fas fa-plus"></i> Add Variable
+                </button>
+            </div>
+            
+            <!-- Test Input -->
+            <div class="mb-4">
+                <label class="form-label">Test Input</label>
+                <textarea class="form-control" id="test-input" rows="4" placeholder="Enter test input here...">How can I improve my Python code?</textarea>
+            </div>
+            
+            <!-- Generated Prompt -->
+            <div class="mb-4">
+                <label class="form-label">Generated Prompt</label>
+                <textarea class="form-control" id="generated-prompt" rows="6" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prompt Library & Settings -->
+    <div class="col-lg-4">
+        <!-- Prompt Templates -->
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Prompt Templates</h4>
+            </div>
+            
+            <div class="template-list" id="template-list">
+                <div class="template-item" onclick="loadTemplate('coding')">
+                    <h6><i class="fas fa-code"></i> Coding Assistant</h6>
+                    <small class="text-muted">Help with programming tasks</small>
+                </div>
+                <div class="template-item" onclick="loadTemplate('analysis')">
+                    <h6><i class="fas fa-chart-bar"></i> Data Analysis</h6>
+                    <small class="text-muted">Analyze and interpret data</small>
+                </div>
+                <div class="template-item" onclick="loadTemplate('writing')">
+                    <h6><i class="fas fa-pen"></i> Content Writing</h6>
+                    <small class="text-muted">Create written content</small>
+                </div>
+                <div class="template-item" onclick="loadTemplate('translation')">
+                    <h6><i class="fas fa-language"></i> Translation</h6>
+                    <small class="text-muted">Translate between languages</small>
+                </div>
+                <div class="template-item" onclick="loadTemplate('debugging')">
+                    <h6><i class="fas fa-bug"></i> Debugging</h6>
+                    <small class="text-muted">Help debug code issues</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Settings -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Model Settings</h4>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">AI Model</label>
+                <select class="form-select" id="model-select">
+                    <option value="mistral">Mistral (Fast)</option>
+                    <option value="llama3.1">Llama 3.1 (Accurate)</option>
+                    <option value="hybrid">Hybrid (Best of Both)</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Temperature</label>
+                <input type="range" class="form-range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+                <div class="d-flex justify-content-between">
+                    <small>Conservative (0)</small>
+                    <small id="temp-value">0.7</small>
+                    <small>Creative (2)</small>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Max Tokens</label>
+                <input type="number" class="form-control" id="max-tokens" value="1000" min="100" max="4000">
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Test Results</h4>
+            </div>
+            
+            <div id="test-results">
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-play-circle"></i>
+                    <br>Click "Test" to see results
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Prompt History -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">Prompt History</h3>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Template</th>
+                            <th>Model</th>
+                            <th>Response Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prompt-history">
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                No prompt history yet
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .template-item {
+        padding: 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .template-item:hover {
+        background: var(--light-bg);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+    
+    .template-item h6 {
+        margin: 0 0 5px 0;
+        color: var(--primary-color);
+    }
+    
+    .template-item i {
+        margin-right: 8px;
+        color: var(--accent-color);
+    }
+    
+    .form-range {
+        height: 6px;
+    }
+    
+    .form-range::-webkit-slider-thumb {
+        background: var(--accent-color);
+    }
+    
+    .form-range::-moz-range-thumb {
+        background: var(--accent-color);
+    }
+    
+    .test-result {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .test-result.success {
+        background: rgba(39, 174, 96, 0.1);
+        border: 1px solid rgba(39, 174, 96, 0.3);
+    }
+    
+    .test-result.error {
+        background: rgba(231, 76, 60, 0.1);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+    
+    .response-time {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .prompt-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const promptTemplates = {
+        'coding': {
+            name: 'Coding Assistant',
+            template: `You are an expert programmer. Please help me with the following coding task:
+
+{user_input}
+
+Please provide:
+1. A clear solution
+2. Code examples
+3. Best practices
+4. Potential improvements`,
+            variables: ['user_input']
+        },
+        'analysis': {
+            name: 'Data Analysis',
+            template: `You are a data analyst. Please analyze the following data:
+
+{user_input}
+
+Please provide:
+1. Key insights
+2. Statistical analysis
+3. Visual recommendations
+4. Actionable conclusions`,
+            variables: ['user_input']
+        },
+        'writing': {
+            name: 'Content Writing',
+            template: `You are a professional content writer. Please help me create content about:
+
+{user_input}
+
+Please provide:
+1. Engaging introduction
+2. Well-structured content
+3. SEO optimization
+4. Call-to-action`,
+            variables: ['user_input']
+        },
+        'translation': {
+            name: 'Translation',
+            template: `You are a professional translator. Please translate the following text:
+
+{source_text}
+
+From: {source_language}
+To: {target_language}
+
+Please provide:
+1. Accurate translation
+2. Cultural context
+3. Alternative expressions`,
+            variables: ['source_text', 'source_language', 'target_language']
+        },
+        'debugging': {
+            name: 'Debugging',
+            template: `You are a debugging expert. Please help me fix this issue:
+
+{error_message}
+
+Code context:
+{code_context}
+
+Please provide:
+1. Root cause analysis
+2. Step-by-step solution
+3. Prevention tips
+4. Code improvements`,
+            variables: ['error_message', 'code_context']
+        }
+    };
+
+    // Load template
+    function loadTemplate(templateId) {
+        const template = promptTemplates[templateId];
+        if (!template) return;
+        
+        document.getElementById('prompt-template').value = template.template;
+        
+        // Clear existing variables
+        const container = document.getElementById('variables-container');
+        container.innerHTML = '';
+        
+        // Add variables
+        template.variables.forEach(varName => {
+            addVariable(varName);
+        });
+        
+        updateGeneratedPrompt();
+    }
+
+    // Add variable
+    function addVariable(name = '') {
+        const container = document.getElementById('variables-container');
+        const varId = name || `var_${Date.now()}`;
+        
+        const varDiv = document.createElement('div');
+        varDiv.className = 'input-group mb-2';
+        varDiv.innerHTML = `
+            <span class="input-group-text">Variable</span>
+            <input type="text" class="form-control" placeholder="variable_name" value="${name}" onchange="updateGeneratedPrompt()">
+            <span class="input-group-text">Value</span>
+            <input type="text" class="form-control" placeholder="Enter value" id="var-${varId}" onchange="updateGeneratedPrompt()">
+            <button class="btn btn-outline-danger" onclick="removeVariable(this)">
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
+        container.appendChild(varDiv);
+    }
+
+    // Remove variable
+    function removeVariable(button) {
+        button.closest('.input-group').remove();
+        updateGeneratedPrompt();
+    }
+
+    // Update generated prompt
+    function updateGeneratedPrompt() {
+        let template = document.getElementById('prompt-template').value;
+        const variables = {};
+        
+        // Get all variables
+        document.querySelectorAll('#variables-container .input-group').forEach(group => {
+            const varInput = group.querySelector('input[type="text"]');
+            const valueInput = group.querySelector('input[id^="var-"]');
+            if (varInput && valueInput) {
+                variables[varInput.value] = valueInput.value;
+            }
+        });
+        
+        // Replace variables in template
+        Object.keys(variables).forEach(varName => {
+            const regex = new RegExp(`{${varName}}`, 'g');
+            template = template.replace(regex, variables[varName]);
+        });
+        
+        document.getElementById('generated-prompt').value = template;
+    }
+
+    // Test prompt
+    function testPrompt() {
+        const prompt = document.getElementById('generated-prompt').value;
+        const model = document.getElementById('model-select').value;
+        const temperature = document.getElementById('temperature').value;
+        const maxTokens = document.getElementById('max-tokens').value;
+        
+        if (!prompt.trim()) {
+            alert('Please generate a prompt first.');
+            return;
+        }
+        
+        // Show loading
+        const resultsDiv = document.getElementById('test-results');
+        resultsDiv.innerHTML = `
+            <div class="text-center py-3">
+                <i class="fas fa-spinner fa-spin"></i>
+                <br>Testing prompt...
+            </div>
+        `;
+        
+        // Send to API
+        fetch('/api/prompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                model: model,
+                temperature: parseFloat(temperature),
+                max_tokens: parseInt(maxTokens)
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                resultsDiv.innerHTML = `
+                    <div class="test-result success">
+                        <h6><i class="fas fa-check-circle"></i> Test Successful</h6>
+                        <div class="response-time">Response time: ${data.response_time || 'N/A'}</div>
+                        <div class="mt-3">
+                            <strong>Response:</strong>
+                            <div class="mt-2 p-3 bg-light rounded">${data.response}</div>
+                        </div>
+                        <div class="prompt-stats">
+                            <span>Tokens used: ${data.tokens_used || 'N/A'}</span>
+                            <span>Model: ${model}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Add to history
+                addToHistory(prompt, model, data.response_time, 'success');
+            } else {
+                resultsDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h6><i class="fas fa-exclamation-circle"></i> Test Failed</h6>
+                        <div class="mt-2">${data.error || 'Unknown error occurred'}</div>
+                    </div>
+                `;
+                
+                addToHistory(prompt, model, 'N/A', 'error');
+            }
+        })
+        .catch(error => {
+            resultsDiv.innerHTML = `
+                <div class="test-result error">
+                    <h6><i class="fas fa-exclamation-circle"></i> Connection Error</h6>
+                    <div class="mt-2">${error.message}</div>
+                </div>
+            `;
+            
+            addToHistory(prompt, model, 'N/A', 'error');
+        });
+    }
+
+    // Save prompt
+    function savePrompt() {
+        const prompt = document.getElementById('prompt-template').value;
+        const name = prompt('Enter a name for this prompt template:');
+        
+        if (!name) return;
+        
+        // Save to localStorage for now
+        const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts') || '[]');
+        savedPrompts.push({
+            name: name,
+            template: prompt,
+            timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+        
+        alert('Prompt template saved successfully!');
+    }
+
+    // Add to history
+    function addToHistory(prompt, model, responseTime, status) {
+        const historyTable = document.getElementById('prompt-history');
+        
+        // Remove "no history" message if exists
+        const noHistoryRow = historyTable.querySelector('tr td[colspan="6"]');
+        if (noHistoryRow) {
+            noHistoryRow.parentElement.remove();
+        }
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${new Date().toLocaleTimeString()}</td>
+            <td>${prompt.substring(0, 50)}...</td>
+            <td>${model}</td>
+            <td>${responseTime}</td>
+            <td><span class="badge bg-${status === 'success' ? 'success' : 'danger'}">${status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="loadPromptFromHistory('${prompt}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        `;
+        
+        historyTable.insertBefore(row, historyTable.firstChild);
+    }
+
+    // Load prompt from history
+    function loadPromptFromHistory(prompt) {
+        document.getElementById('prompt-template').value = prompt;
+        updateGeneratedPrompt();
+    }
+
+    // Update temperature display
+    document.getElementById('temperature').addEventListener('input', function() {
+        document.getElementById('temp-value').textContent = this.value;
+    });
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        updateGeneratedPrompt();
+        
+        // Add event listeners
+        document.getElementById('prompt-template').addEventListener('input', updateGeneratedPrompt);
+        document.getElementById('test-input').addEventListener('input', function() {
+            const varInput = document.getElementById('var-user_input');
+            if (varInput) {
+                varInput.value = this.value;
+                updateGeneratedPrompt();
+            }
+        });
+    });
+</script>
+{% endblock %} 

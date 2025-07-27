@@ -1,0 +1,50 @@
+[
+  {
+    "timestamp": "2025-07-20 19:33:03",
+    "endpoint": "Health Check",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A88FE00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:08",
+    "endpoint": "Metrics Dashboard",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A985590>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:13",
+    "endpoint": "Logs Dashboard",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/logs (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A985E50>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:18",
+    "endpoint": "Editor Status",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/editor/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A93AC40>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:23",
+    "endpoint": "Admin Command: @him system status",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/commands (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A93B360>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:28",
+    "endpoint": "Admin Command: @him check health",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/commands (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A95E570>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:32",
+    "endpoint": "Admin Command: @him show active editors",
+    "success": false,
+    "response": "Error: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /admin/dashboard/commands (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002B00A99C9E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+  },
+  {
+    "timestamp": "2025-07-20 19:33:37",
+    "endpoint": "WebSocket Connection",
+    "success": false,
+    "response": "Error: [WinError 1225] The remote computer refused the network connection"
+  }
+]

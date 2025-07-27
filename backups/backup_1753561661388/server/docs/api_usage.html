@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><meta charset="UTF-8"><title>ZombieCoder: API ব্যবহার</title></head>
+<body style="font-family:Segoe UI,Arial,sans-serif;background:#f7f9fa;color:#222;padding:2em;max-width:900px;margin:auto;">
+<h1>ZombieCoder: API ব্যবহার</h1>
+<p>ZombieCoder API ব্যবহার করতে:</p>
+<ol>
+  <li>API endpoint: <code>POST /agent/run</code> (Laravel/Flask)</li>
+  <li>Request body (JSON):<br>
+  <code>{ "agent": "instruct", "input": "বাংলায় একটা গল্প লেখো" }</code></li>
+  <li>Response:<br>
+  <code>{ "reply": "একদিন এক গ্রামে..." }</code></li>
+  <li>API key থাকলে header-এ দিন: <code>Authorization: Bearer [API_KEY]</code></li>
+  <li>Fallback, memory, context—all supported</li>
+</ol>
+<p>ডিটেইল API spec: <code>docs/api_spec.yaml</code></p>
+</body></html> 

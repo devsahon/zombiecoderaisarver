@@ -1,0 +1,5 @@
+{
+  "provider": "newsapi",
+  "api": "https://newsapi.org/v2/top-headlines",
+  "type": "news"
+} 

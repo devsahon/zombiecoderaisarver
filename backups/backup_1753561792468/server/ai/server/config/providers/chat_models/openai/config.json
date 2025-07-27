@@ -1,0 +1,5 @@
+{
+  "provider": "openai",
+  "api": "https://api.openai.com/v1/chat/completions",
+  "type": "chat"
+} 

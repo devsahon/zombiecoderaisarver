@@ -1,0 +1,35 @@
+name: personal_agent
+description: >
+  This is Shawon's personal AI companion. Responsible for giving logical suggestions,
+  analyzing system status, initiating tasks, and helping in code, UI, decision, and real-life guidance.
+
+entrypoint: logic.py
+personality: personality.yaml
+memory: memory.json
+enabled: true
+permissions:
+  - system_diagnose
+  - auto_fix
+  - image_to_html
+  - html_to_dynamic
+  - code_review
+  - project_suggestion
+  - database_analyze
+  - provider_manage
+  - user_management
+  - backup_control
+  - voice_settings
+  - image_generation
+  - video_generation
+  - communication_manage
+  - productivity_tools
+  - model_management
+  - prompt_generation
+
+settings:
+  default_language: bn
+  fallback_language: en
+  response_timeout: 30
+  max_memory_size: 1000
+  auto_save_interval: 300
+  log_level: info

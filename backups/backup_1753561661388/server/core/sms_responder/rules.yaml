@@ -1,0 +1,19 @@
+# SMS Response Rules
+# Define keywords and corresponding responses
+
+responses:
+  greeting:
+    keywords: [hello, hi, hey]
+    response: "Hello! How can I help you today?"
+
+  help:
+    keywords: [help, support, assist]
+    response: "I'm here to help. What do you need assistance with?"
+
+  follow_up:
+    no_response_time: 30 # minutes
+    message: "Haven't heard from you. Do you still need help?"
+
+  context_aware:
+    previous_context: true # Enable context-aware responses
+    memory_length: 5 # Remember last 5 messages

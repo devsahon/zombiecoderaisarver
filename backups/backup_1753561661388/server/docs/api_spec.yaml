@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: License Management API
+  version: 1.0.0
+paths:
+  /licenses:
+    get:
+      summary: List all licenses
+      responses:
+        '200':
+          description: List of licenses
+    post:
+      summary: Create a new license
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/License'
+      responses:
+        '201':
+          description: License created
+  /licenses/{id}:
+    get:
+      summary: Get license by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: License object
+    put:
+      summary: Update license
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/License'
+      responses:
+        '200':
+          description: License updated
+    delete:
+      summary: Delete license
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: License deleted
+components:
+  schemas:
+    License:
+      type: object
+      properties:
+        id: { type: integer }
+        project_id: { type: integer }
+        license_key: { type: string }
+        expiry_date: { type: string, format: date }
+        status: { type: string, enum: [valid, invalid] }
+        last_checked_at: { type: string, format: date-time } 

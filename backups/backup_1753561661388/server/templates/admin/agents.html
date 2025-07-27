@@ -1,0 +1,21 @@
+{% extends "base_layout.html" %}
+{% block title %}Agents - Zombie Coder{% endblock %}
+{% block page_title %}Agents{% endblock %}
+{% block content %}
+<div class="content-card fade-in">
+  <div class="content-header">
+    <h2 class="content-title">Agents List</h2>
+    <p class="content-subtitle">View and manage all registered agents</p>
+  </div>
+  <div id="agents-list"></div>
+  <script>
+    fetch('/api/agents').then(res => res.json()).then(data => {
+      const list = document.getElementById('agents-list');
+      list.innerHTML = '';
+      (data.agents || []).forEach(agent => {
+        list.innerHTML += `<div class='content-card mb-2'><b>${agent.name}</b> (${agent.id})<br>Type: ${agent.type || ''}<br>Personality: ${agent.personality || ''}<br><button class='btn btn-sm btn-primary' onclick=\"window.open('/agent/config/${agent.id}','_blank')\">Configure</button> <button class='btn btn-sm btn-info' onclick=\"window.open('/agent/status/${agent.id}','_blank')\">Status</button> <button class='btn btn-sm btn-success' onclick=\"window.open('/agent/integrations/${agent.id}','_blank')\">Integrate</button></div>`;
+      });
+    });
+  </script>
+</div>
+{% endblock %} 

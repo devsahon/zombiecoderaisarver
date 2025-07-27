@@ -1,0 +1,18 @@
+{
+    "default_voice": "google_tts",
+    "coqui": {
+        "api_url": "http://localhost:5002",
+        "api_key": "YOUR_COQUI_API_KEY",
+        "models": {
+            "bn_female": "tts_models/bn/coqui/bn_female",
+            "bn_male": "tts_models/bn/coqui/bn_male"
+        }
+    },
+    "elevenlabs": {
+        "api_key": "YOUR_ELEVENLABS_API_KEY",
+        "voices": {
+            "bn_female": "voice_id_for_bangla_female",
+            "bn_male": "voice_id_for_bangla_male"
+        }
+    }
+}

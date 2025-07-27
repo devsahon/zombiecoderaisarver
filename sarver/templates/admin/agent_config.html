@@ -1,0 +1,717 @@
+{% extends "base_layout.html" %} {% block title %}Agent Configuration - Zombie
+Coder{% endblock %} {% block page_title %}Agent Configuration{% endblock %} {%
+block content %}
+<div class="row">
+  <!-- Agent Configuration -->
+  <div class="col-lg-8">
+    <div class="content-card fade-in">
+      <div class="content-header">
+        <div>
+          <h2 class="content-title">Agent Configuration</h2>
+          <p class="content-subtitle">Manage and configure AI agents</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="saveAllConfigurations()">
+            <i class="fas fa-save"></i> Save All Changes
+          </button>
+        </div>
+      </div>
+
+      <!-- Agent Categories -->
+      <div class="agent-categories mt-4">
+        <ul class="nav nav-tabs" id="agentTabs" role="tablist">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="relationship-tab"
+              data-bs-toggle="tab"
+              href="#relationship"
+              role="tab"
+            >
+              Relationship Agents
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="education-tab"
+              data-bs-toggle="tab"
+              href="#education"
+              role="tab"
+            >
+              Education Agents
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="voice-tab"
+              data-bs-toggle="tab"
+              href="#voice"
+              role="tab"
+            >
+              Voice Agents
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="productivity-tab"
+              data-bs-toggle="tab"
+              href="#productivity"
+              role="tab"
+            >
+              Productivity Agents
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content mt-3" id="agentTabContent">
+          <!-- Relationship Agents -->
+          <div
+            class="tab-pane fade show active"
+            id="relationship"
+            role="tabpanel"
+          >
+            <div class="agent-grid" id="relationship-agents">
+              <!-- Agent cards will be populated here -->
+            </div>
+          </div>
+
+          <!-- Education Agents -->
+          <div class="tab-pane fade" id="education" role="tabpanel">
+            <div class="agent-grid" id="education-agents">
+              <!-- Agent cards will be populated here -->
+            </div>
+          </div>
+
+          <!-- Voice Agents -->
+          <div class="tab-pane fade" id="voice" role="tabpanel">
+            <div class="agent-grid" id="voice-agents">
+              <!-- Agent cards will be populated here -->
+            </div>
+          </div>
+
+          <!-- Productivity Agents -->
+          <div class="tab-pane fade" id="productivity" role="tabpanel">
+            <div class="agent-grid" id="productivity-agents">
+              <!-- Agent cards will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Model Configuration -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h3 class="content-title">Voice Configuration</h3>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5>Bengali Voice Models</h5>
+            </div>
+            <div class="card-body">
+              <div class="voice-model-list">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="bengaliVoice"
+                    id="voice1"
+                    checked
+                  />
+                  <label class="form-check-label" for="voice1">
+                    Bengali Female 1
+                    <button
+                      class="btn btn-sm btn-outline-primary ms-2"
+                      onclick="previewVoice('bn-female-1')"
+                    >
+                      <i class="fas fa-play"></i> Preview
+                    </button>
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="bengaliVoice"
+                    id="voice2"
+                  />
+                  <label class="form-check-label" for="voice2">
+                    Bengali Male 1
+                    <button
+                      class="btn btn-sm btn-outline-primary ms-2"
+                      onclick="previewVoice('bn-male-1')"
+                    >
+                      <i class="fas fa-play"></i> Preview
+                    </button>
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="bengaliVoice"
+                    id="voice3"
+                  />
+                  <label class="form-check-label" for="voice3">
+                    Bengali Female 2
+                    <button
+                      class="btn btn-sm btn-outline-primary ms-2"
+                      onclick="previewVoice('bn-female-2')"
+                    >
+                      <i class="fas fa-play"></i> Preview
+                    </button>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5>Text-to-Speech Test</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">Enter Bengali Text</label>
+                <textarea
+                  class="form-control"
+                  id="ttsText"
+                  rows="3"
+                  placeholder="এখানে বাংলা টেক্সট লিখুন..."
+                ></textarea>
+              </div>
+              <button class="btn btn-primary" onclick="generateSpeech()">
+                <i class="fas fa-play"></i> Generate & Play
+              </button>
+              <button class="btn btn-secondary" onclick="downloadSpeech()">
+                <i class="fas fa-download"></i> Download Audio
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <div class="col-lg-4">
+    <!-- Active Agents -->
+    <div class="content-card fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Active Agents</h4>
+      </div>
+      <div class="active-agents-list" id="activeAgentsList">
+        <!-- Active agents will be listed here -->
+      </div>
+    </div>
+
+    <!-- Agent Performance -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Agent Performance</h4>
+      </div>
+      <canvas id="agentPerformanceChart"></canvas>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Recent Activities</h4>
+      </div>
+      <div class="activity-log" id="agentActivityLog">
+        <!-- Activity logs will be populated here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent Configuration Modal -->
+<div class="modal fade" id="agentConfigModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Configure Agent</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="agentConfigForm">
+          <div class="mb-3">
+            <label class="form-label">Agent Name</label>
+            <input type="text" class="form-control" id="agentName" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Language Support</label>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="bengaliSupport"
+                checked
+              />
+              <label class="form-check-label" for="bengaliSupport"
+                >Bengali</label
+              >
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="englishSupport"
+              />
+              <label class="form-check-label" for="englishSupport"
+                >English</label
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Voice Configuration</label>
+            <select class="form-select" id="voiceConfig">
+              <option value="bn-female-1">Bengali Female 1</option>
+              <option value="bn-male-1">Bengali Male 1</option>
+              <option value="bn-female-2">Bengali Female 2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Response Configuration</label>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="autoVoiceResponse"
+                checked
+              />
+              <label class="form-check-label" for="autoVoiceResponse">
+                Auto-generate voice response
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="filterSpecialChars"
+                checked
+              />
+              <label class="form-check-label" for="filterSpecialChars">
+                Filter special characters
+              </label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Advanced Settings</label>
+            <textarea
+              class="form-control"
+              id="advancedSettings"
+              rows="4"
+              placeholder="Enter JSON configuration..."
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="saveAgentConfig()"
+        >
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .agent-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agent-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-color);
+  }
+
+  .agent-card.active::before {
+    background: var(--success-color);
+  }
+
+  .agent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .agent-name {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .agent-status {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+  }
+
+  .agent-status.active {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+  }
+
+  .agent-status.inactive {
+    background: rgba(149, 165, 166, 0.1);
+    color: #95a5a6;
+  }
+
+  .agent-info {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+  }
+
+  .agent-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .agent-actions .btn {
+    flex: 1;
+  }
+
+  .voice-model-list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .active-agents-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .active-agent-item {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .active-agent-info {
+    flex: 1;
+  }
+
+  .active-agent-name {
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .active-agent-type {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .activity-log {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .activity-item {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .activity-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .activity-message {
+    margin-top: 5px;
+  }
+</style>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Fetch agents from API and populate UI
+  let agentsByCategory = {};
+
+  function fetchAgents() {
+    fetch('/api/agents')
+      .then(res => res.json())
+      .then(data => {
+        agentsByCategory = {};
+        if (data.agents && data.categories) {
+          // Group agents by category
+          Object.entries(data.categories).forEach(([cat, agentIds]) => {
+            agentsByCategory[cat] = (data.agents || []).filter(a => agentIds.includes(a.id));
+          });
+        }
+        populateAgentTabsAndGrids(data.categories);
+        updateActiveAgentsList();
+      });
+  }
+  function populateAgentTabsAndGrids(categories) {
+    // Render tabs
+    const tabList = document.getElementById('agentTabs');
+    tabList.innerHTML = '';
+    let first = true;
+    Object.keys(categories).forEach(cat => {
+      tabList.innerHTML += `<li class="nav-item"><a class="nav-link${first ? ' active' : ''}" id="${cat}-tab" data-bs-toggle="tab" href="#${cat}" role="tab">${cat.charAt(0).toUpperCase() + cat.slice(1)} Agents</a></li>`;
+      first = false;
+    });
+    // Render tab content
+    const tabContent = document.getElementById('agentTabContent');
+    tabContent.innerHTML = '';
+    first = true;
+    Object.entries(categories).forEach(([cat, agentIds]) => {
+      tabContent.innerHTML += `<div class="tab-pane fade show${first ? ' active' : ''}" id="${cat}" role="tabpanel"><div class="agent-grid" id="${cat}-agents"></div></div>`;
+      first = false;
+    });
+    // Populate agent grids
+    Object.entries(categories).forEach(([cat, agentIds]) => {
+      const grid = document.getElementById(`${cat}-agents`);
+      grid.innerHTML = '';
+      const agents = agentsByCategory[cat] || [];
+      agents.forEach(agent => {
+        const card = createAgentCard(agent, cat);
+        grid.appendChild(card);
+      });
+    });
+  }
+  function createAgentCard(agent, cat) {
+    const div = document.createElement('div');
+    div.className = `agent-card ${agent.status === 'active' ? 'active' : ''}`;
+    div.innerHTML = `
+      <div class="agent-header">
+        <h5 class="agent-name">${agent.name}</h5>
+        <span class="agent-status ${agent.status === 'active' ? 'active' : 'inactive'}">${agent.status === 'active' ? 'Active' : 'Inactive'}</span>
+      </div>
+      <div class="agent-info">
+        <div>Type: ${agent.type || 'N/A'}</div>
+        <div>Personality: ${agent.personality || ''}</div>
+        <div>Model: ${(agent.model_preference || []).join(', ')}</div>
+      </div>
+      <div class="agent-actions">
+        <button class="btn btn-outline-primary" onclick="configureAgent('${agent.id}')"><i class="fas fa-cog"></i> Configure</button>
+        <button class="btn btn-outline-info" onclick="window.open('/agent/integrations/${agent.id}','_blank')"><i class="fas fa-plug"></i> Integrate</button>
+        <button class="btn btn-outline-secondary" onclick="window.open('vscode://file/${agent.id}','_blank')"><i class="fab fa-vscode"></i> VSCode</button>
+        <button class="btn btn-outline-dark" onclick="window.open('cursor://file/${agent.id}','_blank')"><i class="fas fa-code"></i> Cursor</button>
+        <button class="btn btn-${agent.status === 'active' ? 'danger' : 'success'}" onclick="toggleAgent('${agent.id}')">${agent.status === 'active' ? '<i class=\'fas fa-stop\'></i> Stop' : '<i class=\'fas fa-play\'></i> Start'}</button>
+      </div>
+    `;
+    return div;
+  }
+
+  // Update active agents list dynamically
+  function updateActiveAgentsList() {
+    const list = document.getElementById('activeAgentsList');
+    list.innerHTML = '';
+    Object.values(agentsByCategory).flat().filter(agent => agent.status === 'active').forEach(agent => {
+      const item = document.createElement('div');
+      item.className = 'active-agent-item';
+      item.innerHTML = `
+        <div class="active-agent-info">
+          <h6 class="active-agent-name">${agent.name}</h6>
+          <div class="active-agent-type">${agent.type || 'N/A'}</div>
+        </div>
+        <button class="btn btn-sm btn-outline-danger" onclick="toggleAgent('${agent.id}')">
+          <i class="fas fa-stop"></i>
+        </button>
+      `;
+      list.appendChild(item);
+    });
+    if (list.children.length === 0) {
+      list.innerHTML = '<div class="text-center text-muted py-3">No active agents</div>';
+    }
+  }
+
+  // Initialize performance chart
+  function initializePerformanceChart() {
+    const ctx = document
+      .getElementById("agentPerformanceChart")
+      .getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Response Time", "Accuracy", "User Rating"],
+        datasets: [
+          {
+            label: "Performance Metrics",
+            data: [85, 92, 88],
+            backgroundColor: [
+              "rgba(52, 152, 219, 0.5)",
+              "rgba(46, 204, 113, 0.5)",
+              "rgba(155, 89, 182, 0.5)",
+            ],
+            borderColor: [
+              "rgba(52, 152, 219, 1)",
+              "rgba(46, 204, 113, 1)",
+              "rgba(155, 89, 182, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+          },
+        },
+      },
+    });
+  }
+
+  // Configure agent
+  function configureAgent(agentId) {
+    const agent = Object.values(agentsByCategory)
+      .flat()
+      .find((a) => a.id === agentId);
+    if (!agent) return;
+
+    // Populate modal with agent configuration
+    document.getElementById("agentName").value = agent.name;
+    document.getElementById("bengaliSupport").checked = true;
+    document.getElementById("englishSupport").checked = true;
+
+    // Show modal
+    const modal = new bootstrap.Modal(
+      document.getElementById("agentConfigModal")
+    );
+    modal.show();
+  }
+
+  // Save agent configuration
+  function saveAgentConfig() {
+    // Implement configuration saving logic
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("agentConfigModal")
+    );
+    modal.hide();
+
+    addActivityLog("Agent configuration updated");
+  }
+
+  // Toggle agent status
+  function toggleAgent(agentId) {
+    const agent = Object.values(agentsByCategory)
+      .flat()
+      .find((a) => a.id === agentId);
+    if (!agent) return;
+
+    agent.status = agent.status === 'active' ? 'inactive' : 'active';
+    populateAgentTabsAndGrids(Object.fromEntries(Object.entries(agentsByCategory).map(([cat, agents]) => [cat, agents.map(a => a.id)]))); // Re-populate grids to update status
+    updateActiveAgentsList();
+
+    addActivityLog(
+      `Agent ${agent.name} ${agent.status === 'active' ? "activated" : "deactivated"}`
+    );
+  }
+
+  // Voice preview
+  function previewVoice(voiceId) {
+    // Implement voice preview logic
+    console.log(`Previewing voice: ${voiceId}`);
+  }
+
+  // Generate speech
+  function generateSpeech() {
+    const text = document.getElementById("ttsText").value;
+    if (!text) return;
+
+    // Implement speech generation logic
+    console.log(`Generating speech for: ${text}`);
+  }
+
+  // Download speech
+  function downloadSpeech() {
+    const text = document.getElementById("ttsText").value;
+    if (!text) return;
+
+    // Implement speech download logic
+    console.log(`Downloading speech for: ${text}`);
+  }
+
+  // Add activity log
+  function addActivityLog(message) {
+    const log = document.getElementById("agentActivityLog");
+    const item = document.createElement("div");
+    item.className = "activity-item";
+    item.innerHTML = `
+            <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+            <div class="activity-message">${message}</div>
+        `;
+
+    log.insertBefore(item, log.firstChild);
+
+    // Keep only last 10 items
+    while (log.children.length > 10) {
+      log.removeChild(log.lastChild);
+    }
+  }
+
+  // Start activity monitoring
+  function startActivityMonitoring() {
+    setInterval(() => {
+      // Simulate random activities
+      const activities = [
+        "Agent response generated",
+        "Voice model loaded",
+        "User query processed",
+        "Configuration updated",
+      ];
+
+      if (Math.random() > 0.7) {
+        addActivityLog(
+          activities[Math.floor(Math.random() * activities.length)]
+        );
+      }
+    }, 5000);
+  }
+
+  // Save all configurations
+  function saveAllConfigurations() {
+    // Implement saving all configurations
+    console.log("Saving all configurations...");
+    addActivityLog("All configurations saved");
+  }
+
+  // On page load, fetch agents
+  document.addEventListener('DOMContentLoaded', fetchAgents);
+</script>
+{% endblock %}

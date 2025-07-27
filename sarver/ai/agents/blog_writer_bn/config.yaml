@@ -1,0 +1,7 @@
+agent_name: blog_writer_bn
+primary_model: llama3
+allowed_providers:
+  - ollama
+  - openai
+  - together
+temperature: 0.7 

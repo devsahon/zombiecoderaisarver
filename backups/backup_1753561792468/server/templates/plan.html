@@ -1,0 +1,812 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Project Planning - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Project Planning{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Project Overview -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">Project Planning</h2>
+                    <p class="content-subtitle">Plan, track, and manage your development projects</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2" onclick="exportPlan()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="btn btn-primary" onclick="createNewProject()">
+                        <i class="fas fa-plus"></i> New Project
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Project Form -->
+            <div class="project-form mb-4" id="project-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="project-name" placeholder="Enter project name">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select" id="project-type">
+                                <option value="web-app">Web Application</option>
+                                <option value="mobile-app">Mobile App</option>
+                                <option value="api-service">API Service</option>
+                                <option value="desktop-app">Desktop Application</option>
+                                <option value="data-analysis">Data Analysis</option>
+                                <option value="ai-ml">AI/ML Project</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="start-date">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Target End Date</label>
+                            <input type="date" class="form-control" id="end-date">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Project Description</label>
+                    <textarea class="form-control" id="project-description" rows="3" placeholder="Describe your project goals and requirements..."></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Technologies & Stack</label>
+                    <input type="text" class="form-control" id="project-tech" placeholder="e.g., React, Node.js, Python, MongoDB">
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Management -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h3 class="content-title">Task Management</h3>
+            </div>
+            
+            <div class="task-management">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="task-column">
+                            <h5 class="task-column-header bg-primary text-white">To Do</h5>
+                            <div class="task-list" id="todo-list">
+                                <div class="task-item" draggable="true" data-status="todo">
+                                    <div class="task-header">
+                                        <h6>Project Setup</h6>
+                                        <span class="badge bg-secondary">High</span>
+                                    </div>
+                                    <p class="task-description">Initialize project structure and dependencies</p>
+                                    <div class="task-meta">
+                                        <small class="text-muted">Due: Today</small>
+                                        <small class="text-muted">Est: 2h</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="addTask('todo')">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="task-column">
+                            <h5 class="task-column-header bg-warning text-dark">In Progress</h5>
+                            <div class="task-list" id="progress-list">
+                                <div class="task-item" draggable="true" data-status="progress">
+                                    <div class="task-header">
+                                        <h6>Database Design</h6>
+                                        <span class="badge bg-warning">Medium</span>
+                                    </div>
+                                    <p class="task-description">Design database schema and relationships</p>
+                                    <div class="task-meta">
+                                        <small class="text-muted">Due: Tomorrow</small>
+                                        <small class="text-muted">Est: 4h</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-warning btn-sm w-100 mt-2" onclick="addTask('progress')">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="task-column">
+                            <h5 class="task-column-header bg-success text-white">Completed</h5>
+                            <div class="task-list" id="completed-list">
+                                <div class="task-item" draggable="true" data-status="completed">
+                                    <div class="task-header">
+                                        <h6>Requirements Analysis</h6>
+                                        <span class="badge bg-success">Done</span>
+                                    </div>
+                                    <p class="task-description">Gather and document project requirements</p>
+                                    <div class="task-meta">
+                                        <small class="text-muted">Completed: Yesterday</small>
+                                        <small class="text-muted">Time: 3h</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-success btn-sm w-100 mt-2" onclick="addTask('completed')">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Sidebar -->
+    <div class="col-lg-4">
+        <!-- Project Stats -->
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Project Statistics</h4>
+            </div>
+            
+            <div class="project-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-tasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completed-tasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="progress-percentage">0%</div>
+                    <div class="stat-label">Progress</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="days-remaining">0</div>
+                    <div class="stat-label">Days Left</div>
+                </div>
+            </div>
+            
+            <div class="progress mt-3">
+                <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Project Timeline</h4>
+            </div>
+            
+            <div class="timeline" id="project-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-primary"></div>
+                    <div class="timeline-content">
+                        <h6>Project Start</h6>
+                        <small class="text-muted">Today</small>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-warning"></div>
+                    <div class="timeline-content">
+                        <h6>Development Phase</h6>
+                        <small class="text-muted">Next Week</small>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-success"></div>
+                    <div class="timeline-content">
+                        <h6>Project Completion</h6>
+                        <small class="text-muted">End Date</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Members -->
+        <div class="content-card mt-4">
+            <div class="content-header">
+                <h4 class="content-title">Team Members</h4>
+            </div>
+            
+            <div class="team-members" id="team-members">
+                <div class="member-item">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h6>Project Manager</h6>
+                        <small class="text-muted">Lead</small>
+                    </div>
+                </div>
+                <div class="member-item">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h6>Developer</h6>
+                        <small class="text-muted">Full Stack</small>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="addTeamMember()">
+                <i class="fas fa-plus"></i> Add Member
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- AI Planning Assistant -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h3 class="content-title">AI Planning Assistant</h3>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label">Describe your project requirements</label>
+                        <textarea class="form-control" id="ai-input" rows="4" placeholder="Describe your project goals, features, and requirements..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="generatePlan()">
+                        <i class="fas fa-magic"></i> Generate Plan
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <div class="ai-suggestions">
+                        <h6>Quick Suggestions:</h6>
+                        <div class="suggestion-item" onclick="useSuggestion('web-app')">
+                            <i class="fas fa-globe"></i> Web Application
+                        </div>
+                        <div class="suggestion-item" onclick="useSuggestion('api-service')">
+                            <i class="fas fa-server"></i> API Service
+                        </div>
+                        <div class="suggestion-item" onclick="useSuggestion('mobile-app')">
+                            <i class="fas fa-mobile-alt"></i> Mobile App
+                        </div>
+                        <div class="suggestion-item" onclick="useSuggestion('ai-ml')">
+                            <i class="fas fa-brain"></i> AI/ML Project
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="ai-response" class="mt-3" style="display: none;">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-robot"></i> AI Generated Plan</h6>
+                    <div id="ai-plan-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .task-column {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .task-column-header {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .task-list {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    
+    .task-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 10px;
+        cursor: move;
+        transition: all 0.3s ease;
+    }
+    
+    .task-item:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transform: translateY(-1px);
+    }
+    
+    .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    
+    .task-header h6 {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .task-description {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+    
+    .task-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+    }
+    
+    .project-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e9ecef;
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -22px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+    
+    .timeline-content h6 {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .team-members {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .member-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .member-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+    }
+    
+    .member-info h6 {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .ai-suggestions {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+    }
+    
+    .suggestion-item {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    
+    .suggestion-item:hover {
+        background: var(--light-bg);
+    }
+    
+    .suggestion-item i {
+        margin-right: 8px;
+        color: var(--accent-color);
+    }
+    
+    .task-item.dragging {
+        opacity: 0.5;
+    }
+    
+    .task-list.drag-over {
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 6px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentProject = null;
+    let tasks = [];
+
+    // Create new project
+    function createNewProject() {
+        const projectData = {
+            name: document.getElementById('project-name').value,
+            type: document.getElementById('project-type').value,
+            startDate: document.getElementById('start-date').value,
+            endDate: document.getElementById('end-date').value,
+            description: document.getElementById('project-description').value,
+            technologies: document.getElementById('project-tech').value
+        };
+        
+        if (!projectData.name) {
+            alert('Please enter a project name.');
+            return;
+        }
+        
+        currentProject = projectData;
+        updateProjectStats();
+        updateTimeline();
+        
+        alert('Project created successfully!');
+    }
+
+    // Add task
+    function addTask(status) {
+        const taskName = prompt('Enter task name:');
+        if (!taskName) return;
+        
+        const task = {
+            id: Date.now(),
+            name: taskName,
+            description: prompt('Enter task description:') || '',
+            status: status,
+            priority: 'Medium',
+            dueDate: prompt('Enter due date (YYYY-MM-DD):') || '',
+            estimatedHours: prompt('Enter estimated hours:') || '2'
+        };
+        
+        tasks.push(task);
+        renderTask(task);
+        updateProjectStats();
+    }
+
+    // Render task
+    function renderTask(task) {
+        const listId = `${task.status}-list`;
+        const list = document.getElementById(listId);
+        
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task-item';
+        taskElement.draggable = true;
+        taskElement.dataset.taskId = task.id;
+        taskElement.dataset.status = task.status;
+        
+        taskElement.innerHTML = `
+            <div class="task-header">
+                <h6>${task.name}</h6>
+                <span class="badge bg-${getPriorityColor(task.priority)}">${task.priority}</span>
+            </div>
+            <p class="task-description">${task.description}</p>
+            <div class="task-meta">
+                <small class="text-muted">Due: ${task.dueDate || 'Not set'}</small>
+                <small class="text-muted">Est: ${task.estimatedHours}h</small>
+            </div>
+        `;
+        
+        list.appendChild(taskElement);
+    }
+
+    // Get priority color
+    function getPriorityColor(priority) {
+        switch (priority.toLowerCase()) {
+            case 'high': return 'danger';
+            case 'medium': return 'warning';
+            case 'low': return 'secondary';
+            default: return 'secondary';
+        }
+    }
+
+    // Update project stats
+    function updateProjectStats() {
+        const totalTasks = tasks.length;
+        const completedTasks = tasks.filter(t => t.status === 'completed').length;
+        const progressPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        
+        document.getElementById('total-tasks').textContent = totalTasks;
+        document.getElementById('completed-tasks').textContent = completedTasks;
+        document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+        
+        // Calculate days remaining
+        if (currentProject && currentProject.endDate) {
+            const endDate = new Date(currentProject.endDate);
+            const today = new Date();
+            const daysRemaining = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('days-remaining').textContent = daysRemaining > 0 ? daysRemaining : 0;
+        }
+    }
+
+    // Update timeline
+    function updateTimeline() {
+        if (!currentProject) return;
+        
+        const timeline = document.getElementById('project-timeline');
+        timeline.innerHTML = `
+            <div class="timeline-item">
+                <div class="timeline-marker bg-primary"></div>
+                <div class="timeline-content">
+                    <h6>Project Start</h6>
+                    <small class="text-muted">${currentProject.startDate}</small>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker bg-warning"></div>
+                <div class="timeline-content">
+                    <h6>Development Phase</h6>
+                    <small class="text-muted">Ongoing</small>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker bg-success"></div>
+                <div class="timeline-content">
+                    <h6>Project Completion</h6>
+                    <small class="text-muted">${currentProject.endDate}</small>
+                </div>
+            </div>
+        `;
+    }
+
+    // Add team member
+    function addTeamMember() {
+        const name = prompt('Enter member name:');
+        const role = prompt('Enter member role:');
+        
+        if (!name || !role) return;
+        
+        const memberElement = document.createElement('div');
+        memberElement.className = 'member-item';
+        memberElement.innerHTML = `
+            <div class="member-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="member-info">
+                <h6>${name}</h6>
+                <small class="text-muted">${role}</small>
+            </div>
+        `;
+        
+        document.getElementById('team-members').appendChild(memberElement);
+    }
+
+    // Generate plan with AI
+    function generatePlan() {
+        const input = document.getElementById('ai-input').value;
+        
+        if (!input.trim()) {
+            alert('Please describe your project requirements.');
+            return;
+        }
+        
+        // Show loading
+        document.getElementById('ai-response').style.display = 'block';
+        document.getElementById('ai-plan-content').innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin"></i>
+                <br>Generating plan...
+            </div>
+        `;
+        
+        // Send to AI API
+        fetch('/api/plan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                requirements: input,
+                project_type: document.getElementById('project-type').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('ai-plan-content').innerHTML = `
+                    <div class="mb-3">
+                        <strong>Recommended Tasks:</strong>
+                        <ul class="mt-2">
+                            ${data.tasks.map(task => `<li>${task}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Timeline:</strong>
+                        <p class="mt-2">${data.timeline}</p>
+                    </div>
+                    <div>
+                        <strong>Technologies:</strong>
+                        <p class="mt-2">${data.technologies}</p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('ai-plan-content').innerHTML = `
+                    <div class="text-danger">
+                        Error generating plan: ${data.error}
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            document.getElementById('ai-plan-content').innerHTML = `
+                <div class="text-danger">
+                    Connection error: ${error.message}
+                </div>
+            `;
+        });
+    }
+
+    // Use suggestion
+    function useSuggestion(type) {
+        const suggestions = {
+            'web-app': 'I want to build a modern web application with user authentication, database integration, and responsive design.',
+            'api-service': 'I need to create a RESTful API service for data management with authentication and documentation.',
+            'mobile-app': 'I want to develop a mobile application with cross-platform compatibility and offline functionality.',
+            'ai-ml': 'I want to build an AI/ML project with data processing, model training, and prediction capabilities.'
+        };
+        
+        document.getElementById('ai-input').value = suggestions[type] || '';
+        document.getElementById('project-type').value = type;
+    }
+
+    // Export plan
+    function exportPlan() {
+        if (!currentProject) {
+            alert('Please create a project first.');
+            return;
+        }
+        
+        const planData = {
+            project: currentProject,
+            tasks: tasks,
+            exportDate: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(planData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentProject.name}-plan.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // Drag and drop functionality
+    function initializeDragAndDrop() {
+        const taskLists = document.querySelectorAll('.task-list');
+        
+        taskLists.forEach(list => {
+            list.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                list.classList.add('drag-over');
+            });
+            
+            list.addEventListener('dragleave', () => {
+                list.classList.remove('drag-over');
+            });
+            
+            list.addEventListener('drop', (e) => {
+                e.preventDefault();
+                list.classList.remove('drag-over');
+                
+                const taskId = e.dataTransfer.getData('text/plain');
+                const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+                const newStatus = list.id.replace('-list', '');
+                
+                if (taskElement) {
+                    // Update task status
+                    const task = tasks.find(t => t.id == taskId);
+                    if (task) {
+                        task.status = newStatus;
+                        taskElement.dataset.status = newStatus;
+                    }
+                    
+                    // Move element
+                    list.appendChild(taskElement);
+                    updateProjectStats();
+                }
+            });
+        });
+        
+        // Make task items draggable
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('task-item')) {
+                e.target.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', e.target.dataset.taskId);
+            }
+        });
+        
+        document.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('task-item')) {
+                e.target.classList.remove('dragging');
+            }
+        });
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeDragAndDrop();
+        updateProjectStats();
+        
+        // Set default dates
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').value = today;
+        
+        const nextMonth = new Date();
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        document.getElementById('end-date').value = nextMonth.toISOString().split('T')[0];
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,521 @@
+{% extends "base_layout.html" %} {% block title %}VS Code Integration - Zombie
+Coder{% endblock %} {% block page_title %}VS Code Integration{% endblock %} {%
+block content %}
+<div class="row">
+  <!-- VS Code Integration Status -->
+  <div class="col-lg-8">
+    <div class="content-card fade-in">
+      <div class="content-header">
+        <div>
+          <h2 class="content-title">VS Code Integration Status</h2>
+          <p class="content-subtitle">
+            Monitor and manage VS Code Cursor integration
+          </p>
+        </div>
+        <div>
+          <button
+            class="btn btn-outline-secondary me-2"
+            onclick="refreshStatus()"
+          >
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+          <button class="btn btn-primary" onclick="configureIntegration()">
+            <i class="fas fa-cog"></i> Configure
+          </button>
+        </div>
+      </div>
+
+      <!-- Connection Status -->
+      <div class="status-panel mt-4">
+        <div class="status-item">
+          <div class="status-icon">
+            <i class="fas fa-plug"></i>
+          </div>
+          <div class="status-info">
+            <h4>Connection Status</h4>
+            <div class="status-value" id="connectionStatus">
+              <span class="badge bg-success">Connected</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <div class="status-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="status-info">
+            <h4>Active Sessions</h4>
+            <div class="status-value" id="activeSessions">0</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <div class="status-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="status-info">
+            <h4>Uptime</h4>
+            <div class="status-value" id="integrationUptime">0h 0m</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Projects -->
+      <div class="mt-4">
+        <h4>Active Projects</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Workspace</th>
+                <th>Language</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="activeProjects">
+              <!-- Projects will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage Analytics -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h3 class="content-title">Usage Analytics</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <canvas id="requestsChart"></canvas>
+        </div>
+        <div class="col-md-6">
+          <canvas id="languageChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <div class="col-lg-4">
+    <!-- Quick Actions -->
+    <div class="content-card fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Quick Actions</h4>
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" onclick="testConnection()">
+          <i class="fas fa-vial"></i> Test Connection
+        </button>
+        <button class="btn btn-info" onclick="syncSettings()">
+          <i class="fas fa-sync"></i> Sync Settings
+        </button>
+        <button class="btn btn-warning" onclick="clearCache()">
+          <i class="fas fa-broom"></i> Clear Cache
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Recent Activities</h4>
+      </div>
+      <div class="activity-log" id="vsCodeActivityLog">
+        <!-- Activities will be populated here -->
+      </div>
+    </div>
+
+    <!-- Agent Integration Status -->
+    <div class="content-card mt-4 fade-in">
+      <div class="content-header">
+        <h4 class="content-title">Agent Integration</h4>
+      </div>
+      <div class="agent-status-list" id="agentStatusList">
+        <!-- Agent status will be populated here -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+  .status-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .status-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .status-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .status-info {
+    flex: 1;
+  }
+
+  .status-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #6c757d;
+  }
+
+  .status-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 5px;
+  }
+
+  .activity-log {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .activity-item {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .activity-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .activity-message {
+    margin-top: 5px;
+  }
+
+  .agent-status-list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .agent-status-item {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .agent-status-info {
+    flex: 1;
+  }
+
+  .agent-status-name {
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .agent-status-type {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+</style>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let requestsChart, languageChart;
+  let wsConnection = null;
+
+  // Initialize page
+  function initializePage() {
+    initializeCharts();
+    updateActiveProjects();
+    updateAgentStatus();
+    startActivityMonitoring();
+    connectWebSocket();
+  }
+
+  // Initialize charts
+  function initializeCharts() {
+    // Requests Chart
+    const requestsCtx = document
+      .getElementById("requestsChart")
+      .getContext("2d");
+    requestsChart = new Chart(requestsCtx, {
+      type: "line",
+      data: {
+        labels: ["1m", "2m", "3m", "4m", "5m"],
+        datasets: [
+          {
+            label: "Requests per Minute",
+            data: [12, 19, 15, 17, 14],
+            borderColor: "#3498db",
+            tension: 0.4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Request Volume",
+          },
+        },
+      },
+    });
+
+    // Language Chart
+    const languageCtx = document
+      .getElementById("languageChart")
+      .getContext("2d");
+    languageChart = new Chart(languageCtx, {
+      type: "doughnut",
+      data: {
+        labels: ["Python", "JavaScript", "Java", "Other"],
+        datasets: [
+          {
+            data: [40, 30, 20, 10],
+            backgroundColor: ["#3498db", "#e74c3c", "#2ecc71", "#95a5a6"],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Language Distribution",
+          },
+        },
+      },
+    });
+  }
+
+  // Update active projects
+  function updateActiveProjects() {
+    const tbody = document.getElementById("activeProjects");
+    const projects = [
+      {
+        name: "Project A",
+        workspace: "/path/to/workspace",
+        language: "Python",
+        status: "Active",
+      },
+      {
+        name: "Project B",
+        workspace: "/path/to/other",
+        language: "JavaScript",
+        status: "Idle",
+      },
+    ];
+
+    tbody.innerHTML = projects
+      .map(
+        (project) => `
+            <tr>
+                <td>${project.name}</td>
+                <td>${project.workspace}</td>
+                <td>${project.language}</td>
+                <td>
+                    <span class="badge bg-${
+                      project.status === "Active" ? "success" : "secondary"
+                    }">
+                        ${project.status}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewProject('${
+                      project.name
+                    }')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            </tr>
+        `
+      )
+      .join("");
+  }
+
+  // Update agent status
+  function updateAgentStatus() {
+    const list = document.getElementById("agentStatusList");
+    const agents = [
+      { name: "Code Completion", type: "AI", status: "online" },
+      { name: "Language Support", type: "Service", status: "online" },
+      { name: "Bengali TTS", type: "Voice", status: "online" },
+    ];
+
+    list.innerHTML = agents
+      .map(
+        (agent) => `
+            <div class="agent-status-item">
+                <div class="agent-status-info">
+                    <h6 class="agent-status-name">${agent.name}</h6>
+                    <div class="agent-status-type">${agent.type}</div>
+                </div>
+                <span class="status-badge bg-${
+                  agent.status === "online" ? "success" : "danger"
+                }">
+                    ${agent.status}
+                </span>
+            </div>
+        `
+      )
+      .join("");
+  }
+
+  // Add activity log
+  function addActivityLog(message) {
+    const log = document.getElementById("vsCodeActivityLog");
+    const item = document.createElement("div");
+    item.className = "activity-item";
+    item.innerHTML = `
+            <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+            <div class="activity-message">${message}</div>
+        `;
+
+    log.insertBefore(item, log.firstChild);
+
+    // Keep only last 10 items
+    while (log.children.length > 10) {
+      log.removeChild(log.lastChild);
+    }
+  }
+
+  // Start activity monitoring
+  function startActivityMonitoring() {
+    setInterval(() => {
+      // Update active sessions
+      document.getElementById("activeSessions").textContent = Math.floor(
+        Math.random() * 5 + 1
+      );
+
+      // Update uptime
+      const uptime = document.getElementById("integrationUptime");
+      const [hours, minutes] = uptime.textContent.split("h ");
+      const newMinutes = (parseInt(minutes) + 1) % 60;
+      const newHours = parseInt(hours) + (newMinutes === 0 ? 1 : 0);
+      uptime.textContent = `${newHours}h ${newMinutes}m`;
+
+      // Random activities
+      if (Math.random() > 0.7) {
+        const activities = [
+          "New VS Code connection established",
+          "Code completion request processed",
+          "Language server synchronized",
+          "Bengali voice model loaded",
+        ];
+        addActivityLog(
+          activities[Math.floor(Math.random() * activities.length)]
+        );
+      }
+
+      // Update charts
+      updateCharts();
+    }, 5000);
+  }
+
+  // Update charts
+  function updateCharts() {
+    // Update requests chart
+    const data = requestsChart.data.datasets[0].data;
+    data.shift();
+    data.push(Math.floor(Math.random() * 10 + 10));
+    requestsChart.update();
+  }
+
+  // WebSocket connection
+  function connectWebSocket() {
+    wsConnection = new WebSocket("ws://localhost:5000/vscode");
+
+    wsConnection.onopen = () => {
+      document.getElementById("connectionStatus").innerHTML =
+        '<span class="badge bg-success">Connected</span>';
+      addActivityLog("WebSocket connection established");
+    };
+
+    wsConnection.onclose = () => {
+      document.getElementById("connectionStatus").innerHTML =
+        '<span class="badge bg-danger">Disconnected</span>';
+      addActivityLog("WebSocket connection closed");
+
+      // Attempt to reconnect after 5 seconds
+      setTimeout(connectWebSocket, 5000);
+    };
+
+    wsConnection.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      handleWebSocketMessage(data);
+    };
+  }
+
+  // Handle WebSocket messages
+  function handleWebSocketMessage(data) {
+    switch (data.type) {
+      case "project_update":
+        updateActiveProjects();
+        break;
+      case "agent_status":
+        updateAgentStatus();
+        break;
+      case "activity":
+        addActivityLog(data.message);
+        break;
+    }
+  }
+
+  // Quick action functions
+  function testConnection() {
+    addActivityLog("Testing VS Code connection...");
+    // Implement connection test
+  }
+
+  function syncSettings() {
+    addActivityLog("Syncing VS Code settings...");
+    // Implement settings sync
+  }
+
+  function clearCache() {
+    addActivityLog("Clearing VS Code cache...");
+    // Implement cache clearing
+  }
+
+  function configureIntegration() {
+    // Implement integration configuration
+    console.log("Configuring integration...");
+  }
+
+  function viewProject(projectName) {
+    // Implement project view
+    console.log(`Viewing project: ${projectName}`);
+  }
+
+  function refreshStatus() {
+    updateActiveProjects();
+    updateAgentStatus();
+    addActivityLog("Status refreshed");
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initializePage);
+</script>
+{% endblock %}

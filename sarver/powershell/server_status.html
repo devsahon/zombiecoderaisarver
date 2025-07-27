@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZombieCoder Server Status</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #18181b; color: #f1f5f9; }
+    h1 { color: #38bdf8; }
+    .status { margin: 1em 0; padding: 1em; border-radius: 8px; background: #27272a; }
+    .ok { color: #22c55e; }
+    .fail { color: #ef4444; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #38bdf8; border-radius: 50%; border-top: 2px solid transparent; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <h1>ZombieCoder Server Status</h1>
+  <div class="status" id="py-backend">Python Backend: <span class="spinner"></span></div>
+  <div class="status" id="ollama">Ollama Server: <span class="spinner"></span></div>
+  <div class="status" id="laravel">Laravel API: <span class="spinner"></span></div>
+  <script>
+    async function check(url, el, okMsg, failMsg) {
+      try {
+        const res = await fetch(url, {cache: 'no-store'});
+        if (res.ok) {
+          el.innerHTML = okMsg;
+          el.className = 'status ok';
+        } else {
+          el.innerHTML = failMsg + ' (HTTP ' + res.status + ')';
+          el.className = 'status fail';
+        }
+      } catch {
+        el.innerHTML = failMsg;
+        el.className = 'status fail';
+      }
+    }
+    function updateAll() {
+      check('http://localhost:8000/status', document.getElementById('py-backend'), 'Python Backend: <b>Running</b>', 'Python Backend: <b>Not Running</b>');
+      check('http://localhost:11434', document.getElementById('ollama'), 'Ollama Server: <b>Running</b>', 'Ollama Server: <b>Not Running</b>');
+      check('http://localhost:8001', document.getElementById('laravel'), 'Laravel API: <b>Running</b>', 'Laravel API: <b>Not Running</b>');
+    }
+    updateAll();
+    setInterval(updateAll, 5000);
+  </script>
+</body>
+</html> 

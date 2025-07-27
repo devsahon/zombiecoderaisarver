@@ -1,0 +1,616 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Admin Panel - Zombie Coder Developer Zone{% endblock %}
+
+{% block page_title %}Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Server Status Overview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-server me-2"></i>
+                        Server Status Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="server-status-grid">
+                        <!-- Server status cards will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>
+                        Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-primary w-100" onclick="startAllServers()">
+                                <i class="fas fa-play me-2"></i>Start All Servers
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-danger w-100" onclick="stopAllServers()">
+                                <i class="fas fa-stop me-2"></i>Stop All Servers
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-warning w-100" onclick="restartAllServers()">
+                                <i class="fas fa-redo me-2"></i>Restart All
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-info w-100" onclick="refreshStatus()">
+                                <i class="fas fa-sync me-2"></i>Refresh Status
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>
+                        System Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="system-info">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs me-2"></i>
+                        Model Status
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="model-status">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Controls -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tools me-2"></i>
+                        Advanced Controls
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-primary">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Cache Management</h6>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="clearCache()">
+                                        Clear Cache
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewCacheStats()">
+                                        View Stats
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Token Management</h6>
+                                    <button class="btn btn-sm btn-outline-success" onclick="viewTokenUsage()">
+                                        View Usage
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning" onclick="manageTokens()">
+                                        Manage Tokens
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Agent Setup</h6>
+                                    <button class="btn btn-sm btn-outline-warning" onclick="setupAgent()">
+                                        Setup Agent
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewAgentStatus()">
+                                        Agent Status
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs and Monitoring -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list-alt me-2"></i>
+                        System Logs & Monitoring
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Recent Logs</h6>
+                            <div id="recent-logs" style="max-height: 300px; overflow-y: auto;">
+                                <div class="text-muted">Loading logs...</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>API Endpoints</h6>
+                            <div id="api-endpoints" style="max-height: 300px; overflow-y: auto;">
+                                <div class="text-muted">Loading endpoints...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="tokenModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Token Management</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="tokenModalBody">
+                <!-- Token management content -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cacheModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cache Statistics</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="cacheModalBody">
+                <!-- Cache stats content -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Server configuration
+const servers = [
+    { name: 'Model Server', port: 5000, url: 'http://localhost:5000' },
+    { name: 'Main Server', port: 5001, url: 'http://localhost:5001' },
+    { name: 'Client API', port: 5002, url: 'http://localhost:5002' },
+    { name: 'Audio API', port: 5003, url: 'http://localhost:5003' },
+    { name: 'MCP Server', port: 5004, url: 'http://localhost:5004' }
+];
+
+// Initialize admin panel
+document.addEventListener('DOMContentLoaded', function() {
+    refreshStatus();
+    loadSystemInfo();
+    loadModelStatus();
+    loadLogs();
+    loadEndpoints();
+    
+    // Auto-refresh every 30 seconds
+    setInterval(refreshStatus, 30000);
+});
+
+// Refresh server status
+async function refreshStatus() {
+    const statusGrid = document.getElementById('server-status-grid');
+    statusGrid.innerHTML = '';
+    
+    for (const server of servers) {
+        const statusCard = await checkServerStatus(server);
+        statusGrid.appendChild(statusCard);
+    }
+}
+
+// Check individual server status
+async function checkServerStatus(server) {
+    const card = document.createElement('div');
+    card.className = 'col-md-4 col-lg-2 mb-3';
+    
+    try {
+        const response = await fetch(`${server.url}/api/status`, { 
+            method: 'GET',
+            timeout: 5000 
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            card.innerHTML = `
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">${server.name}</h6>
+                        <div class="badge bg-success">Running</div>
+                        <small class="d-block text-muted mt-1">Port ${server.port}</small>
+                    </div>
+                </div>
+            `;
+        } else {
+            throw new Error('Server not responding');
+        }
+    } catch (error) {
+        card.innerHTML = `
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <h6 class="card-title">${server.name}</h6>
+                    <div class="badge bg-danger">Stopped</div>
+                    <small class="d-block text-muted mt-1">Port ${server.port}</small>
+                </div>
+            </div>
+        `;
+    }
+    
+    return card;
+}
+
+// Load system information
+async function loadSystemInfo() {
+    try {
+        const response = await fetch('/api/admin/system-info');
+        const data = await response.json();
+        
+        document.getElementById('system-info').innerHTML = `
+            <div class="row">
+                <div class="col-6">
+                    <strong>Uptime:</strong><br>
+                    <span class="text-muted">${data.uptime}</span>
+                </div>
+                <div class="col-6">
+                    <strong>CPU Usage:</strong><br>
+                    <span class="text-muted">${data.cpu_usage}%</span>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <strong>Memory Usage:</strong><br>
+                    <span class="text-muted">${data.memory_usage}%</span>
+                </div>
+                <div class="col-6">
+                    <strong>Models Loaded:</strong><br>
+                    <span class="text-muted">${data.model_count}</span>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        document.getElementById('system-info').innerHTML = '<div class="text-danger">Error loading system info</div>';
+    }
+}
+
+// Load model status
+async function loadModelStatus() {
+    try {
+        const response = await fetch('/api/admin/models');
+        const data = await response.json();
+        
+        let modelHtml = '';
+        data.forEach(model => {
+            const statusClass = model.is_loaded ? 'success' : 'danger';
+            const statusText = model.is_loaded ? 'Loaded' : 'Not Loaded';
+            
+            modelHtml += `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>${model.name}</span>
+                    <span class="badge bg-${statusClass}">${statusText}</span>
+                </div>
+            `;
+        });
+        
+        document.getElementById('model-status').innerHTML = modelHtml;
+    } catch (error) {
+        document.getElementById('model-status').innerHTML = '<div class="text-danger">Error loading model status</div>';
+    }
+}
+
+// Server control functions
+async function startAllServers() {
+    if (confirm('Start all servers?')) {
+        // Implementation for starting servers
+        alert('Server start command sent');
+        setTimeout(refreshStatus, 2000);
+    }
+}
+
+async function stopAllServers() {
+    if (confirm('Stop all servers?')) {
+        // Implementation for stopping servers
+        alert('Server stop command sent');
+        setTimeout(refreshStatus, 2000);
+    }
+}
+
+async function restartAllServers() {
+    if (confirm('Restart all servers?')) {
+        // Implementation for restarting servers
+        alert('Server restart command sent');
+        setTimeout(refreshStatus, 3000);
+    }
+}
+
+// Cache management
+async function clearCache() {
+    if (confirm('Clear all cache?')) {
+        try {
+            const response = await fetch('/api/admin/cache-clear', { method: 'POST' });
+            const data = await response.json();
+            alert(data.message || 'Cache cleared successfully');
+        } catch (error) {
+            alert('Error clearing cache');
+        }
+    }
+}
+
+async function viewCacheStats() {
+    try {
+        const response = await fetch('/api/admin/cache-stats');
+        const data = await response.json();
+        
+        document.getElementById('cacheModalBody').innerHTML = `
+            <div class="row">
+                <div class="col-6">
+                    <strong>Total Cached:</strong> ${data.total_cached_responses}<br>
+                    <strong>Cache Hits:</strong> ${data.cache_hits}<br>
+                    <strong>Cache Misses:</strong> ${data.cache_misses}
+                </div>
+                <div class="col-6">
+                    <strong>Hit Ratio:</strong> ${(data.cache_hit_ratio * 100).toFixed(2)}%<br>
+                    <strong>Cache Size:</strong> ${data.cache_size || 'N/A'}
+                </div>
+            </div>
+        `;
+        
+        new bootstrap.Modal(document.getElementById('cacheModal')).show();
+    } catch (error) {
+        alert('Error loading cache stats');
+    }
+}
+
+// Token management
+async function viewTokenUsage() {
+    try {
+        const response = await fetch('/api/admin/token-usage');
+        const data = await response.json();
+        
+        let usageHtml = '<div class="table-responsive"><table class="table table-sm">';
+        usageHtml += '<thead><tr><th>Model</th><th>Input Tokens</th><th>Output Tokens</th><th>Total</th></tr></thead><tbody>';
+        
+        Object.entries(data.usage_by_model).forEach(([model, usage]) => {
+            usageHtml += `
+                <tr>
+                    <td>${model}</td>
+                    <td>${usage.input_tokens}</td>
+                    <td>${usage.output_tokens}</td>
+                    <td>${usage.input_tokens + usage.output_tokens}</td>
+                </tr>
+            `;
+        });
+        
+        usageHtml += '</tbody></table></div>';
+        
+        document.getElementById('tokenModalBody').innerHTML = usageHtml;
+        new bootstrap.Modal(document.getElementById('tokenModal')).show();
+    } catch (error) {
+        alert('Error loading token usage');
+    }
+}
+
+async function manageTokens() {
+    try {
+        const response = await fetch('/api/admin/tokens');
+        const data = await response.json();
+        
+        let tokenHtml = '<div class="mb-3"><button class="btn btn-primary btn-sm" onclick="addNewToken()">Add Token</button></div>';
+        tokenHtml += '<div class="table-responsive"><table class="table table-sm">';
+        tokenHtml += '<thead><tr><th>#</th><th>Token</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+        
+        data.tokens.forEach((token, index) => {
+            const isActive = index === data.active_index;
+            tokenHtml += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${token.substring(0, 10)}...</td>
+                    <td><span class="badge bg-${isActive ? 'success' : 'secondary'}">${isActive ? 'Active' : 'Inactive'}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-${isActive ? 'secondary' : 'success'}" onclick="activateToken(${index})" ${isActive ? 'disabled' : ''}>
+                            ${isActive ? 'Active' : 'Activate'}
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="removeToken(${index})">Remove</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        tokenHtml += '</tbody></table></div>';
+        
+        document.getElementById('tokenModalBody').innerHTML = tokenHtml;
+        new bootstrap.Modal(document.getElementById('tokenModal')).show();
+    } catch (error) {
+        alert('Error loading tokens');
+    }
+}
+
+// Agent management
+async function setupAgent() {
+    try {
+        const response = await fetch('/api/v1/agent-setup', { method: 'POST' });
+        const data = await response.json();
+        alert(data.message || 'Agent setup completed');
+    } catch (error) {
+        alert('Error setting up agent');
+    }
+}
+
+async function viewAgentStatus() {
+    try {
+        const response = await fetch('/api/admin/agent-status');
+        const data = await response.json();
+        
+        let statusHtml = `
+            <div class="row">
+                <div class="col-6">
+                    <strong>Agent Status:</strong> <span class="badge bg-${data.status === 'active' ? 'success' : 'danger'}">${data.status}</span><br>
+                    <strong>Last Activity:</strong> ${data.last_activity || 'N/A'}<br>
+                    <strong>Features:</strong> ${data.features?.join(', ') || 'None'}
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-sm btn-primary" onclick="toggleFeature('chat')">Toggle Chat</button><br>
+                    <button class="btn btn-sm btn-success" onclick="toggleFeature('code')">Toggle Code</button><br>
+                    <button class="btn btn-sm btn-warning" onclick="toggleFeature('prompt')">Toggle Prompt</button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('tokenModalBody').innerHTML = statusHtml;
+        new bootstrap.Modal(document.getElementById('tokenModal')).show();
+    } catch (error) {
+        alert('Error loading agent status');
+    }
+}
+
+// Load logs and endpoints
+async function loadLogs() {
+    try {
+        const response = await fetch('/api/admin/logs');
+        const data = await response.json();
+        
+        let logsHtml = '';
+        data.logs.slice(0, 10).forEach(log => {
+            logsHtml += `<div class="small text-muted">${log}</div>`;
+        });
+        
+        document.getElementById('recent-logs').innerHTML = logsHtml;
+    } catch (error) {
+        document.getElementById('recent-logs').innerHTML = '<div class="text-danger">Error loading logs</div>';
+    }
+}
+
+async function loadEndpoints() {
+    try {
+        const response = await fetch('/api/admin/endpoints');
+        const data = await response.json();
+        
+        let endpointsHtml = '';
+        data.endpoints.forEach(endpoint => {
+            endpointsHtml += `
+                <div class="small">
+                    <strong>${endpoint.method}</strong> ${endpoint.path}<br>
+                    <span class="text-muted">${endpoint.description}</span>
+                </div>
+            `;
+        });
+        
+        document.getElementById('api-endpoints').innerHTML = endpointsHtml;
+    } catch (error) {
+        document.getElementById('api-endpoints').innerHTML = '<div class="text-danger">Error loading endpoints</div>';
+    }
+}
+
+// Utility functions
+async function toggleFeature(feature) {
+    try {
+        const response = await fetch('/api/admin/toggle-feature', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ feature })
+        });
+        const data = await response.json();
+        alert(data.message || 'Feature toggled');
+    } catch (error) {
+        alert('Error toggling feature');
+    }
+}
+
+async function addNewToken() {
+    const token = prompt('Enter new token:');
+    if (token) {
+        try {
+            const response = await fetch('/api/admin/tokens', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            });
+            const data = await response.json();
+            alert(data.message || 'Token added');
+            manageTokens(); // Refresh the modal
+        } catch (error) {
+            alert('Error adding token');
+        }
+    }
+}
+
+async function activateToken(index) {
+    try {
+        const response = await fetch(`/api/admin/tokens/activate/${index}`, { method: 'PUT' });
+        const data = await response.json();
+        alert(data.message || 'Token activated');
+        manageTokens(); // Refresh the modal
+    } catch (error) {
+        alert('Error activating token');
+    }
+}
+
+async function removeToken(index) {
+    if (confirm('Remove this token?')) {
+        try {
+            const response = await fetch(`/api/admin/tokens/${index}`, { method: 'DELETE' });
+            const data = await response.json();
+            alert(data.message || 'Token removed');
+            manageTokens(); // Refresh the modal
+        } catch (error) {
+            alert('Error removing token');
+        }
+    }
+}
+</script>
+{% endblock %} 

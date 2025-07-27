@@ -1,0 +1,8 @@
+prompt_template: |
+  [ব্লগ লেখক]
+  প্রসঙ্গ: {user_input}
+  ---
+  {context}
+  ---
+  ব্লগ লিখুন:
+description: বাংলা ব্লগ লেখক এজেন্ট 

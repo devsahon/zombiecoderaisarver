@@ -1,0 +1,199 @@
+{% extends "base_layout.html" %}
+
+{% block page_title %}Agent Memory Dashboard{% endblock %}
+
+{% block content %}
+<div class="content-card fade-in">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title">Agent Memory Dashboard</h2>
+            <p class="content-subtitle">View and manage agent memory, Q&A history, and performance stats</p>
+        </div>
+        <div class="content-actions">
+            <button class="btn btn-primary" onclick="exportAllMemory()">
+                <i class="fas fa-download"></i> Export All Memory
+            </button>
+        </div>
+    </div>
+
+    <!-- Memory Stats Overview -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3>Total Agents</h3>
+                <div class="stat-value" id="total-agents">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3>Total Q&A Pairs</h3>
+                <div class="stat-value" id="total-qa">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3>Active Agents</h3>
+                <div class="stat-value" id="active-agents">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3>Memory Usage</h3>
+                <div class="stat-value" id="memory-usage">0 KB</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Memory List -->
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Memory Count</th>
+                    <th>Last Updated</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="agent-memory-list">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Memory Details Modal -->
+    <div class="modal fade" id="memoryDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Memory Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="memory-details-content">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-top: 10px;
+    }
+
+    .memory-details-content {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+<script>
+    // Fetch and display agent memory stats
+    function fetchMemoryStats() {
+        fetch('/api/agents/memory/stats')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('total-agents').textContent = data.total_agents;
+                document.getElementById('total-qa').textContent = data.total_qa;
+                document.getElementById('active-agents').textContent = data.active_agents;
+                document.getElementById('memory-usage').textContent = data.memory_usage;
+            });
+    }
+
+    // Fetch and display agent memory list
+    function fetchAgentMemoryList() {
+        fetch('/api/agents/memory')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('agent-memory-list');
+                tbody.innerHTML = '';
+
+                data.agents.forEach(agent => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td>${agent.name}</td>
+                    <td>${agent.memory_count}</td>
+                    <td>${new Date(agent.last_updated).toLocaleString()}</td>
+                    <td><span class="badge bg-${agent.status === 'active' ? 'success' : 'danger'}">${agent.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewMemoryDetails('${agent.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="exportMemory('${agent.id}')">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </td>
+                `;
+                    tbody.appendChild(tr);
+                });
+            });
+    }
+
+    // View memory details for an agent
+    function viewMemoryDetails(agentId) {
+        fetch(`/api/agents/memory/${agentId}`)
+            .then(res => res.json())
+            .then(data => {
+                const content = document.querySelector('.memory-details-content');
+                content.innerHTML = `
+                <h4>${data.agent_name}</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Input</th>
+                                <th>Response</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.memories.map(m => `
+                                <tr>
+                                    <td>${m.input}</td>
+                                    <td>${m.response}</td>
+                                    <td>${new Date(m.timestamp).toLocaleString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+                new bootstrap.Modal(document.getElementById('memoryDetailsModal')).show();
+            });
+    }
+
+    // Export memory for an agent
+    function exportMemory(agentId) {
+        window.location.href = `/api/agents/memory/${agentId}/export`;
+    }
+
+    // Export all memory
+    function exportAllMemory() {
+        window.location.href = '/api/agents/memory/export-all';
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchMemoryStats();
+        fetchAgentMemoryList();
+        // Refresh every 30 seconds
+        setInterval(fetchMemoryStats, 30000);
+        setInterval(fetchAgentMemoryList, 30000);
+    });
+</script>
+{% endblock %}

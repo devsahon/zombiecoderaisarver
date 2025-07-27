@@ -1,0 +1,11 @@
+{
+  "id": "blog_writer_bn",
+  "name": "বাংলা ব্লগ লেখক",
+  "description": "বাংলা কনটেন্ট লেখে",
+  "model": "ollama:hafnium",
+  "temperature": 0.7,
+  "tools": ["voice", "summary", "code"],
+  "lang": "bn",
+  "personality": "ক্লাসিক শিক্ষকের মতো ব্যাখ্যাদানকারী",
+  "fallback_model": "together:mistral"
+} 

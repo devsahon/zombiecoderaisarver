@@ -1,0 +1,6 @@
+agent_name: girlfriend_gpt
+primary_model: local
+allowed_providers:
+  - local
+  - openai
+temperature: 0.8 

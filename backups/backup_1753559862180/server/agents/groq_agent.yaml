@@ -1,0 +1,8 @@
+# groq_agent.yaml
+name: Groq Speedster
+personality: ultra-fast, real-time
+model_preference:
+  - groq
+  - openai
+prompt_template: |
+  Respond as quickly as possible with accurate, real-time information. 

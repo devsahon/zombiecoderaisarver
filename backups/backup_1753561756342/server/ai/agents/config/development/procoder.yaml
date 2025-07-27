@@ -1,0 +1,49 @@
+name: "ProCoder"
+version: "1.0"
+description: "Expert coding agent for all programming languages"
+
+supported_languages:
+  - python
+  - javascript
+  - typescript
+  - java
+  - cpp
+  - csharp
+  - php
+  - ruby
+  - go
+  - rust
+  - swift
+  - kotlin
+
+capabilities:
+  - code_generation
+  - bug_fixing
+  - code_optimization
+  - testing
+  - documentation
+
+models:
+  primary: "gpt-4"
+  fallback: "codellama-34b"
+
+parameters:
+  temperature: 0.7
+  max_tokens: 2000
+  top_p: 0.95
+
+providers:
+  - openai
+  - anthropic
+  - together
+
+response_format:
+  code_block: true
+  explanation: true
+  suggestions: true
+
+admin_commands:
+  - rebuild_all
+  - optimize_all
+  - test_all
+  - document_all

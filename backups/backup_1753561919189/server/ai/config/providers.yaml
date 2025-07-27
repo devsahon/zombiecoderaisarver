@@ -1,0 +1,39 @@
+# Main provider configuration hub for MCP dispatcher
+
+default_provider: openai
+fallback_priority:
+  - openai
+  - together
+  - ollama
+  - lmstudio
+
+providers:
+  openai:
+    type: api
+    base_url: https://api.openai.com/v1
+    model: gpt-3.5-turbo
+    api_key: ${OPENAI_API_KEY}
+    temperature: 0.7
+    enabled: true
+
+  together:
+    type: api
+    base_url: https://api.together.xyz/v1
+    model: mistralai/Mixtral-8x7B-Instruct-v0.1
+    api_key: ${TOGETHER_API_KEY}
+    temperature: 0.65
+    enabled: true
+
+  ollama:
+    type: local
+    base_url: http://localhost:11434
+    model: llama3
+    temperature: 0.7
+    enabled: true
+
+  lmstudio:
+    type: local
+    base_url: http://localhost:1234
+    model: phi3
+    temperature: 0.6
+    enabled: true 

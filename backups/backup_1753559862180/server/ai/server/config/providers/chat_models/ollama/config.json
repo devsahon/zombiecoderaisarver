@@ -1,0 +1,5 @@
+{
+  "provider": "ollama",
+  "api": "http://localhost:11434/api/generate",
+  "type": "chat"
+} 

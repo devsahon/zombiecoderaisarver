@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><meta charset="UTF-8"><title>ZombieCoder: Android Studio ইন্টিগ্রেশন</title></head>
+<body style="font-family:Segoe UI,Arial,sans-serif;background:#f7f9fa;color:#222;padding:2em;max-width:900px;margin:auto;">
+<h1>ZombieCoder: Android Studio ইন্টিগ্রেশন</h1>
+<ol>
+  <li>ZombieCoder server চালু করুন (local বা cloud)</li>
+  <li>Android Studio-তে custom Gradle task যোগ করুন:<br>
+  <code>task connectToMCP(type: Exec) {
+    commandLine 'curl', '-X', 'POST', 'http://localhost:8000/instruct', '-d', 'query=build me a login activity'
+  }</code></li>
+  <li>কমান্ড চালান: <code>./gradlew connectToMCP</code></li>
+  <li>Response পাবেন: AI-generated code, doc, বা suggestion</li>
+  <li>API key থাকলে header-এ দিন</li>
+</ol>
+<p>এভাবে Android Studio থেকে সরাসরি ZombieCoder-এর AI এজেন্ট, কোড, ডক, fallback—all ব্যবহার করতে পারবেন।</p>
+</body></html> 

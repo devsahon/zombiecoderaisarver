@@ -1,0 +1,19 @@
+[
+  {
+    "backupId": "backup_1753561677259",
+    "type": "local",
+    "status": "failed",
+    "details": "Manual backup failed",
+    "fileSize": null,
+    "error": "path.join is not a function",
+    "timestamp": "2025-07-26T20:27:57.260Z"
+  },
+  {
+    "backupId": "backup_1753561792468",
+    "type": "local",
+    "status": "completed",
+    "details": "Manual backup completed successfully",
+    "fileSize": 242179520,
+    "timestamp": "2025-07-26T20:29:57.699Z"
+  }
+]

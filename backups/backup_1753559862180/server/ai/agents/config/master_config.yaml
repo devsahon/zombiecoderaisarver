@@ -1,0 +1,57 @@
+admin_prefix: "@him"
+default_language: "en"
+admin_roles:
+  - zombiecoder
+  - admin
+  - superuser
+
+agent_categories:
+  development:
+    - procoder
+    - debugmaster
+    - algowizard
+    - apibuilder
+    - devops
+
+  creative:
+    - imagetohtml
+    - uidesigner
+    - videoscript
+    - voicetts
+    - storyteller
+
+  relationship:
+    - girlfriend_gpt
+    - friendcoder
+    - motivator
+
+  business:
+    - projectmanager
+    - financeanalyzer
+    - seoagent
+    - socialmedia
+
+  data_ai:
+    - datascientist
+    - datacleaner
+    - vision
+    - knowledgebot
+
+  security:
+    - serverguard
+    - loganalyzer
+    - pentest
+
+  language:
+    - bengali_translator
+    - multilang
+
+  hybrid:
+    - codegirlfriend
+    - teacher
+    - zombiecoder_ai
+
+fallback_chain:
+  max_retries: 3
+  timeout_seconds: 30
+  retry_delay: 5

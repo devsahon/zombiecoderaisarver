@@ -1,0 +1,583 @@
+{% extends "base_layout.html" %}
+
+{% block title %}Server Control - Zombie Coder{% endblock %}
+
+{% block page_title %}Server Control Panel{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Server Control Panel -->
+    <div class="col-lg-8">
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title">Server Control Panel</h2>
+                    <p class="content-subtitle">Manage and monitor individual server instances</p>
+                </div>
+            </div>
+
+            <div class="server-control-grid mt-4">
+                <!-- Model Server Control -->
+                <div class="server-control-card" id="model-server-control">
+                    <div class="server-control-header">
+                        <h4>Model Server</h4>
+                        <div class="server-status" id="model-server-status">Checking...</div>
+                    </div>
+                    <div class="server-control-body">
+                        <div class="server-info">
+                            <div class="info-item">
+                                <span class="info-label">Port:</span>
+                                <span class="info-value">5000</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Process ID:</span>
+                                <span class="info-value" id="model-server-pid">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Uptime:</span>
+                                <span class="info-value" id="model-server-uptime">--</span>
+                            </div>
+                        </div>
+                        <div class="server-controls">
+                            <button class="btn btn-success" onclick="controlServer('model-server', 'start')">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger" onclick="controlServer('model-server', 'stop')">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="btn btn-warning" onclick="controlServer('model-server', 'restart')">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Server Control -->
+                <div class="server-control-card" id="main-server-control">
+                    <div class="server-control-header">
+                        <h4>Main Server</h4>
+                        <div class="server-status" id="main-server-status">Checking...</div>
+                    </div>
+                    <div class="server-control-body">
+                        <div class="server-info">
+                            <div class="info-item">
+                                <span class="info-label">Port:</span>
+                                <span class="info-value">5001</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Process ID:</span>
+                                <span class="info-value" id="main-server-pid">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Uptime:</span>
+                                <span class="info-value" id="main-server-uptime">--</span>
+                            </div>
+                        </div>
+                        <div class="server-controls">
+                            <button class="btn btn-success" onclick="controlServer('main-server', 'start')">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger" onclick="controlServer('main-server', 'stop')">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="btn btn-warning" onclick="controlServer('main-server', 'restart')">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client API Control -->
+                <div class="server-control-card" id="client-api-control">
+                    <div class="server-control-header">
+                        <h4>Client API</h4>
+                        <div class="server-status" id="client-api-status">Checking...</div>
+                    </div>
+                    <div class="server-control-body">
+                        <div class="server-info">
+                            <div class="info-item">
+                                <span class="info-label">Port:</span>
+                                <span class="info-value">5002</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Process ID:</span>
+                                <span class="info-value" id="client-api-pid">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Uptime:</span>
+                                <span class="info-value" id="client-api-uptime">--</span>
+                            </div>
+                        </div>
+                        <div class="server-controls">
+                            <button class="btn btn-success" onclick="controlServer('client-api', 'start')">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger" onclick="controlServer('client-api', 'stop')">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="btn btn-warning" onclick="controlServer('client-api', 'restart')">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio API Control -->
+                <div class="server-control-card" id="audio-api-control">
+                    <div class="server-control-header">
+                        <h4>Audio API</h4>
+                        <div class="server-status" id="audio-api-status">Checking...</div>
+                    </div>
+                    <div class="server-control-body">
+                        <div class="server-info">
+                            <div class="info-item">
+                                <span class="info-label">Port:</span>
+                                <span class="info-value">5003</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Process ID:</span>
+                                <span class="info-value" id="audio-api-pid">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Uptime:</span>
+                                <span class="info-value" id="audio-api-uptime">--</span>
+                            </div>
+                        </div>
+                        <div class="server-controls">
+                            <button class="btn btn-success" onclick="controlServer('audio-api', 'start')">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger" onclick="controlServer('audio-api', 'stop')">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="btn btn-warning" onclick="controlServer('audio-api', 'restart')">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MCP Server Control -->
+                <div class="server-control-card" id="mcp-server-control">
+                    <div class="server-control-header">
+                        <h4>MCP Server</h4>
+                        <div class="server-status" id="mcp-server-status">Checking...</div>
+                    </div>
+                    <div class="server-control-body">
+                        <div class="server-info">
+                            <div class="info-item">
+                                <span class="info-label">Port:</span>
+                                <span class="info-value">11435</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Process ID:</span>
+                                <span class="info-value" id="mcp-server-pid">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Uptime:</span>
+                                <span class="info-value" id="mcp-server-uptime">--</span>
+                            </div>
+                        </div>
+                        <div class="server-controls">
+                            <button class="btn btn-success" onclick="controlServer('mcp-server', 'start')">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger" onclick="controlServer('mcp-server', 'stop')">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="btn btn-warning" onclick="controlServer('mcp-server', 'restart')">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="col-lg-4">
+        <!-- Server Logs -->
+        <div class="content-card fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Server Logs</h4>
+                <select class="form-select form-select-sm w-auto" id="log-server-select" onchange="filterLogs()">
+                    <option value="all">All Servers</option>
+                    <option value="model-server">Model Server</option>
+                    <option value="main-server">Main Server</option>
+                    <option value="client-api">Client API</option>
+                    <option value="audio-api">Audio API</option>
+                    <option value="mcp-server">MCP Server</option>
+                </select>
+            </div>
+            <div class="server-logs" id="server-logs">
+                <!-- Logs will be populated here -->
+            </div>
+        </div>
+
+        <!-- Server Metrics -->
+        <div class="content-card mt-4 fade-in">
+            <div class="content-header">
+                <h4 class="content-title">Server Metrics</h4>
+            </div>
+            <div class="server-metrics">
+                <canvas id="cpu-usage-chart"></canvas>
+                <canvas id="memory-usage-chart" class="mt-4"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .server-control-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .server-control-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .server-control-header {
+        padding: 15px;
+        background: var(--light-bg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .server-control-header h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .server-status {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .server-status.online {
+        background: rgba(39, 174, 96, 0.1);
+        color: var(--success-color);
+    }
+
+    .server-status.offline {
+        background: rgba(231, 76, 60, 0.1);
+        color: var(--danger-color);
+    }
+
+    .server-control-body {
+        padding: 15px;
+    }
+
+    .server-info {
+        margin-bottom: 15px;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .info-label {
+        color: #6c757d;
+    }
+
+    .info-value {
+        font-weight: 500;
+    }
+
+    .server-controls {
+        display: flex;
+        gap: 10px;
+    }
+
+    .server-controls .btn {
+        flex: 1;
+        font-size: 0.9rem;
+    }
+
+    .server-logs {
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 0.9rem;
+    }
+
+    .log-entry {
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+
+    .log-entry.error {
+        background: rgba(231, 76, 60, 0.1);
+        color: var(--danger-color);
+    }
+
+    .log-entry.warning {
+        background: rgba(241, 196, 15, 0.1);
+        color: var(--warning-color);
+    }
+
+    .log-entry.info {
+        background: rgba(52, 152, 219, 0.1);
+        color: var(--accent-color);
+    }
+
+    .log-timestamp {
+        color: #6c757d;
+        font-size: 0.8rem;
+    }
+
+    .server-metrics canvas {
+        width: 100% !important;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Server configuration
+    const servers = [
+        { id: 'model-server', name: 'Model Server', port: 5000 },
+        { id: 'main-server', name: 'Main Server', port: 5001 },
+        { id: 'client-api', name: 'Client API', port: 5002 },
+        { id: 'audio-api', name: 'Audio API', port: 5003 },
+        { id: 'mcp-server', name: 'MCP Server', port: 11435 }
+    ];
+
+    // Initialize page
+    function initializePage() {
+        checkAllServerStatus();
+        initializeMetricsCharts();
+        startLogMonitoring();
+        startMetricsUpdate();
+    }
+
+    // Check all server status
+    function checkAllServerStatus() {
+        servers.forEach(server => {
+            checkServerStatus(server);
+        });
+    }
+
+    // Check individual server status
+    function checkServerStatus(server) {
+        const statusElement = document.getElementById(`${server.id}-status`);
+        const uptimeElement = document.getElementById(`${server.id}-uptime`);
+        const pidElement = document.getElementById(`${server.id}-pid`);
+
+        fetch(`http://localhost:${server.port}/api/status`)
+            .then(response => response.json())
+            .then(data => {
+                statusElement.textContent = 'Online';
+                statusElement.className = 'server-status online';
+                uptimeElement.textContent = data.uptime || '--';
+                pidElement.textContent = data.pid || '--';
+            })
+            .catch(() => {
+                statusElement.textContent = 'Offline';
+                statusElement.className = 'server-status offline';
+                uptimeElement.textContent = '--';
+                pidElement.textContent = '--';
+            });
+    }
+
+    // Control server
+    function controlServer(serverId, action) {
+        const server = servers.find(s => s.id === serverId);
+        if (!server) return;
+
+        fetch('/api/server/control', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                server: serverId,
+                action: action
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                addLog(serverId, 'info', `Server ${action} successful`);
+                setTimeout(() => checkServerStatus(server), 2000);
+            } else {
+                addLog(serverId, 'error', `Server ${action} failed: ${data.message}`);
+            }
+        })
+        .catch(error => {
+            addLog(serverId, 'error', `Server ${action} failed: ${error.message}`);
+        });
+    }
+
+    // Add log entry
+    function addLog(serverId, level, message) {
+        const logs = document.getElementById('server-logs');
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${level}`;
+        entry.innerHTML = `
+            <div class="log-timestamp">${new Date().toISOString()}</div>
+            <div>[${serverId}] ${message}</div>
+        `;
+        logs.insertBefore(entry, logs.firstChild);
+
+        // Keep only last 100 logs
+        const entries = logs.getElementsByClassName('log-entry');
+        if (entries.length > 100) {
+            entries[entries.length - 1].remove();
+        }
+    }
+
+    // Initialize metrics charts
+    function initializeMetricsCharts() {
+        // CPU Usage Chart
+        const cpuCtx = document.getElementById('cpu-usage-chart').getContext('2d');
+        new Chart(cpuCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: servers.map(server => ({
+                    label: server.name,
+                    data: [],
+                    borderColor: getRandomColor(),
+                    tension: 0.4
+                }))
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'CPU Usage (%)'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Memory Usage Chart
+        const memoryCtx = document.getElementById('memory-usage-chart').getContext('2d');
+        new Chart(memoryCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: servers.map(server => ({
+                    label: server.name,
+                    data: [],
+                    borderColor: getRandomColor(),
+                    tension: 0.4
+                }))
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Memory Usage (MB)'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Start log monitoring
+    function startLogMonitoring() {
+        // Simulated log updates
+        setInterval(() => {
+            const server = servers[Math.floor(Math.random() * servers.length)];
+            const levels = ['info', 'warning', 'error'];
+            const level = levels[Math.floor(Math.random() * levels.length)];
+            const messages = [
+                'Processing request',
+                'Connection established',
+                'Memory usage high',
+                'Request timeout',
+                'API call successful'
+            ];
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            
+            if (Math.random() > 0.7) { // 30% chance to add a log
+                addLog(server.id, level, message);
+            }
+        }, 5000);
+    }
+
+    // Start metrics update
+    function startMetricsUpdate() {
+        setInterval(() => {
+            servers.forEach(server => {
+                fetch(`http://localhost:${server.port}/api/metrics`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update charts with new data
+                        // Implementation depends on your metrics API response format
+                    })
+                    .catch(() => {
+                        // Handle error
+                    });
+            });
+        }, 10000);
+    }
+
+    // Filter logs
+    function filterLogs() {
+        const selectedServer = document.getElementById('log-server-select').value;
+        const logs = document.getElementsByClassName('log-entry');
+        
+        Array.from(logs).forEach(log => {
+            if (selectedServer === 'all' || log.textContent.includes(selectedServer)) {
+                log.style.display = 'block';
+            } else {
+                log.style.display = 'none';
+            }
+        });
+    }
+
+    // Utility function to generate random colors for charts
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initializePage);
+</script>
+{% endblock %}

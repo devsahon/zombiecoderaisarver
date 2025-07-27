@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><meta charset="UTF-8"><title>ZombieCoder: মডেল ও চরিত্র</title></head>
+<body style="font-family:Segoe UI,Arial,sans-serif;background:#f7f9fa;color:#222;padding:2em;max-width:900px;margin:auto;">
+<h1>ZombieCoder: মডেল ও চরিত্র</h1>
+<table border="1" cellpadding="6" style="border-collapse:collapse;">
+<tr><th>Model</th><th>Character</th><th>Provider</th><th>Fallback</th><th>Free?</th></tr>
+<tr><td>gpt-3.5, gpt-4, gpt-4o</td><td>OpenAgent</td><td>OpenAI</td><td>Groq → TogetherAI → Ollama</td><td>❌</td></tr>
+<tr><td>mixtral, llama3</td><td>GroqGuy</td><td>Groq</td><td>OpenAI → TogetherAI</td><td>✅</td></tr>
+<tr><td>mistral, llama3, falcon</td><td>TogetherTwin</td><td>TogetherAI</td><td>OpenAI → Groq</td><td>✅</td></tr>
+<tr><td>llama3, codellama, mistral</td><td>LocalDada</td><td>Ollama</td><td>LMStudio</td><td>✅</td></tr>
+<tr><td>Any GGUF</td><td>StudioFriend</td><td>LMStudio</td><td>Ollama</td><td>✅</td></tr>
+<tr><td>openchat, neural-chat</td><td>Voice/CLI</td><td>OpenChat, NeuralChat</td><td>Ollama</td><td>✅</td></tr>
+</table>
+<p>ফ্রি: Groq, TogetherAI, Ollama, LMStudio, OpenChat, NeuralChat<br>পেইড: OpenAI (gpt-3.5, gpt-4, gpt-4o)</p>
+</body></html> 

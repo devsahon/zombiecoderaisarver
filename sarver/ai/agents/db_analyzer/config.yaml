@@ -1,0 +1,4 @@
+agent_name: db_analyzer
+description: Database analysis agent
+version: 1.0
+author: system 

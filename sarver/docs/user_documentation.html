@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ZombieCoder AI - সম্পূর্ণ ইউজার গাইড</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="অসহায় মানুষের জন্য সম্পূর্ণ ফ্রি AI সেবা - 25টি এজেন্ট, বাংলা ভয়েস, ভিডিও তৈরি, ই-কমার্স সহ সব ফিচার">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts - Inter & Noto Sans Bengali -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e40af;
+      --accent-color: #3b82f6;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+      --dark-color: #1f2937;
+      --light-color: #f8fafc;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --border-color: #e5e7eb;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: var(--primary-color);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      color: var(--dark-color);
+    }
+
+    h3 {
+      font-size: 2rem;
+      color: var(--secondary-color);
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary-color) !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: var(--text-primary) !important;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 8rem 0 6rem;
+      margin-top: 80px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .card {
+      background: white;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 1.3rem;
+      padding: 1.5rem;
+      border: none;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .service-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      color: white;
+    }
+
+    .badge {
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .badge-success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .badge-warning {
+      background: var(--warning-color);
+      color: white;
+    }
+
+    .badge-danger {
+      background: var(--danger-color);
+      color: white;
+    }
+
+    .badge-info {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    .comparison-table {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .comparison-table th {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .comparison-table td {
+      padding: 1.5rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list i {
+      color: var(--success-color);
+      margin-right: 1rem;
+      font-size: 1.2rem;
+      width: 20px;
+    }
+
+    .footer {
+      background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
+      color: white;
+      text-align: center;
+      padding: 4rem 0 2rem;
+      margin-top: 5rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#"><i class="bi bi-robot"></i> ZombieCoder AI</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-label="Toggle navigation" title="Toggle navigation menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#services">সেবা</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">ফিচার</a></li>
+          <li class="nav-item"><a class="nav-link" href="#comparison">তুলনা</a></li>
+          <li class="nav-item"><a class="nav-link" href="#benefits">সুবিধা</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">আপনার ব্যক্তিগত AI সহকারী</h1>
+        <p class="hero-subtitle">অসহায় মানুষের জন্য সম্পূর্ণ ফ্রি AI সেবা। বাংলা ভাষায় কথা বলুন, প্রশ্ন করুন, এবং সহজে
+          কাজ করুন।</p>
+        <div class="mt-4">
+          <span class="badge badge-success me-2">সম্পূর্ণ ফ্রি</span>
+          <span class="badge badge-primary me-2">বাংলা ভাষা</span>
+          <span class="badge badge-info me-2">25টি এজেন্ট</span>
+          <span class="badge badge-warning">সম্পূর্ণ নিরাপদ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="section" id="services">
+      <div class="section-title">
+        <h2>আমাদের সেবা</h2>
+        <p>সব ধরনের কাজের জন্য বিশেষায়িত AI সেবা</p>
+      </div>
+
+      <div class="service-grid">
+        <div class="service-card" data-aos="fade-up">
+          <div class="service-icon">
+            <i class="bi bi-robot"></i>
+          </div>
+          <h4>AI চ্যাট সহকারী</h4>
+          <p><strong>25টি বিশেষায়িত AI এজেন্ট</strong> আপনার বিভিন্ন কাজের জন্য প্রস্তুত। প্রতিটি এজেন্টের আলাদা দক্ষতা
+            ও ব্যক্তিত্ব রয়েছে।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>ব্যক্তিগত সহকারী</li>
+            <li><i class="bi bi-check-circle"></i>শিক্ষা সহায়ক</li>
+            <li><i class="bi bi-check-circle"></i>ব্যবসায়িক পরামর্শদাতা</li>
+            <li><i class="bi bi-check-circle"></i>কোডিং বিশেষজ্ঞ</li>
+            <li><i class="bi bi-check-circle"></i>অনুবাদক</li>
+          </ul>
+          <span class="badge badge-success">সম্পূর্ণ ফ্রি</span>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-icon">
+            <i class="bi bi-mic-fill"></i>
+          </div>
+          <h4>বাংলা ভয়েস সিস্টেম</h4>
+          <p><strong>উচ্চমানের বাংলা স্পিচ</strong> জেনারেশন ও শোনার সক্ষমতা। আপনার কথা শুনে উত্তর দেবে এবং বাংলায় কথা
+            বলবে।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>টেক্সট-টু-স্পিচ (TTS)</li>
+            <li><i class="bi bi-check-circle"></i>স্পিচ-টু-টেক্সট (STT)</li>
+            <li><i class="bi bi-check-circle"></i>প্রাকৃতিক বাংলা উচ্চারণ</li>
+            <li><i class="bi bi-check-circle"></i>রিয়েল-টাইম প্লেব্যাক</li>
+            <li><i class="bi bi-check-circle"></i>মাল্টি-ইঞ্জিন সাপোর্ট</li>
+          </ul>
+          <span class="badge badge-primary">বাংলা ভাষা</span>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-icon">
+            <i class="bi bi-cpu"></i>
+          </div>
+          <h4>স্মার্ট AI প্রোভাইডার</h4>
+          <p><strong>23টি AI প্রোভাইডার</strong> থেকে সর্বোত্তম ফলাফল। একটি ব্যর্থ হলে অটোমেটিক অন্যটি ব্যবহার করবে।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>OpenAI GPT-4</li>
+            <li><i class="bi bi-check-circle"></i>TogetherAI</li>
+            <li><i class="bi bi-check-circle"></i>Ollama (লোকাল)</li>
+            <li><i class="bi bi-check-circle"></i>HuggingFace</li>
+            <li><i class="bi bi-check-circle"></i>অটো ফলব্যাক</li>
+          </ul>
+          <span class="badge badge-info">স্মার্ট AI</span>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="service-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h4>ব্যক্তিগত মেমোরি</h4>
+          <p><strong>আপনার কথোপকথন মনে রাখে</strong> এবং আগের আলোচনা থেকে শিখে। প্রতিটি এজেন্ট আপনার পছন্দ বুঝে।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>কনভারসেশন ইতিহাস</li>
+            <li><i class="bi bi-check-circle"></i>ব্যক্তিগত পছন্দ</li>
+            <li><i class="bi bi-check-circle"></i>শেখার ক্ষমতা</li>
+            <li><i class="bi bi-check-circle"></i>কনটেক্সট বুঝার ক্ষমতা</li>
+            <li><i class="bi bi-check-circle"></i>ব্যক্তিগতকৃত অভিজ্ঞতা</li>
+          </ul>
+          <span class="badge badge-warning">ব্যক্তিগত</span>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="service-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h4>সম্পূর্ণ নিরাপদ</h4>
+          <p><strong>আপনার ডেটা সম্পূর্ণ নিরাপদ</strong>। লোকাল সার্ভারে চলছে, তাই আপনার তথ্য কারও কাছে যায় না।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>লোকাল সার্ভার</li>
+            <li><i class="bi bi-check-circle"></i>ডেটা এনক্রিপশন</li>
+            <li><i class="bi bi-check-circle"></i>প্রাইভেসি সুরক্ষা</li>
+            <li><i class="bi bi-check-circle"></i>তৃতীয় পক্ষের অ্যাক্সেস নেই</li>
+            <li><i class="bi bi-check-circle"></i>সম্পূর্ণ নিয়ন্ত্রণ</li>
+          </ul>
+          <span class="badge badge-success">নিরাপদ</span>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="service-icon">
+            <i class="bi bi-phone"></i>
+          </div>
+          <h4>সহজ ব্যবহার</h4>
+          <p><strong>সবাই ব্যবহার করতে পারবে</strong>। জটিল সেটিংস নেই, শুধু কথা বলুন বা লিখুন।</p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle"></i>সহজ ইন্টারফেস</li>
+            <li><i class="bi bi-check-circle"></i>বাংলা ভাষায়</li>
+            <li><i class="bi bi-check-circle"></i>কোন জ্ঞান প্রয়োজন নেই</li>
+            <li><i class="bi bi-check-circle"></i>মোবাইল ফ্রেন্ডলি</li>
+            <li><i class="bi bi-check-circle"></i>দ্রুত রেসপন্স</li>
+          </ul>
+          <span class="badge badge-primary">সহজ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Features Section -->
+    <div class="section" id="features">
+      <div class="section-title">
+        <h2>উন্নত ফিচার</h2>
+        <p>আধুনিক AI টেকনোলজির সব ফিচার</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-right">
+            <div class="card-header">
+              <i class="bi bi-camera-video"></i> ভিডিও তৈরি
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>AI ভিডিও জেনারেশন</li>
+                <li><i class="bi bi-check-circle"></i>টেক্সট থেকে ভিডিও</li>
+                <li><i class="bi bi-check-circle"></i>ভিডিও এডিটিং</li>
+                <li><i class="bi bi-check-circle"></i>অ্যানিমেশন তৈরি</li>
+                <li><i class="bi bi-check-circle"></i>ভিডিও ট্রান্সক্রিপশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-left">
+            <div class="card-header">
+              <i class="bi bi-image"></i> ইমেজ তৈরি
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>AI ইমেজ জেনারেশন</li>
+                <li><i class="bi bi-check-circle"></i>ইমেজ এডিটিং</li>
+                <li><i class="bi bi-check-circle"></i>স্টাইল ট্রান্সফার</li>
+                <li><i class="bi bi-check-circle"></i>ইমেজ রিকগনিশন</li>
+                <li><i class="bi bi-check-circle"></i>QR কোড জেনারেশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-right">
+            <div class="card-header">
+              <i class="bi bi-shield-lock"></i> লাইসেন্স সিস্টেম
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>ডিজিটাল লাইসেন্স</li>
+                <li><i class="bi bi-check-circle"></i>অটো রিনিউয়াল</li>
+                <li><i class="bi bi-check-circle"></i>লাইসেন্স ভেরিফিকেশন</li>
+                <li><i class="bi bi-check-circle"></i>পেমেন্ট ইন্টিগ্রেশন</li>
+                <li><i class="bi bi-check-circle"></i>লাইসেন্স ট্র্যাকিং</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-left">
+            <div class="card-header">
+              <i class="bi bi-cart"></i> ই-কমার্স
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>প্রোডাক্ট ক্যাটালগ</li>
+                <li><i class="bi bi-check-circle"></i>অর্ডার ম্যানেজমেন্ট</li>
+                <li><i class="bi bi-check-circle"></i>পেমেন্ট গেটওয়ে</li>
+                <li><i class="bi bi-check-circle"></i>ইনভেন্টরি ট্র্যাকিং</li>
+                <li><i class="bi bi-check-circle"></i>কাস্টমার সাপোর্ট</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-right">
+            <div class="card-header">
+              <i class="bi bi-phone"></i> মোবাইল অ্যাপ
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>Android অ্যাপ</li>
+                <li><i class="bi bi-check-circle"></i>iOS অ্যাপ</li>
+                <li><i class="bi bi-check-circle"></i>অফলাইন সাপোর্ট</li>
+                <li><i class="bi bi-check-circle"></i>পুশ নোটিফিকেশন</li>
+                <li><i class="bi bi-check-circle"></i>মোবাইল অপটিমাইজেশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card" data-aos="fade-left">
+            <div class="card-header">
+              <i class="bi bi-graph-up"></i> অ্যানালিটিক্স
+            </div>
+            <div class="card-body">
+              <ul class="feature-list">
+                <li><i class="bi bi-check-circle"></i>ইউজার অ্যানালিটিক্স</li>
+                <li><i class="bi bi-check-circle"></i>পারফরম্যান্স ট্র্যাকিং</li>
+                <li><i class="bi bi-check-circle"></i>রিয়েল-টাইম ড্যাশবোর্ড</li>
+                <li><i class="bi bi-check-circle"></i>রিপোর্ট জেনারেশন</li>
+                <li><i class="bi bi-check-circle"></i>ডেটা ভিজুয়ালাইজেশন</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Section -->
+    <div class="section" id="comparison">
+      <div class="section-title">
+        <h2>অন্যান্য সেবার সাথে তুলনা</h2>
+        <p>আমাদের সিস্টেমের অনন্য বৈশিষ্ট্য</p>
+      </div>
+
+      <div class="comparison-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>বৈশিষ্ট্য</th>
+              <th>ChatGPT</th>
+              <th>Google Assistant</th>
+              <th>Siri</th>
+              <th><strong>আমাদের সিস্টেম</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ভাষা সাপোর্ট</strong></td>
+              <td>সীমিত বাংলা</td>
+              <td>সীমিত বাংলা</td>
+              <td>সীমিত বাংলা</td>
+              <td><strong>সম্পূর্ণ বাংলা সাপোর্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>কোস্ট</strong></td>
+              <td>$20/মাস</td>
+              <td>ফ্রি (বিজ্ঞাপন সহ)</td>
+              <td>ফ্রি (ডিভাইস সীমিত)</td>
+              <td><strong>সম্পূর্ণ ফ্রি</strong></td>
+            </tr>
+            <tr>
+              <td><strong>এজেন্ট সংখ্যা</strong></td>
+              <td>একটি</td>
+              <td>একটি</td>
+              <td>একটি</td>
+              <td><strong>25টি বিশেষায়িত এজেন্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>লোকাল ডেটা</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>আংশিক</td>
+              <td><strong>সম্পূর্ণ লোকাল</strong></td>
+            </tr>
+            <tr>
+              <td><strong>কাস্টমাইজেশন</strong></td>
+              <td>সীমিত</td>
+              <td>সীমিত</td>
+              <td>সীমিত</td>
+              <td><strong>সম্পূর্ণ কাস্টম</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ভয়েস কোয়ালিটি</strong></td>
+              <td>সীমিত</td>
+              <td>ভালো</td>
+              <td>ভালো</td>
+              <td><strong>উচ্চমানের বাংলা ভয়েস</strong></td>
+            </tr>
+            <tr>
+              <td><strong>প্রাইভেসি</strong></td>
+              <td>তৃতীয় পক্ষের কাছে</td>
+              <td>Google-এর কাছে</td>
+              <td>Apple-এর কাছে</td>
+              <td><strong>সম্পূর্ণ প্রাইভেট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>অফলাইন কাজ</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>আংশিক</td>
+              <td><strong>সম্পূর্ণ অফলাইন</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ভিডিও তৈরি</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>না</td>
+              <td><strong>সম্পূর্ণ সাপোর্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ইমেজ তৈরি</strong></td>
+              <td>সীমিত</td>
+              <td>না</td>
+              <td>না</td>
+              <td><strong>সম্পূর্ণ সাপোর্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ই-কমার্স</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>না</td>
+              <td><strong>সম্পূর্ণ সাপোর্ট</strong></td>
+            </tr>
+            <tr>
+              <td><strong>মোবাইল অ্যাপ</strong></td>
+              <td>না</td>
+              <td>না</td>
+              <td>না</td>
+              <td><strong>Android & iOS</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="section" id="benefits">
+      <div class="section-title">
+        <h2>আপনার সুবিধা</h2>
+        <p>আমাদের সিস্টেম ব্যবহারের বিশেষ সুবিধা</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in">
+            <div class="card-body">
+              <i class="bi bi-currency-dollar" style="font-size: 3em; color: var(--success-color);"></i>
+              <h4 class="mt-3">সম্পূর্ণ ফ্রি</h4>
+              <p>কোন মাসিক চার্জ নেই, কোন বিজ্ঞাপন নেই। অসহায় মানুষের জন্য সম্পূর্ণ ফ্রি সেবা।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card-body">
+              <i class="bi bi-shield-check" style="font-size: 3em; color: var(--primary-color);"></i>
+              <h4 class="mt-3">সম্পূর্ণ নিরাপদ</h4>
+              <p>আপনার ডেটা আপনার কম্পিউটারে থাকে। কারও কাছে যায় না, সম্পূর্ণ প্রাইভেট।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card-body">
+              <i class="bi bi-translate" style="font-size: 3em; color: var(--warning-color);"></i>
+              <h4 class="mt-3">বাংলা ভাষা</h4>
+              <p>মাতৃভাষায় কথা বলুন, প্রশ্ন করুন। উচ্চমানের বাংলা স্পিচ ও টেক্সট প্রসেসিং।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card-body">
+              <i class="bi bi-people" style="font-size: 3em; color: var(--danger-color);"></i>
+              <h4 class="mt-3">25টি এজেন্ট</h4>
+              <p>বিভিন্ন কাজের জন্য বিশেষায়িত AI এজেন্ট। প্রতিটির আলাদা দক্ষতা ও ব্যক্তিত্ব।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in" data-aos-delay="400">
+            <div class="card-body">
+              <i class="bi bi-lightning" style="font-size: 3em; color: var(--accent-color);"></i>
+              <h4 class="mt-3">দ্রুত রেসপন্স</h4>
+              <p>তৎক্ষণাৎ উত্তর পাবেন। লোকাল সার্ভারে চলছে বলে দ্রুত কাজ করে।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card text-center" data-aos="zoom-in" data-aos-delay="500">
+            <div class="card-body">
+              <i class="bi bi-gear" style="font-size: 3em; color: var(--secondary-color);"></i>
+              <h4 class="mt-3">সহজ ব্যবহার</h4>
+              <p>জটিল সেটিংস নেই। শুধু কথা বলুন বা লিখুন, বাকি সব AI করবে।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="section">
+      <div class="section-title">
+        <h2>কিভাবে ব্যবহার করবেন</h2>
+        <p>4টি সহজ ধাপে শুরু করুন</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="card text-center" data-aos="fade-up">
+            <div class="card-body">
+              <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 60px; height: 60px; font-size: 1.5em;">1</div>
+              <h5 class="mt-3">সিস্টেম চালু করুন</h5>
+              <p>আমাদের সিস্টেম চালু করুন। সব সার্ভার অটোমেটিক চালু হবে।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+          <div class="card text-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-body">
+              <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 60px; height: 60px; font-size: 1.5em;">2</div>
+              <h5 class="mt-3">এজেন্ট বেছে নিন</h5>
+              <p>আপনার কাজ অনুযায়ী সঠিক AI এজেন্ট বেছে নিন।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+          <div class="card text-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-body">
+              <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 60px; height: 60px; font-size: 1.5em;">3</div>
+              <h5 class="mt-3">প্রশ্ন করুন</h5>
+              <p>বাংলায় কথা বলুন বা লিখুন। AI আপনার প্রশ্নের উত্তর দেবে।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+          <div class="card text-center" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-body">
+              <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 60px; height: 60px; font-size: 1.5em;">4</div>
+              <h5 class="mt-3">ফলাফল পান</h5>
+              <p>তৎক্ষণাৎ উত্তর পাবেন। ভয়েসে শুনতে চাইলে বলুন।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <h4><i class="bi bi-robot"></i> ZombieCoder AI - ইউজার গাইড</h4>
+    <p class="mb-0">অসহায় মানুষের জন্য ফ্রি AI সেবা | © 2024</p>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS Animation -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+</body>
+
+</html>

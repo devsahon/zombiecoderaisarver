@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZombieCoder Voice Chat & Play</title>
+  <style>
+    body { background: #18181b; color: #f1f5f9; font-family: Arial, sans-serif; }
+    #chat { max-width: 600px; margin: 2rem auto; background: #23272f; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 8px #0004; }
+    #messages { min-height: 200px; margin-bottom: 1rem; }
+    .msg { margin: 0.5em 0; padding: 0.5em 1em; border-radius: 6px; }
+    .user { background: #38bdf8; color: #18181b; text-align: right; }
+    .bot { background: #27272a; color: #f1f5f9; text-align: left; }
+    #inputRow { display: flex; gap: 0.5em; }
+    #textInput { flex: 1; padding: 0.5em; border-radius: 6px; border: none; font-size: 1em; }
+    #sendBtn, #playBtn { padding: 0.5em 1em; border-radius: 6px; border: none; background: #38bdf8; color: #18181b; font-weight: bold; cursor: pointer; }
+    #sendBtn:disabled { background: #64748b; cursor: not-allowed; }
+    #playBtn { background: #22c55e; margin-left: 0.5em; }
+    audio { display: block; margin: 1em auto; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <h2>ZombieCoder Voice Chat & Play</h2>
+    <div id="messages"></div>
+    <div id="inputRow">
+      <input id="textInput" type="text" placeholder="Type your message..." />
+      <button id="sendBtn">Send</button>
+      <button id="playBtn">Play</button>
+    </div>
+    <audio id="audioPlayer" controls></audio>
+  </div>
+  <script>
+    const messages = document.getElementById('messages');
+    const textInput = document.getElementById('textInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const playBtn = document.getElementById('playBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+    let lastBotAudio = null;
+    let chatHistory = [];
+
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + sender;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = textInput.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      chatHistory.push({role: 'user', content: text});
+      textInput.value = '';
+      sendBtn.disabled = true;
+      addMessage('⏳ Generating voice...', 'bot');
+      try {
+        // Send to backend TTS/chat API (replace URL as needed)
+        const response = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, history: chatHistory })
+        });
+        if (!response.ok) throw new Error('TTS API error');
+        // If response is chunked audio, play as it arrives
+        const reader = response.body.getReader();
+        let audioChunks = [];
+        let received = false;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          audioChunks.push(value);
+          received = true;
+        }
+        if (received) {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audioPlayer.src = audioUrl;
+          audioPlayer.play();
+          lastBotAudio = audioUrl;
+          addMessage('🔊 Voice response ready.', 'bot');
+        } else {
+          addMessage('❌ No audio received.', 'bot');
+        }
+      } catch (e) {
+        addMessage('❌ Error: ' + e.message, 'bot');
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.onclick = sendMessage;
+    textInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+    playBtn.onclick = () => {
+      if (lastBotAudio) {
+        audioPlayer.src = lastBotAudio;
+        audioPlayer.play();
+      }
+    };
+  </script>
+</body>
+</html> 
